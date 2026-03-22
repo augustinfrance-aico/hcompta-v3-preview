@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H-Compta AI — Accepter l'invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0e1a; color: #e2e8f0; font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .card { background: #111827; border: 1px solid #1e2d45; border-radius: 16px; padding: 40px; max-width: 480px; width: 90%; text-align: center; }
+  .logo { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+  .logo span { color: #10b981; }
+  .sub { color: #94a3b8; font-size: 14px; margin-bottom: 32px; }
+  .field { margin-bottom: 16px; text-align: left; }
+  .field label { display: block; font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
+  .field input { width: 100%; padding: 12px 14px; background: #1a2235; border: 1px solid #1e2d45; border-radius: 8px; color: #e2e8f0; font-size: 15px; outline: none; }
+  .field input:focus { border-color: #1F6FFF; }
+  .btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #1F6FFF, #7A3CFF); color: #fff; font-size: 15px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; margin-top: 16px; }
+  .btn:hover { opacity: .9; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .msg { margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 13px; display: none; }
+  .msg-ok { background: rgba(16,185,129,.1); color: #10b981; border: 1px solid rgba(16,185,129,.2); }
+  .msg-err { background: rgba(239,68,68,.1); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }
+  .info { margin-top: 24px; font-size: 12px; color: #64748b; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">H-Compta <span>AI</span></div>
+  <div class="sub">Vous avez recu une invitation. Creez votre compte pour acceder au dossier.</div>
+
+  <div class="field">
+    <label>Votre nom complet</label>
+    <input type="text" id="inp-nom" placeholder="Jean Dupont">
+  </div>
+  <div class="field">
+    <label>Mot de passe (min 8 caracteres)</label>
+    <input type="password" id="inp-pwd" placeholder="Choisissez un mot de passe securise">
+  </div>
+  <div class="field">
+    <label>Confirmer le mot de passe</label>
+    <input type="password" id="inp-pwd2" placeholder="Retapez le mot de passe">
+  </div>
+
+  <button class="btn" id="btn-accept" onclick="acceptInvite()">Accepter l'invitation</button>
+
+  <div class="msg msg-ok" id="msg-ok"></div>
+  <div class="msg msg-err" id="msg-err"></div>
+
+  <div class="info">En acceptant, vous aurez acces au dossier comptable de la PME qui vous a invite.</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="auth_v3.js"></script>
+<script>
+(function() {
+  // Lire le token depuis l'URL : accept-invite.html?token=xxx
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+
+  if (!token) {
+    document.getElementById('msg-err').textContent = 'Lien invalide — aucun token d\'invitation trouve.';
+    document.getElementById('msg-err').style.display = 'block';
+    document.getElementById('btn-accept').disabled = true;
+    return;
+  }
+
+  window.acceptInvite = async function() {
+    const nom = document.getElementById('inp-nom').value.trim();
+    const pwd = document.getElementById('inp-pwd').value;
+    const pwd2 = document.getElementById('inp-pwd2').value;
+
+    // Validations
+    if (!nom) { showErr('Veuillez saisir votre nom.'); return; }
+    if (pwd.length < 8) { showErr('Le mot de passe doit faire au moins 8 caracteres.'); return; }
+    if (pwd !== pwd2) { showErr('Les mots de passe ne correspondent pas.'); return; }
+
+    const btn = document.getElementById('btn-accept');
+    btn.disabled = true;
+    btn.textContent = 'Traitement en cours...';
+
+    try {
+      const sb = HC.getSupabase();
+
+      // 1. Lire l'invitation par token (via service — RLS autorise authenticated)
+      const { data: inv, error: invErr } = await sb.from('invitations')
+        .select('*')
+        .eq('token', token)
+        .eq('statut', 'En attente')
+        .single();
+
+      if (invErr || !inv) {
+        showErr('Invitation invalide, expiree ou deja utilisee.');
+        btn.disabled = false;
+        btn.textContent = 'Accepter l\'invitation';
+        return;
+      }
+
+      // Verifier expiration
+      if (new Date(inv.expires_at) < new Date()) {
+        showErr('Cette invitation a expire. Demandez une nouvelle invitation.');
+        btn.disabled = false;
+        btn.textContent = 'Accepter l\'invitation';
+        return;
+      }
+
+      // 2. Creer le compte Supabase Auth
+      const { data: authData, error: authErr } = await sb.auth.signUp({
+        email: inv.email_invite,
+        password: pwd,
+        options: {
+          data: { role: inv.role_invite, nom: nom }
+        }
+      });
+
+      if (authErr) {
+        showErr('Erreur creation de compte : ' + authErr.message);
+        btn.disabled = false;
+        btn.textContent = 'Accepter l\'invitation';
+        return;
+      }
+
+      // 3. Si COLLABORATEUR, inserer dans table collaborateurs
+      if (inv.role_invite === 'COLLABORATEUR') {
+        await sb.from('collaborateurs').insert({
+          pme_id: inv.pme_id,
+          email: inv.email_invite,
+          role: 'COLLABORATEUR',
+          statut: 'Actif'
+        });
+      }
+
+      // 4. Si EXPERT, mettre a jour pme_liste.email_expert
+      if (inv.role_invite === 'EXPERT') {
+        await sb.from('pme_liste')
+          .update({ email_expert: inv.email_invite })
+          .eq('id', inv.pme_id);
+      }
+
+      // 5. Marquer l'invitation comme acceptee
+      await sb.from('invitations')
+        .update({ statut: 'Accept\u00e9e' })
+        .eq('id', inv.id);
+
+      // 6. Succes
+      showOk('Compte cree avec succes ! Vous allez etre redirige vers la page de connexion...');
+      setTimeout(function() {
+        window.location.href = 'login.html';
+      }, 2000);
+
+    } catch (e) {
+      showErr('Erreur inattendue : ' + e.message);
+      btn.disabled = false;
+      btn.textContent = 'Accepter l\'invitation';
+    }
+  };
+
+  function showErr(msg) {
+    document.getElementById('msg-err').textContent = msg;
+    document.getElementById('msg-err').style.display = 'block';
+    document.getElementById('msg-ok').style.display = 'none';
+  }
+  function showOk(msg) {
+    document.getElementById('msg-ok').textContent = msg;
+    document.getElementById('msg-ok').style.display = 'block';
+    document.getElementById('msg-err').style.display = 'none';
+  }
+})();
+</script>
+
+</body>
+</html>

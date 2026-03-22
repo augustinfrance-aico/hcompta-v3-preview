@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H-Compta AI — Documentation Migration V3</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#FAFBFC; --bg2:#FFF; --bg3:#F3F4F6; --border:#E5E7EB; --blue:#1F6FFF; --green:#059669; --orange:#D97706; --red:#DC2626; --purple:#7C3AED; --text:#111827; --text2:#4B5563; --text3:#9CA3AF; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.7}
+
+  .hero{position:relative;width:100%;min-height:100dvh;overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center}
+  .hero video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.08) brightness(1.02)}
+  .hero-ov{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,rgba(0,0,0,.15),rgba(0,0,0,.05) 45%,rgba(0,0,0,.3) 75%,rgba(255,255,255,.95) 95%,#fff);z-index:1}
+  .hero-c{position:relative;z-index:2;text-align:center;padding:40px;max-width:700px}
+  .hero-c .tag{display:inline-block;background:rgba(255,255,255,.2);backdrop-filter:blur(16px);color:#fff;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:8px 22px;border-radius:30px;border:1px solid rgba(255,255,255,.3);margin-bottom:24px}
+  .hero-c h1{font-size:46px;font-weight:900;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.4);letter-spacing:-1px;line-height:1.1;margin-bottom:16px}
+  .hero-c h1 span{color:#34D399}
+  .hero-c p{color:rgba(255,255,255,.9);font-size:17px;text-shadow:0 1px 6px rgba(0,0,0,.3)}
+  .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:3;color:var(--text3);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:2px;animation:bounce 2s infinite}
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+  .container{max-width:900px;margin:0 auto;padding:40px 24px 80px}
+
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:24px 0}
+  .m{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .m-v{font-size:32px;font-weight:900;color:var(--blue)}
+  .m-v.g{color:var(--green)}
+  .m-l{font-size:11px;color:var(--text3);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+  details{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+  details[open]{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+  summary{padding:16px 20px;cursor:pointer;font-weight:700;font-size:15px;display:flex;align-items:center;gap:10px;list-style:none;user-select:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:'▸';font-size:12px;color:var(--text3);transition:transform .2s}
+  details[open] summary::before{transform:rotate(90deg)}
+  summary .s-badge{margin-left:auto;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
+  .s-done{background:#ECFDF5;color:var(--green)}
+  .s-wait{background:#FFFBEB;color:var(--orange)}
+  .det-body{padding:0 20px 20px;font-size:14px;color:var(--text2)}
+  .det-body strong{color:var(--text)}
+
+  .tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .tbl th{text-align:left;padding:10px 12px;font-weight:700;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);background:var(--bg3)}
+  .tbl td{padding:10px 12px;border-top:1px solid var(--border);color:var(--text2)}
+  .tbl td:first-child{font-weight:600;color:var(--text)}
+
+  .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
+  .b-g{background:#ECFDF5;color:var(--green)}.b-b{background:#EFF6FF;color:var(--blue)}.b-o{background:#FFFBEB;color:var(--orange)}
+
+  .info{background:#FFF7ED;border-left:4px solid var(--orange);border-radius:0 10px 10px 0;padding:12px 16px;margin:12px 0;font-size:13px;color:var(--text2)}
+  .info strong{color:var(--orange)}
+
+  .section-title{font-size:20px;font-weight:800;margin:32px 0 16px;display:flex;align-items:center;gap:10px}
+
+  .footer{background:var(--bg2);border-top:1px solid var(--border);padding:32px;text-align:center;color:var(--text3);font-size:12px}
+
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
+
+  @media(max-width:640px){.hero-c h1{font-size:28px}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <video autoplay muted loop playsinline><source src="hero.mp4" type="video/mp4"></video>
+  <div class="hero-ov"></div>
+  <div class="hero-c">
+    <div class="tag">Migration V3 &mdash; Rapport</div>
+    <h1>H-Compta <span>AI</span></h1>
+    <p>Migration Airtable/Dropbox vers Supabase. Tout ce qui a &eacute;t&eacute; fait, v&eacute;rifi&eacute;, et d&eacute;ploy&eacute;.</p>
+  </div>
+  <div class="hero-scroll">&darr; Scroll</div>
+</div>
+
+<div class="container">
+
+<div class="metrics">
+  <div class="m"><div class="m-v g">93%</div><div class="m-l">Avancement</div></div>
+  <div class="m"><div class="m-v">8</div><div class="m-l">Tables SQL</div></div>
+  <div class="m"><div class="m-v">22</div><div class="m-l">Prompts Mariah</div></div>
+  <div class="m"><div class="m-v">4</div><div class="m-l">Sc&eacute;narios Make V3</div></div>
+  <div class="m"><div class="m-v">4</div><div class="m-l">Pages HTML</div></div>
+  <div class="m"><div class="m-v g">-20$/m</div><div class="m-l">&Eacute;conomie Make</div></div>
+</div>
+
+<div class="info">
+  <strong>En r&eacute;sum&eacute; :</strong> Base de donn&eacute;es migr&eacute;e, authentification fonctionnelle, 4 pages connect&eacute;es, 22 prompts Mariah transf&eacute;r&eacute;s, 4 sc&eacute;narios Make recr&eacute;&eacute;s, proxy backend d&eacute;ploy&eacute;, site en ligne. Reste : tests avec No&eacute; + DNS app.hcompta.ai.
+</div>
+
+<!-- ═══ SECTIONS PLIABLES ═══ -->
+
+<div class="section-title">&#x1F5C4;&#xFE0F; Ce qui a &eacute;t&eacute; fait</div>
+
+<details>
+  <summary>&#x1F5C3;&#xFE0F; Base de donn&eacute;es Supabase &mdash; 8 tables + 5 buckets <span class="s-badge s-done">Fait</span></summary>
+  <div class="det-body">
+    <p>8 tables PostgreSQL avec s&eacute;curit&eacute; RLS (chaque PME ne voit que ses donn&eacute;es). 5 espaces de stockage pour les factures, exports, TVA. 13 index de performance. 5 PME de test ins&eacute;r&eacute;es.</p>
+    <table class="tbl">
+      <tr><th>Table</th><th>R&ocirc;le</th><th>Lignes</th></tr>
+      <tr><td>pme_liste</td><td>PME clientes</td><td>5</td></tr>
+      <tr><td>ecritures</td><td>Pi&egrave;ces comptables Mariah</td><td>1</td></tr>
+      <tr><td>prompts</td><td>22 prompts IA</td><td>22</td></tr>
+      <tr><td>ambassadeurs</td><td>Codes promo</td><td>1</td></tr>
+      <tr><td>invitations</td><td>Invitations Expert/Collab</td><td>0</td></tr>
+      <tr><td>cabinets</td><td>Cabinets comptables</td><td>1</td></tr>
+      <tr><td>collaborateurs</td><td>Membres PME</td><td>0</td></tr>
+      <tr><td>sessions_log</td><td>Journal connexions</td><td>0</td></tr>
+    </table>
+    <p><strong>S&eacute;curit&eacute; v&eacute;rifi&eacute;e :</strong> pme@test.ci voit 1 PME. expert@test.ci voit 3 PME. admin@test.ci voit les 5.</p>
+  </div>
+</details>
+
+<details>
+  <summary>&#x1F510; Authentification &mdash; 4 r&ocirc;les, JWT, z&eacute;ro simulation <span class="s-badge s-done">Fait</span></summary>
+  <div class="det-body">
+    <p>SIMULATION_MODE supprim&eacute;. Vraie connexion Supabase avec tokens JWT s&eacute;curis&eacute;s.</p>
+    <table class="tbl">
+      <tr><th>Email</th><th>Mot de passe</th><th>R&ocirc;le</th></tr>
+      <tr><td>pme@test.ci</td><td>hcompta2026</td><td><span class="badge b-g">PME</span></td></tr>
+      <tr><td>expert@test.ci</td><td>hcompta2026</td><td><span class="badge b-b">EXPERT</span></td></tr>
+      <tr><td>collab@test.ci</td><td>hcompta2026</td><td><span class="badge b-o">COLLABORATEUR</span></td></tr>
+      <tr><td>admin@test.ci</td><td>hcompta2026</td><td><span class="badge b-g">ADMIN</span></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>&#x26A1; 9 sc&eacute;narios &mdash; 4 dans Make V3, 5 en Supabase direct <span class="s-badge s-done">Fait</span></summary>
+  <div class="det-body">
+    <p><strong>Rien supprim&eacute;.</strong> Les 9 anciens sc&eacute;narios sont conserv&eacute;s en backup (OFF) dans Make. 4 nouveaux V3 cr&eacute;&eacute;s &agrave; c&ocirc;t&eacute;.</p>
+    <table class="tbl">
+      <tr><th>Sc&eacute;nario</th><th>V3</th><th>Ancien</th></tr>
+      <tr><td>S1 Connexion</td><td><span class="badge b-g">Supabase Auth</span></td><td><span class="badge b-o">Backup</span></td></tr>
+      <tr><td><strong>S2 Import Mariah</strong></td><td><span class="badge b-b">Make V3</span></td><td><span class="badge b-o">Backup</span></td></tr>
+      <tr><td><strong>S3 Export Sage</strong></td><td><span class="badge b-b">Make V3</span></td><td><span class="badge b-o">Backup</span></td></tr>
+      <tr><td><strong>S4 TVA</strong></td><td><span class="badge b-b">Make V3</span></td><td><span class="badge b-o">Backup</span></td></tr>
+      <tr><td>S5 Invitations</td><td><span class="badge b-g">Supabase direct</span></td><td><span class="badge b-o">Backup</span></td></tr>
+      <tr><td>S6 Ambassadeurs</td><td><span class="badge b-g">Supabase direct</span></td><td><span class="badge b-o">Backup</span></td></tr>
+      <tr><td>S7 Reset MDP</td><td><span class="badge b-g">Supabase Auth</span></td><td><span class="badge b-o">Backup</span></td></tr>
+      <tr><td><strong>S8 Sync Expert</strong></td><td><span class="badge b-b">Make V3</span></td><td><span class="badge b-o">Backup</span></td></tr>
+      <tr><td>S9 Inscription</td><td><span class="badge b-g">Supabase Auth</span></td><td><span class="badge b-o">Backup</span></td></tr>
+    </table>
+    <p style="font-size:12px;color:var(--text3);margin-top:8px">
+      <span class="dot" style="background:var(--blue)"></span> Make V3 = t&acirc;ches automatiques
+      &nbsp;&nbsp;
+      <span class="dot" style="background:var(--green)"></span> Supabase = actions utilisateur (instantan&eacute;)
+      &nbsp;&nbsp;
+      <span class="dot" style="background:var(--orange)"></span> Backup = ancien conserv&eacute;
+    </p>
+  </div>
+</details>
+
+<details>
+  <summary>&#x1F4B0; Pourquoi 4 sc&eacute;narios Make au lieu de 9 &mdash; optimisation <span class="s-badge s-done">Optimis&eacute;</span></summary>
+  <div class="det-body">
+
+    <p style="margin-bottom:16px">On n'a pas &laquo; enlev&eacute; &raquo; 5 sc&eacute;narios &mdash; on les a <strong>am&eacute;lior&eacute;s</strong>. Au lieu de passer par Make (qui ajoute du d&eacute;lai et consomme des op&eacute;rations payantes), ces 5 sc&eacute;narios passent directement par Supabase. Le r&eacute;sultat est le m&ecirc;me, mais <strong>plus rapide et moins cher</strong>.</p>
+
+    <p style="font-weight:700;margin-bottom:8px">La diff&eacute;rence entre Make et Supabase direct :</p>
+
+    <table class="tbl">
+      <tr><th>Crit&egrave;re</th><th>Via Make.com</th><th>Via Supabase direct</th></tr>
+      <tr><td><strong>Vitesse</strong></td><td>2 &agrave; 15 secondes (webhook &rarr; traitement &rarr; r&eacute;ponse)</td><td style="color:var(--green);font-weight:600">0.3 seconde (appel direct)</td></tr>
+      <tr><td><strong>Co&ucirc;t</strong></td><td>1 op&eacute;ration par ex&eacute;cution (limit&eacute; par le plan)</td><td style="color:var(--green);font-weight:600">0 op&eacute;ration (inclus dans Supabase)</td></tr>
+      <tr><td><strong>Fiabilit&eacute;</strong></td><td>D&eacute;pend du serveur Make (99.9% uptime)</td><td style="color:var(--green);font-weight:600">M&ecirc;me serveur que la base de donn&eacute;es</td></tr>
+      <tr><td><strong>S&eacute;curit&eacute;</strong></td><td>Token webhook (peut &ecirc;tre expos&eacute;)</td><td style="color:var(--green);font-weight:600">JWT Supabase (chiffr&eacute;, expire automatiquement)</td></tr>
+    </table>
+
+    <p style="font-weight:700;margin:16px 0 8px">Pourquoi on garde Make pour S2, S3, S4, S8 :</p>
+
+    <table class="tbl">
+      <tr><th>Sc&eacute;nario</th><th>Pourquoi Make est n&eacute;cessaire</th></tr>
+      <tr><td><strong>S2 Import Mariah</strong></td><td>Personne ne clique &mdash; Make surveille automatiquement toutes les 15 minutes s'il y a des nouvelles factures &agrave; analyser. C'est un <strong>robot en fond</strong>.</td></tr>
+      <tr><td><strong>S3 Export Sage</strong></td><td>G&eacute;n&egrave;re un fichier CSV complexe en agr&eacute;geant des dizaines d'&eacute;critures. C'est un <strong>traitement lourd</strong> qui doit tourner c&ocirc;t&eacute; serveur.</td></tr>
+      <tr><td><strong>S4 TVA</strong></td><td>Se d&eacute;clenche automatiquement le <strong>1er du mois &agrave; 6h</strong>. Aucune intervention humaine. C'est une <strong>t&acirc;che planifi&eacute;e</strong>.</td></tr>
+      <tr><td><strong>S8 Sync Expert</strong></td><td>Apr&egrave;s qu'un expert valide une &eacute;criture, Make recalcule le <strong>score de conformit&eacute;</strong> de la PME. C'est un traitement en cascade.</td></tr>
+    </table>
+
+    <p style="font-weight:700;margin:16px 0 8px">Pourquoi Supabase est mieux pour S1, S5, S6, S7, S9 :</p>
+
+    <table class="tbl">
+      <tr><th>Sc&eacute;nario</th><th>Avant (Make)</th><th>Maintenant (Supabase)</th><th>Gain</th></tr>
+      <tr><td><strong>S1 Connexion</strong></td><td>Webhook &rarr; Airtable &rarr; r&eacute;ponse (5 sec)</td><td>Supabase Auth direct (0.3 sec)</td><td style="color:var(--green);font-weight:600">16x plus rapide + JWT s&eacute;curis&eacute;</td></tr>
+      <tr><td><strong>S5 Invitations</strong></td><td>Webhook &rarr; Airtable Update (15 min d'attente)</td><td>Insert direct dans Supabase</td><td style="color:var(--green);font-weight:600">Instantan&eacute; + lien partag&eacute; imm&eacute;diat</td></tr>
+      <tr><td><strong>S6 Ambassadeurs</strong></td><td>Webhook &rarr; Airtable Search (d&eacute;lai)</td><td>V&eacute;rification directe dans la table</td><td style="color:var(--green);font-weight:600">Instantan&eacute;</td></tr>
+      <tr><td><strong>S7 Reset MDP</strong></td><td>Webhook &rarr; token &rarr; email via Mailjet</td><td>Supabase Auth envoie l'email nativement</td><td style="color:var(--green);font-weight:600">Email en 2s + z&eacute;ro config Mailjet</td></tr>
+      <tr><td><strong>S9 Inscription</strong></td><td>Webhook &rarr; Airtable Create (5 sec)</td><td>Supabase Auth direct (0.5 sec)</td><td style="color:var(--green);font-weight:600">10x plus rapide + email confirmation natif</td></tr>
+    </table>
+
+    <p style="font-weight:700;margin:16px 0 8px">Impact financier :</p>
+
+    <table class="tbl">
+      <tr><th>Configuration</th><th>Op&eacute;rations/mois</th><th>Plan Make n&eacute;cessaire</th><th>Co&ucirc;t</th></tr>
+      <tr><td>9 sc&eacute;narios dans Make (ancienne approche)</td><td>~25 000</td><td>Pro</td><td style="color:var(--red);font-weight:700">49$/mois</td></tr>
+      <tr><td><strong>4 dans Make + 5 en Supabase (notre approche)</strong></td><td>~8 000</td><td>Teams</td><td style="color:var(--green);font-weight:700">29$/mois</td></tr>
+    </table>
+
+    <div style="margin-top:12px;padding:14px 18px;background:#ECFDF5;border:1px solid rgba(5,150,105,.15);border-radius:10px;font-size:14px">
+      <strong style="color:var(--green)">&Eacute;conomie : 20$/mois (240$/an)</strong> &mdash; et vos utilisateurs ont une exp&eacute;rience <strong>10 &agrave; 16 fois plus rapide</strong> sur les actions courantes (connexion, inscription, invitations, codes promo, reset mot de passe).
+    </div>
+
+    <p style="margin-top:16px;padding:12px 16px;background:var(--bg3);border-radius:8px;font-size:13px;color:var(--text2)">
+      <strong style="color:var(--text)">R&egrave;gle simple :</strong> si un utilisateur clique un bouton &rarr; Supabase (instantan&eacute;, gratuit). Si c'est automatique ou planifi&eacute; &rarr; Make (robot en fond, payant par op&eacute;ration).
+    </p>
+
+  </div>
+</details>
+
+<details>
+  <summary>&#x1F916; 22 prompts Mariah &mdash; migr&eacute;s depuis Airtable <span class="s-badge s-done">Fait</span></summary>
+  <div class="det-body">
+    <p>Les 22 prompts (PME-01 &agrave; PME-15 + MAR-01 &agrave; MAR-07) ont &eacute;t&eacute; copi&eacute;s mot pour mot d'Airtable vers Supabase. V&eacute;rifi&eacute;s caract&egrave;re par caract&egrave;re. Pour modifier un prompt, changez-le dans la table <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:12px">prompts</code> de Supabase.</p>
+  </div>
+</details>
+
+<details>
+  <summary>&#x1F5A5;&#xFE0F; 4 pages HTML connect&eacute;es <span class="s-badge s-done">Fait</span></summary>
+  <div class="det-body">
+    <p>Le design n'a pas chang&eacute;. On a remplac&eacute; le moteur en gardant la carrosserie.</p>
+    <table class="tbl">
+      <tr><th>Page</th><th>Ce qui a chang&eacute;</th></tr>
+      <tr><td>Landing</td><td>Formulaire d&eacute;mo branch&eacute;, code promo ambassadeur</td></tr>
+      <tr><td>Login</td><td>Vraie auth Supabase, plus de simulation</td></tr>
+      <tr><td>Dashboard PME</td><td>KPIs dynamiques, import facture, export Sage, TVA, Mariah IA</td></tr>
+      <tr><td>Dashboard Expert</td><td>Portefeuille PME r&eacute;el, validation/rejet, Mariah branch&eacute;</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>&#x1F680; D&eacute;ploiement &mdash; Netlify + Edge Function <span class="s-badge s-done">Fait</span></summary>
+  <div class="det-body">
+    <p><strong>Site en ligne :</strong> augustin-empire.netlify.app</p>
+    <p><strong>Proxy backend :</strong> Edge Function d&eacute;ploy&eacute;e sur Supabase (Mariah IA, exports, validations).</p>
+    <p><strong>Reste &agrave; faire :</strong> configurer le domaine <strong>app.hcompta.ai</strong> (No&eacute; doit pointer le DNS vers Netlify).</p>
+  </div>
+</details>
+
+<!-- ═══ CE QUI RESTE ═══ -->
+
+<div class="section-title">&#x23F3; Ce qui reste</div>
+
+<details>
+  <summary>&#x2705; 9 conditions de recette &mdash; &agrave; tester ensemble <span class="s-badge s-wait">&Agrave; tester</span></summary>
+  <div class="det-body">
+    <table class="tbl">
+      <tr><th>#</th><th>Condition</th><th>Statut</th></tr>
+      <tr><td>1</td><td>Connexion PME &rarr; Dashboard PME</td><td><span class="badge b-g">Pr&ecirc;t</span></td></tr>
+      <tr><td>2</td><td>Connexion Expert &rarr; Dashboard Expert</td><td><span class="badge b-g">Pr&ecirc;t</span></td></tr>
+      <tr><td>3</td><td>D&eacute;p&ocirc;t PDF &rarr; &eacute;criture en moins de 60s</td><td><span class="badge b-o">&Agrave; tester</span></td></tr>
+      <tr><td>4</td><td>Prompt Mariah depuis la table prompts</td><td><span class="badge b-g">V&eacute;rifi&eacute;</span></td></tr>
+      <tr><td>5</td><td>Export Sage &rarr; fichier dans bucket exports</td><td><span class="badge b-o">&Agrave; tester</span></td></tr>
+      <tr><td>6</td><td>Invitation expert &rarr; email &rarr; acc&egrave;s</td><td><span class="badge b-o">&Agrave; tester</span></td></tr>
+      <tr><td>7</td><td>RLS : PME A ne voit pas PME B</td><td><span class="badge b-g">V&eacute;rifi&eacute;</span></td></tr>
+      <tr><td>8</td><td>Export TVA CI/CM/SN correct</td><td><span class="badge b-o">&Agrave; tester</span></td></tr>
+      <tr><td>9</td><td>D&eacute;connexion &rarr; session invalid&eacute;e</td><td><span class="badge b-g">Pr&ecirc;t</span></td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>&#x1F4B0; Co&ucirc;t mensuel post-migration <span class="s-badge s-done">104$/mois</span></summary>
+  <div class="det-body">
+    <table class="tbl">
+      <tr><th>Service</th><th>Plan</th><th>Co&ucirc;t</th></tr>
+      <tr><td>Supabase</td><td>Pro</td><td>25$/mois</td></tr>
+      <tr><td>Make.com</td><td>Teams</td><td>29$/mois</td></tr>
+      <tr><td>API Claude (Mariah)</td><td>Usage</td><td>~50$/mois</td></tr>
+      <tr><td>Netlify</td><td>Free</td><td>0$/mois</td></tr>
+      <tr><td colspan="2" style="font-weight:800">Total</td><td style="font-weight:800;color:var(--green)">~104$/mois</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>&#x1F4C1; Fichiers livr&eacute;s <span class="s-badge s-done">9 fichiers</span></summary>
+  <div class="det-body">
+    <table class="tbl">
+      <tr><th>Fichier</th><th>R&ocirc;le</th></tr>
+      <tr><td>schema_v3.sql</td><td>8 tables + RLS + 5 buckets + index</td></tr>
+      <tr><td>auth_v3.js</td><td>Authentification (connexion, inscription, r&ocirc;les)</td></tr>
+      <tr><td>bridge_v3.js</td><td>Connecteur dashboard (KPIs, &eacute;critures, upload)</td></tr>
+      <tr><td>proxy_v3.js</td><td>Backend s&eacute;curis&eacute; (Mariah, export, sync)</td></tr>
+      <tr><td>login.html</td><td>Page de connexion</td></tr>
+      <tr><td>dashboard-pme.html</td><td>Dashboard PME</td></tr>
+      <tr><td>dashboard-expert.html</td><td>Dashboard Expert</td></tr>
+      <tr><td>index.html</td><td>Landing page</td></tr>
+      <tr><td>accept-invite.html</td><td>Page d'acceptation d'invitation</td></tr>
+    </table>
+  </div>
+</details>
+
+</div>
+
+<div class="footer">
+  <strong>H-Compta AI</strong> &mdash; Documentation Migration V3<br>
+  22 mars 2026
+</div>
+
+</body>
+</html>

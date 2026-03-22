@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>H-Compta AI – La comptabilité intelligente pour l'Afrique</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   CHARTE PENNYLANE — H-Compta AI Landing V4
+   Vert sauge profond · Beige doux · Blanc pur
+══════════════════════════════════════════════ */
+:root {
+  /* Couleurs Pennylane */
+  --green:      #1B4D3E;   /* vert profond principal */
+  --green2:     #22614e;   /* vert hover */
+  --green3:     #2d7a61;   /* vert accent */
+  --green-l:    #E8F5EE;   /* vert très clair bg sections */
+  --green-ll:   #f0faf4;   /* vert ultra léger */
+  --green-t:    rgba(27,77,62,.10);
+
+  --gold:       #C97B2A;
+  --gold-l:     rgba(201,123,42,.10);
+  --red:        #C0392B;
+  --red-l:      rgba(192,57,43,.09);
+  --blue:       #1a5f9e;
+
+  /* Fonds */
+  --bg:         #FAFAF8;   /* beige très léger Pennylane */
+  --bg-section: #F4F6F1;   /* vert-beige section alternée */
+  --bg-green:   #E8F3EC;   /* section verte claire */
+  --white:      #FFFFFF;
+
+  /* Textes */
+  --text:       #1a1a2e;
+  --text2:      #4a5568;
+  --text3:      #8a96a8;
+  --text4:      #c4cdd6;
+
+  /* Borders */
+  --border:     #E2E8E4;
+  --border2:    #CBD5CE;
+
+  /* Ombres */
+  --shadow:     0 1px 4px rgba(27,77,62,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow2:    0 4px 20px rgba(27,77,62,.09), 0 2px 8px rgba(0,0,0,.05);
+  --shadow3:    0 12px 48px rgba(27,77,62,.12), 0 4px 16px rgba(0,0,0,.06);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Inter', sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+img { max-width:100%; }
+
+/* ══ UTILITAIRES ═══════════════════════ */
+.max { max-width:1160px; margin:0 auto; padding:0 24px; }
+.badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--green-l); border:1px solid rgba(27,77,62,.15);
+  border-radius:20px; padding:4px 13px;
+  font-size:11px; font-weight:700; color:var(--green);
+  letter-spacing:.3px; text-transform:uppercase;
+}
+.badge-dot { width:6px; height:6px; border-radius:50%; background:var(--green3); }
+
+/* ══ BOUTONS ════════════════════════════ */
+.btn {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:10px 22px; border-radius:8px;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+  cursor:pointer; border:none; text-decoration:none;
+  transition:all .2s; white-space:nowrap;
+}
+.btn-primary {
+  background:var(--green); color:#fff;
+}
+.btn-primary:hover { background:var(--green2); transform:translateY(-1px); box-shadow:0 6px 20px rgba(27,77,62,.28); }
+.btn-outline {
+  background:transparent; border:1.5px solid var(--border2);
+  color:var(--text2);
+}
+.btn-outline:hover { border-color:var(--green); color:var(--green); background:var(--green-t); }
+.btn-lg { padding:14px 30px; font-size:15px; border-radius:10px; }
+.btn-xl { padding:17px 38px; font-size:16px; border-radius:12px; }
+.btn-ghost { background:rgba(255,255,255,.12); color:#fff; border:1.5px solid rgba(255,255,255,.25); }
+.btn-ghost:hover { background:rgba(255,255,255,.2); }
+
+/* ══ NAV ════════════════════════════════ */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  background:rgba(250,250,248,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.nav-inner {
+  display:flex; align-items:center; height:64px; gap:16px;
+}
+.nav-logo {
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none; flex-shrink:0;
+}
+.nav-logo-icon {
+  width:36px; height:36px; border-radius:9px; flex-shrink:0;
+  background:linear-gradient(135deg,#2d9e7a,var(--green));
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 8px rgba(27,77,62,.25);
+}
+.nav-logo-icon svg { width:20px; height:20px; }
+.nav-logo-text {
+  font-size:16px; font-weight:800; color:var(--text); letter-spacing:-.3px;
+}
+.nav-logo-text span { color:var(--green3); }
+
+.nav-links { display:flex; gap:28px; margin-left:32px; }
+.nav-links a {
+  color:var(--text2); text-decoration:none; font-size:13px;
+  font-weight:500; transition:color .15s;
+}
+.nav-links a:hover { color:var(--green); }
+
+.nav-pays { display:flex; gap:5px; margin-left:auto; }
+.np {
+  padding:4px 9px; border-radius:6px; font-size:12px; cursor:pointer;
+  border:1px solid var(--border); background:transparent; color:var(--text2);
+  transition:all .15s; font-family:'Inter',sans-serif; font-weight:500;
+}
+.np:hover, .np.on { border-color:var(--green); color:var(--green); background:var(--green-t); }
+.nav-cta { display:flex; gap:8px; }
+
+/* ══ HERO ════════════════════════════════ */
+.hero {
+  min-height:100vh;
+  padding:100px 0 70px;
+  background:var(--bg);
+  position:relative; overflow:hidden;
+}
+/* Forme organique Pennylane en fond */
+.hero::before {
+  content:'';
+  position:absolute; top:-200px; right:-150px;
+  width:700px; height:700px; border-radius:50%;
+  background:radial-gradient(ellipse, var(--green-l) 0%, transparent 65%);
+  pointer-events:none;
+}
+.hero::after {
+  content:'';
+  position:absolute; bottom:-100px; left:-100px;
+  width:400px; height:400px; border-radius:50%;
+  background:radial-gradient(ellipse, var(--bg-section) 0%, transparent 65%);
+  pointer-events:none;
+}
+.hero-inner {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:60px; align-items:center;
+  position:relative; z-index:1;
+}
+.hero-badge-wrap { margin-bottom:20px; }
+.hero-title {
+  font-size:50px; font-weight:800; line-height:1.1;
+  color:var(--text); margin-bottom:18px; letter-spacing:-.8px;
+}
+.hero-title em {
+  font-style:italic; color:var(--green3);
+  /* Pennylane utilise des italiques pour les mots-clés */
+}
+.hero-sub {
+  font-size:16px; color:var(--text2); line-height:1.75;
+  margin-bottom:30px; max-width:490px;
+}
+.hero-btns { display:flex; gap:11px; flex-wrap:wrap; margin-bottom:36px; }
+.hero-stats { display:flex; gap:32px; }
+.hs { }
+.hs-val {
+  font-size:24px; font-weight:800; color:var(--green);
+  font-family:'JetBrains Mono',monospace; line-height:1;
+}
+.hs-lbl { font-size:11px; color:var(--text3); margin-top:3px; font-weight:500; }
+.hero-flags {
+  display:flex; align-items:center; gap:8px;
+  margin-top:22px; font-size:12px; color:var(--text3);
+}
+.hero-flags span { font-size:18px; }
+
+/* ══ PREVIEW DASHBOARD (Pennylane-style) ══ */
+.preview-wrap {
+  position:relative;
+}
+.preview-shadow {
+  position:absolute; inset:20px; border-radius:20px;
+  background:linear-gradient(135deg,var(--green-l),var(--bg-section));
+  filter:blur(30px); opacity:.7; z-index:0;
+}
+.preview {
+  position:relative; z-index:1;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:16px; overflow:hidden;
+  box-shadow:var(--shadow3);
+}
+.preview-bar {
+  background:var(--bg-section); padding:10px 14px;
+  display:flex; align-items:center; gap:6px;
+  border-bottom:1px solid var(--border);
+}
+.dot { width:10px; height:10px; border-radius:50%; }
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.preview-url {
+  margin-left:10px; font-family:'JetBrains Mono',monospace;
+  font-size:10px; color:var(--text3);
+  background:var(--white); border:1px solid var(--border);
+  border-radius:4px; padding:3px 10px;
+}
+.prev-body { padding:16px; }
+.prev-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:12px;
+}
+.prev-title { font-size:12px; font-weight:700; color:var(--text); }
+.prev-badge {
+  font-size:9px; font-weight:600; padding:2px 8px; border-radius:12px;
+  background:var(--green-l); color:var(--green);
+}
+.prev-kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:12px; }
+.pk {
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:9px; padding:10px 12px;
+  border-left:3px solid;
+}
+.pk.g{border-left-color:var(--green3)}
+.pk.o{border-left-color:var(--gold)}
+.pk.gr{border-left-color:#22c55e}
+.pk.r{border-left-color:var(--red)}
+.pk-v { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:15px; color:var(--text); }
+.pk-l { font-size:9px; color:var(--text3); margin-top:2px; font-weight:500; }
+.prev-table { background:var(--bg); border:1px solid var(--border); border-radius:9px; overflow:hidden; }
+.pt-head {
+  display:grid; grid-template-columns:1fr 1fr 1fr 72px;
+  padding:7px 10px; border-bottom:1px solid var(--border);
+  font-size:8px; color:var(--text3); text-transform:uppercase;
+  letter-spacing:1px; font-weight:700; background:var(--bg-section);
+}
+.pt-row {
+  display:grid; grid-template-columns:1fr 1fr 1fr 72px;
+  padding:7px 10px; border-bottom:1px solid var(--border);
+  font-size:10px; color:var(--text2);
+}
+.pt-row:last-child { border:none; }
+.pt-row:hover { background:var(--green-ll); }
+.pt-badge {
+  display:inline-block; padding:2px 6px; border-radius:4px;
+  font-size:8px; font-weight:700;
+}
+.pt-badge.a { background:var(--green-l); color:var(--green); }
+.pt-badge.v { background:var(--gold-l); color:var(--gold); }
+
+/* ══ SECTION GÉNÉRIQUE ════════════════ */
+section { padding:88px 0; }
+.sec-bg-alt { background:var(--bg-section); }
+.sec-bg-green { background:var(--bg-green); }
+.sec-bg-dark { background:var(--green); }
+.sec-title {
+  font-size:38px; font-weight:800; line-height:1.15;
+  color:var(--text); margin-bottom:13px; letter-spacing:-.5px;
+}
+.sec-title em { font-style:italic; color:var(--green3); }
+.sec-title-white { color:#fff; }
+.sec-sub {
+  font-size:15px; color:var(--text2); line-height:1.75;
+  max-width:560px; margin-bottom:44px;
+}
+.sec-sub-white { color:rgba(255,255,255,.72); }
+.sec-head { margin-bottom:44px; }
+
+/* ══ STEPS / COMMENT ÇA MARCHE ═══════ */
+.steps-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:18px;
+}
+.step-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:14px; padding:24px 20px;
+  position:relative; box-shadow:var(--shadow);
+  transition:all .2s;
+}
+.step-card:hover { box-shadow:var(--shadow2); transform:translateY(-3px); }
+.step-card:not(:last-child)::after {
+  content:'→';
+  position:absolute; right:-13px; top:50%; transform:translateY(-50%);
+  color:var(--green3); font-size:18px; font-weight:700; z-index:1;
+}
+.step-num {
+  width:30px; height:30px; border-radius:50%;
+  background:var(--green); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:800; margin-bottom:14px;
+}
+.step-ico { font-size:26px; margin-bottom:10px; }
+.step-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:7px; }
+.step-txt { font-size:12px; color:var(--text2); line-height:1.7; }
+
+/* ══ PAYS ═══════════════════════════════ */
+.pays-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.pays-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:14px; padding:28px 24px; text-align:center;
+  transition:all .22s; box-shadow:var(--shadow);
+}
+.pays-card:hover { border-color:var(--green); transform:translateY(-4px); box-shadow:var(--shadow2); }
+.pays-flag { font-size:52px; margin-bottom:14px; display:block; }
+.pays-name {
+  font-size:18px; font-weight:800; color:var(--text); margin-bottom:8px;
+}
+.pays-info { font-size:12px; color:var(--text2); line-height:1.75; }
+.pays-tva {
+  display:inline-block; margin-top:12px;
+  background:var(--green-l); color:var(--green);
+  border-radius:6px; padding:4px 12px;
+  font-size:11px; font-weight:700;
+}
+
+/* ══ PRICING ═════════════════════════════ */
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.plan {
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:16px; padding:28px;
+  position:relative; transition:all .22s;
+  box-shadow:var(--shadow);
+}
+.plan:hover { box-shadow:var(--shadow2); transform:translateY(-4px); }
+.plan.pop {
+  border-color:var(--green);
+  box-shadow:0 0 0 1px var(--green), var(--shadow2);
+}
+.plan-badge {
+  position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+  background:var(--green); color:#fff;
+  font-size:9px; font-weight:800; padding:4px 14px;
+  border-radius:12px; letter-spacing:1.2px; text-transform:uppercase;
+  white-space:nowrap;
+}
+.plan-trial {
+  background:var(--green-l); border:1px solid rgba(27,77,62,.15);
+  border-radius:8px; padding:8px 12px;
+  font-size:11px; color:var(--green); font-weight:600;
+  text-align:center; margin-bottom:18px;
+}
+.plan-ico { font-size:32px; margin-bottom:10px; }
+.plan-name { font-size:19px; font-weight:800; color:var(--text); margin-bottom:8px; }
+.plan-price {
+  font-size:34px; font-weight:800; color:var(--green);
+  font-family:'JetBrains Mono',monospace; line-height:1; margin-bottom:3px;
+}
+.plan-period { font-size:11px; color:var(--text3); margin-bottom:20px; }
+.plan-feats { list-style:none; margin-bottom:24px; }
+.plan-feats li {
+  font-size:12px; color:var(--text2); padding:6px 0;
+  display:flex; gap:9px; align-items:flex-start;
+  border-bottom:1px solid var(--border);
+}
+.plan-feats li:last-child { border:none; }
+.plan-feats li::before {
+  content:'✓'; color:var(--green); font-weight:800;
+  flex-shrink:0; margin-top:1px; font-size:11px;
+}
+.plan-btn {
+  width:100%; padding:12px;
+  border-radius:9px; font-size:13px; font-weight:700;
+  cursor:pointer; border:1.5px solid var(--green);
+  background:transparent; color:var(--green);
+  transition:all .2s; font-family:'Inter',sans-serif;
+}
+.plan.pop .plan-btn {
+  background:var(--green); color:#fff; border:none;
+}
+.plan-btn:hover { transform:translateY(-1px); }
+.plan.pop .plan-btn:hover { background:var(--green2); }
+
+/* ══ SOCIAL PROOF ═══════════════════════ */
+.proof-strip {
+  background:var(--green);
+  border-top:none;
+  border-bottom:none;
+  padding:24px 0;
+}
+.proof-inner {
+  display:flex; align-items:center; justify-content:center;
+  gap:48px; flex-wrap:wrap;
+}
+.proof-item {
+  display:flex; align-items:center; gap:10px;
+  font-size:13px; font-weight:600; color:rgba(255,255,255,.90);
+}
+.proof-icon { font-size:20px; }
+
+/* ══ CTA FINAL (fond vert Pennylane) ══ */
+.cta-section {
+  background:var(--green);
+  padding:88px 0;
+  text-align:center;
+  position:relative; overflow:hidden;
+}
+.cta-section::before {
+  content:'';
+  position:absolute; top:-60%; right:-10%;
+  width:500px; height:500px; border-radius:50%;
+  background:rgba(255,255,255,.04);
+  pointer-events:none;
+}
+.cta-title {
+  font-size:40px; font-weight:800; color:#fff;
+  margin-bottom:14px; letter-spacing:-.5px;
+}
+.cta-sub {
+  font-size:16px; color:rgba(255,255,255,.72);
+  margin-bottom:32px; max-width:500px;
+  margin-left:auto; margin-right:auto; line-height:1.7;
+}
+.cta-note { font-size:12px; color:rgba(255,255,255,.45); margin-top:16px; }
+
+/* ══ FOOTER ══════════════════════════════ */
+footer {
+  background:var(--green2);
+  padding:48px 0 32px;
+}
+.footer-inner {
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  gap:32px; margin-bottom:36px;
+}
+.footer-brand .ft-logo {
+  font-size:18px; font-weight:800; color:#fff;
+  margin-bottom:10px; letter-spacing:-.3px;
+}
+.footer-brand .ft-logo span { color:rgba(255,255,255,.60); }
+.footer-brand p {
+  font-size:12px; color:rgba(255,255,255,.55); line-height:1.7;
+}
+.footer-col h4 {
+  font-size:11px; font-weight:700; color:rgba(255,255,255,.50);
+  letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;
+}
+.footer-col a {
+  display:block; font-size:12px; color:rgba(255,255,255,.70);
+  text-decoration:none; margin-bottom:7px; transition:color .15s;
+}
+.footer-col a:hover { color:#fff; }
+.footer-bottom {
+  border-top:1px solid rgba(255,255,255,.12);
+  padding-top:20px; text-align:center;
+  font-size:11px; color:rgba(255,255,255,.40);
+}
+.ft-pays { display:flex; gap:10px; justify-content:center; margin-bottom:10px; font-size:20px; }
+
+/* ══ MODAL DÉMO ══════════════════════════ */
+.modal-overlay {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(26,26,46,.55);
+  display:none; align-items:center; justify-content:center;
+  backdrop-filter:blur(6px);
+  padding:20px;
+}
+.modal-overlay.on { display:flex; }
+.modal-box {
+  background:var(--white); border-radius:20px;
+  padding:36px 32px; width:100%; max-width:500px;
+  box-shadow:var(--shadow3);
+  max-height:92vh; overflow-y:auto;
+  position:relative;
+}
+.modal-box::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:4px;
+  border-radius:20px 20px 0 0;
+  background:linear-gradient(90deg,var(--green),#2d9e7a);
+}
+.modal-close {
+  position:absolute; top:16px; right:16px;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--bg-section); border:none; cursor:pointer;
+  font-size:15px; color:var(--text2);
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s;
+}
+.modal-close:hover { background:var(--border); color:var(--text); }
+.modal-title { font-size:22px; font-weight:800; color:var(--text); margin-bottom:6px; }
+.modal-sub { font-size:13px; color:var(--text2); margin-bottom:24px; line-height:1.6; }
+
+/* Champs formulaire */
+.field { margin-bottom:16px; }
+.field-label {
+  display:block; font-size:11px; font-weight:700;
+  color:var(--text2); margin-bottom:6px;
+  letter-spacing:.4px; text-transform:uppercase;
+}
+.field-hint {
+  display:inline; font-size:10px; color:var(--green3);
+  font-weight:400; text-transform:none; letter-spacing:0;
+  font-style:italic; margin-left:6px;
+}
+.field-input, .field-select {
+  width:100%;
+  background:var(--bg-section); border:1.5px solid var(--border);
+  border-radius:9px; padding:11px 14px;
+  font-family:'Inter',sans-serif; font-size:13px;
+  color:var(--text); outline:none; transition:all .18s;
+  -webkit-appearance:none;
+}
+.field-input::placeholder { color:var(--text4); }
+.field-input:focus, .field-select:focus {
+  border-color:var(--green);
+  background:var(--white);
+  box-shadow:0 0 0 3px var(--green-t);
+}
+.field-input.valid { border-color:#22c55e; background:var(--white); }
+.field-input.invalid { border-color:var(--red); background:var(--white); }
+
+/* RCCM — champ libre avec aide contextuelle */
+.rccm-help {
+  margin-top:6px; font-size:11px; line-height:1.6;
+  padding:8px 11px; border-radius:7px;
+  display:none;
+}
+.rccm-help.show { display:block; }
+.rccm-help.ok { background:rgba(34,197,94,.08); color:#15803d; border:1px solid rgba(34,197,94,.2); }
+.rccm-help.warn { background:var(--gold-l); color:#92400e; border:1px solid rgba(201,123,42,.2); }
+.rccm-help.info { background:var(--green-l); color:var(--green); border:1px solid rgba(27,77,62,.15); }
+.rccm-examples {
+  margin-top:5px; font-size:10px; color:var(--text3);
+  font-family:'JetBrains Mono',monospace; line-height:1.8;
+}
+
+/* Champ code promo */
+.promo-field {
+  background:var(--green-l); border:1.5px solid rgba(27,77,62,.25);
+  border-radius:9px; padding:11px 14px;
+  color:var(--green); font-weight:700; letter-spacing:2px;
+  width:100%; font-size:13px; font-family:'Inter',sans-serif;
+}
+.promo-note { font-size:10px; color:var(--green3); margin-top:4px; font-style:italic; }
+
+/* Footer modal */
+.modal-footer { display:flex; gap:10px; margin-top:24px; justify-content:flex-end; }
+.btn-cancel {
+  padding:10px 18px; border-radius:8px;
+  border:1.5px solid var(--border2); background:var(--white);
+  color:var(--text2); cursor:pointer; font-size:13px;
+  font-family:'Inter',sans-serif; font-weight:500;
+  transition:all .15s;
+}
+.btn-cancel:hover { background:var(--bg-section); }
+.btn-send {
+  padding:10px 22px; border-radius:8px;
+  background:var(--green); color:#fff; border:none;
+  cursor:pointer; font-size:13px; font-weight:700;
+  font-family:'Inter',sans-serif; transition:all .2s;
+}
+.btn-send:hover { background:var(--green2); transform:translateY(-1px); }
+
+/* ══ RESPONSIVE ══════════════════════════ */
+@media (max-width:960px) {
+  .hero-inner { grid-template-columns:1fr; gap:40px; }
+  .hero-title { font-size:36px; }
+  .steps-grid { grid-template-columns:1fr 1fr; }
+  .pricing-grid { grid-template-columns:1fr; max-width:400px; margin:0 auto; }
+  .pays-grid { grid-template-columns:1fr; max-width:360px; margin:0 auto; }
+  .footer-inner { grid-template-columns:1fr; gap:24px; }
+}
+@media (max-width:640px) {
+  .nav-links { display:none; }
+  .hero-title { font-size:30px; }
+  .steps-grid { grid-template-columns:1fr; }
+  .step-card::after { display:none; }
+  .proof-inner { gap:24px; }
+  .sec-title { font-size:28px; }
+  .cta-title { font-size:28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ═════════════════════════════ -->
+<nav>
+  <div class="nav-inner max">
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="5" width="5" height="14" rx="1.5" fill="white"/>
+          <rect x="16" y="5" width="5" height="14" rx="1.5" fill="white"/>
+          <rect x="7" y="10.5" width="10" height="3" rx="1.5" fill="white"/>
+        </svg>
+      </div>
+      <div class="nav-logo-text">H-Compta<span> AI</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#comment">Comment ça marche</a>
+      <a href="#pays">Pays couverts</a>
+      <a href="#pricing">Tarifs</a>
+    </div>
+    <div class="nav-pays">
+      <button class="np on">🇨🇮 CI</button>
+      <button class="np">🇨🇲 CM</button>
+      <button class="np">🇸🇳 SN</button>
+    </div>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-outline">Connexion</a>
+      <button class="btn btn-primary" onclick="openDemo()">Demander la démo</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner max">
+    <div>
+      <div class="hero-badge-wrap">
+        <span class="badge"><span class="badge-dot"></span> Disponible en Côte d'Ivoire, Cameroun &amp; Sénégal</span>
+      </div>
+      <h1 class="hero-title">
+        La comptabilité<br><em>intelligente</em><br>pour les PME africaines
+      </h1>
+      <p class="hero-sub">
+        Déposez vos factures dans Dropbox. Notre AI les analyse, les impute selon SYSCOHADA et génère votre export Sage en 28 secondes. Sans aucune compétence technique.
+      </p>
+      <div class="hero-btns">
+        <button class="btn btn-primary btn-lg" onclick="openDemo()">🚀 Demander la démo gratuite</button>
+        <a href="dashboard-pme.html" class="btn btn-outline btn-lg">👁 Voir le dashboard</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hs"><div class="hs-val">28s</div><div class="hs-lbl">par facture</div></div>
+        <div class="hs"><div class="hs-val">100+</div><div class="hs-lbl">PME cibles</div></div>
+        <div class="hs"><div class="hs-val">3</div><div class="hs-lbl">pays couverts</div></div>
+        <div class="hs"><div class="hs-val">30j</div><div class="hs-lbl">essai gratuit</div></div>
+      </div>
+      <div class="hero-flags">
+        <span>🇨🇮</span><span>🇨🇲</span><span>🇸🇳</span>
+        <span style="margin-left:4px;font-size:12px;color:var(--text3)">Côte d'Ivoire · Cameroun · Sénégal · SYSCOHADA</span>
+      </div>
+    </div>
+
+    <!-- Preview dashboard -->
+    <div class="preview-wrap">
+      <div class="preview-shadow"></div>
+      <div class="preview">
+        <div class="preview-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <div class="preview-url">app.hcompta.ai/dashboard</div>
+        </div>
+        <div class="prev-body">
+          <div class="prev-header">
+            <div class="prev-title">🏠 Tableau de bord — Mai 2026</div>
+            <div class="prev-badge">🇨🇮 TVA 18%</div>
+          </div>
+          <div class="prev-kpis">
+            <div class="pk g"><div class="pk-v" style="color:var(--green)">12</div><div class="pk-l">Factures traitées</div></div>
+            <div class="pk r"><div class="pk-v" style="color:var(--red)">3</div><div class="pk-l">En attente validation</div></div>
+            <div class="pk o"><div class="pk-v" style="color:var(--gold)">83%</div><div class="pk-l">IA Auto — Succès</div></div>
+            <div class="pk gr"><div class="pk-v" style="color:#22c55e">472K</div><div class="pk-l">TVA à déclarer</div></div>
+          </div>
+          <div class="prev-table">
+            <div class="pt-head"><span>Fournisseur</span><span>Montant</span><span>Compte</span><span>Statut</span></div>
+            <div class="pt-row"><span style="font-weight:600;color:var(--text)">CimenCI SA</span><span style="color:var(--green);font-family:'JetBrains Mono',monospace">118 590</span><span style="color:var(--gold);font-family:'JetBrains Mono',monospace">6262</span><span><span class="pt-badge v">⏳ À valider</span></span></div>
+            <div class="pt-row"><span style="font-weight:600;color:var(--text)">Orange CI</span><span style="color:var(--green);font-family:'JetBrains Mono',monospace">89 400</span><span style="color:var(--gold);font-family:'JetBrains Mono',monospace">6262</span><span><span class="pt-badge a">🧠 Auto</span></span></div>
+            <div class="pt-row"><span style="font-weight:600;color:var(--text)">Sodeci</span><span style="color:var(--green);font-family:'JetBrains Mono',monospace">45 200</span><span style="color:var(--gold);font-family:'JetBrains Mono',monospace">6061</span><span><span class="pt-badge a">🧠 Auto</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SOCIAL PROOF ══════════════════════ -->
+<div class="proof-strip">
+  <div class="proof-inner max">
+    <div class="proof-item"><span class="proof-icon">⚡</span> Traitement en 28 secondes</div>
+    <div class="proof-item"><span class="proof-icon">🔒</span> 100% SYSCOHADA révisé</div>
+    <div class="proof-item"><span class="proof-icon">📤</span> Export Sage 100 &amp; Odoo natif</div>
+    <div class="proof-item"><span class="proof-icon">🎁</span> 30 jours d'essai gratuit</div>
+    <div class="proof-item"><span class="proof-icon">👨‍💼</span> Invitez votre expert-comptable</div>
+  </div>
+</div>
+
+<!-- ══ COMMENT ÇA MARCHE ════════════════ -->
+<section id="comment" class="sec-bg-alt">
+  <div class="max">
+    <div class="sec-head">
+      <span class="badge">⚡ Processus automatisé</span>
+      <h2 class="sec-title" style="margin-top:14px">4 étapes · 28 secondes · <em>Zéro saisie</em></h2>
+      <p class="sec-sub">De la facture papier à l'écriture comptable SYSCOHADA, entièrement automatisé grâce à l'IA.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-ico">📁</div>
+        <div class="step-title">Déposez la facture</div>
+        <p class="step-txt">Prenez une photo ou scannez votre facture. Déposez dans votre Dropbox PME dédiée.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-ico">🧠</div>
+        <div class="step-title">Notre AI analyse</div>
+        <p class="step-txt">L'IA lit la facture, identifie le fournisseur, les montants et impute le compte SYSCOHADA correct.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-ico">✅</div>
+        <div class="step-title">Vous validez</div>
+        <p class="step-txt">Visualisez les écritures dans votre dashboard. Corrigez si nécessaire. L'expert-comptable contrôle.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-ico">📤</div>
+        <div class="step-title">Export Sage auto</div>
+        <p class="step-txt">Le fichier .txt format Sage 100 est généré automatiquement. Import direct sans ressaisie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAYS ═══════════════════════════════ -->
+<section id="pays" style="background:var(--green)">
+  <div class="max">
+    <div class="sec-head">
+      <span class="badge" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:#fff">🌍 Multi-pays</span>
+      <h2 class="sec-title sec-title-white" style="margin-top:14px">3 pays · <em style="color:rgba(255,255,255,.65)">1 seule plateforme</em></h2>
+      <p class="sec-sub sec-sub-white">Adapté aux spécificités fiscales de chaque pays. Changez de pays en un clic depuis votre dashboard.</p>
+    </div>
+    <div class="pays-grid">
+      <div class="pays-card" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)">
+        <span class="pays-flag">🇨🇮</span>
+        <div class="pays-name" style="color:#fff">Côte d'Ivoire</div>
+        <div class="pays-info" style="color:rgba(255,255,255,.70)">SYSCOHADA révisé · DGI Abidjan<br>Plan comptable OHADA complet</div>
+        <div class="pays-tva" style="background:rgba(255,255,255,.15);color:#fff">TVA 18%</div>
+      </div>
+      <div class="pays-card" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35)">
+        <span class="pays-flag">🇨🇲</span>
+        <div class="pays-name" style="color:#fff">Cameroun</div>
+        <div class="pays-info" style="color:rgba(255,255,255,.70)">SYSCOHADA révisé · DGI Yaoundé<br>Spécificités fiscales locales</div>
+        <div class="pays-tva" style="background:rgba(255,255,255,.15);color:#fff">TVA 19,25%</div>
+      </div>
+      <div class="pays-card" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)">
+        <span class="pays-flag">🇸🇳</span>
+        <div class="pays-name" style="color:#fff">Sénégal</div>
+        <div class="pays-info" style="color:rgba(255,255,255,.70)">SYSCOHADA révisé · DGID Dakar<br>Plan comptable OHADA complet</div>
+        <div class="pays-tva" style="background:rgba(255,255,255,.15);color:#fff">TVA 18%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ════════════════════════════ -->
+<section id="pricing" class="sec-bg-alt">
+  <div class="max">
+    <div class="sec-head">
+      <span class="badge">💳 Tarifs transparents</span>
+      <h2 class="sec-title" style="margin-top:14px">30 jours d'essai gratuit · <em>Sans carte</em></h2>
+      <p class="sec-sub">Testez gratuitement pendant 30 jours. Vos identifiants vous sont envoyés par email après votre demande de démo.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="plan">
+        <div class="plan-trial">🎁 30 jours d'essai gratuit inclus</div>
+        <div class="plan-ico">🏪</div>
+        <div class="plan-name">TPE</div>
+        <div class="plan-price">19 990</div>
+        <div class="plan-period">FCFA HT / mois</div>
+        <ul class="plan-feats">
+          <li>1 entreprise de moins de 5 salariés · 1 pays</li>
+          <li>100 factures / mois</li>
+          <li>1 Expert-comptable invité</li>
+          <li>2 sous-comptes collaborateurs</li>
+          <li>Export Sage 100</li>
+          <li>Déclaration TVA automatique</li>
+          <li>Dashboard temps réel</li>
+        </ul>
+        <button class="plan-btn" onclick="openDemo()">Démarrer l'essai gratuit</button>
+      </div>
+      <div class="plan pop">
+        <div class="plan-badge">⭐ RECOMMANDÉ PME</div>
+        <div class="plan-trial">🎁 30 jours d'essai gratuit inclus</div>
+        <div class="plan-ico">🏢</div>
+        <div class="plan-name">PME</div>
+        <div class="plan-price">50 000</div>
+        <div class="plan-period">FCFA HT / mois</div>
+        <ul class="plan-feats">
+          <li>1 entreprise de 6 à 50 salariés · Multi-pays</li>
+          <li>Factures illimitées</li>
+          <li>1 Expert-comptable invité</li>
+          <li>2 sous-comptes collaborateurs</li>
+          <li>Export Sage + Cegid + Odoo</li>
+          <li>Reporting complet + TVA</li>
+          <li>Support prioritaire 24h</li>
+          <li>Switch pays en 1 clic</li>
+        </ul>
+        <button class="plan-btn" onclick="openDemo()">Démarrer l'essai gratuit</button>
+      </div>
+      <div class="plan">
+        <div class="plan-trial" style="background:var(--gold-l);border-color:rgba(201,123,42,.2);color:var(--gold)">📞 Devis personnalisé</div>
+        <div class="plan-ico">🏭</div>
+        <div class="plan-name">ETI</div>
+        <div class="plan-price" style="font-size:22px;line-height:1.3">Sur mesure</div>
+        <div class="plan-period">Contactez notre équipe</div>
+        <ul class="plan-feats">
+          <li>Multi-entités illimité</li>
+          <li>Volume illimité</li>
+          <li>Intégration ERP sur mesure</li>
+          <li>SLA &amp; support dédié</li>
+          <li>Formation &amp; accompagnement</li>
+          <li>CI · CM · SN inclus</li>
+          <li>API et accès cabinet</li>
+        </ul>
+        <button class="plan-btn" style="border-color:var(--gold);color:var(--gold)"
+          onclick="alert('Un conseiller vous contactera sous 24h.\n\nEmail : contact@hcompta.ai')">Nous contacter</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:28px;font-size:13px;color:var(--text3)">
+      🔒 Vos identifiants vous sont envoyés par email après validation de votre demande de démo · 1 compte par entreprise
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA FINAL ══════════════════════════ -->
+<div class="cta-section">
+  <div class="max">
+    <div style="font-size:44px;margin-bottom:18px">🚀</div>
+    <h2 class="cta-title">Prêt à automatiser votre comptabilité ?</h2>
+    <p class="cta-sub">Rejoignez les PME de Côte d'Ivoire, du Cameroun et du Sénégal qui traitent leurs factures en 28 secondes.</p>
+    <button class="btn btn-ghost btn-xl" onclick="openDemo()">Demander ma démo gratuite →</button>
+    <div class="cta-note">30 jours gratuits · Sans carte bancaire · Identifiants par email</div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ═════════════════════════════ -->
+<footer>
+  <div class="max">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="ft-logo">H-Compta<span> AI</span></div>
+        <div class="ft-pays">🇨🇮 🇨🇲 🇸🇳</div>
+        <p>La comptabilité intelligente pour les PME africaines · SYSCOHADA · Sage 100 · Odoo</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <a href="#comment">Comment ça marche</a>
+        <a href="#pays">Pays couverts</a>
+        <a href="#pricing">Tarifs</a>
+        <a href="dashboard-pme.html">Dashboard PME</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="/cdn-cgi/l/email-protection#82e1edecf6e3e1f6c2eae1edeff2f6e3ace3eb"><span class="__cf_email__" data-cfemail="a2c1cdccd6c3c1d6e2cac1cdcfd2d6c38cc3cb">[email&#160;protected]</span></a>
+        <a href="login.html">Connexion</a>
+        <a href="#" onclick="openDemo()">Demander la démo</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 H-Compta AI · Tous droits réservés · SYSCOHADA révisé
+    </div>
+  </div>
+</footer>
+
+<!-- ══ MODAL DÉMO ══════════════════════════ -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeDemo()">✕</button>
+    <div class="modal-title">🚀 Demander ma démo gratuite</div>
+    <div class="modal-sub">Remplissez ce formulaire. Vous recevrez vos identifiants de connexion par email dans les 24h avec 30 jours d'essai gratuit.</div>
+
+    <div class="field">
+      <label class="field-label">Nom de l'entreprise</label>
+      <input class="field-input" id="dm-nom" placeholder="Ex : CimenCI SA">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Votre email professionnel</label>
+      <input class="field-input" id="dm-email" type="email" placeholder="comptable@votrepme.ci">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Pays</label>
+      <select class="field-select" id="dm-pays" onchange="onPaysChange()">
+        <option value="CI">🇨🇮 Côte d'Ivoire</option>
+        <option value="CM">🇨🇲 Cameroun</option>
+        <option value="SN">🇸🇳 Sénégal</option>
+      </select>
+    </div>
+
+    <!-- ══ CHAMP RCCM LIBRE ══════════════
+         Plus de regex bloquante — validation souple
+         avec guide contextuel par pays
+    ══════════════════════════════════════ -->
+    <div class="field">
+      <label class="field-label">
+        N° RCCM
+        <span class="field-hint" id="dm-rccm-hint">Ex : CI-ABJ-01-2023-B-12345</span>
+      </label>
+      <input class="field-input" id="dm-rccm"
+        placeholder="Saisissez votre numéro RCCM"
+        autocomplete="off"
+        oninput="onRccmInput(this)"
+        style="font-family:'JetBrains Mono',monospace;letter-spacing:.5px">
+      <div class="rccm-help" id="dm-rccm-help"></div>
+      <div class="rccm-examples" id="dm-rccm-examples"></div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Plan souhaité</label>
+      <select class="field-select" id="dm-plan">
+        <option>TPE · 19 990 FCFA HT/mois</option>
+        <option selected>PME · 50 000 FCFA HT/mois</option>
+        <option>ETI · Sur mesure</option>
+      </select>
+    </div>
+
+    <!-- Code promo — affiché seulement si présent dans l'URL -->
+    <div class="field" id="dm-promo-wrap" style="display:none">
+      <label class="field-label" style="color:var(--green)">🎁 Code ambassadeur</label>
+      <input class="promo-field" id="dm-promo" readonly>
+      <div class="promo-note">Code appliqué automatiquement via votre ambassadeur</div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeDemo()">Annuler</button>
+      <button class="btn-send" onclick="submitDemo()">Envoyer ma demande →</button>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ══ CODE PROMO URL ════════════════════ */
+function getUrlParam(n){ return new URLSearchParams(window.location.search).get(n)||''; }
+var codePromo = getUrlParam('code');
+if (codePromo) {
+  document.getElementById('dm-promo').value = codePromo;
+  document.getElementById('dm-promo-wrap').style.display = 'block';
+}
+
+/* ══ MODAL ═════════════════════════════ */
+function openDemo()  { document.getElementById('demoModal').classList.add('on'); }
+function closeDemo() { document.getElementById('demoModal').classList.remove('on'); }
+document.getElementById('demoModal').addEventListener('click', function(e){
+  if (e.target === this) closeDemo();
+});
+
+/* ══ NAVIGATION PAYS ════════════════════ */
+document.querySelectorAll('.np').forEach(function(b) {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.np').forEach(function(x){ x.classList.remove('on'); });
+    this.classList.add('on');
+  });
+});
+
+/* ══ RCCM — LOGIQUE SOUPLE ══════════════
+   On n'impose plus de regex strict.
+   On guide l'utilisateur avec des exemples
+   et on détecte les formats connus sans bloquer.
+   Formats officiels connus (informatif uniquement) :
+   CI : CI-[VILLE]-[NN]-[YYYY]-[LETTRE(S)]-[NUMÉRO]
+         → variable : la partie lettre peut être B, B16, A2, etc.
+         → variable : le numéro final peut avoir 5 à 6 chiffres
+   CM : RC/[VILLE]/[YYYY]/[LETTRE]/[NUMÉRO]
+   SN : SN-[VILLE]-[YYYY]-[LETTRE]-[NUMÉRO]
+══════════════════════════════════════════ */
+var RCCM_INFO = {
+  CI: {
+    hint: 'Ex : CI-ABJ-01-2023-B-12345 ou CI-ABJ-03-2025-B16-00015',
+    placeholder: 'CI-ABJ-01-2023-B-12345',
+    examples: [
+      'CI-ABJ-01-2023-B-12345   (format standard)',
+      'CI-ABJ-03-2025-B16-00015 (format étendu)',
+      'CI-YOP-02-2022-A-00892   (autre ville)',
+    ],
+    // Détection souple : commence par CI- et contient des tirets
+    detect: function(v) { return /^CI-/i.test(v); },
+    // Validation souple : structure générale CI-XXX-NN-NNNN-XX-XXXXX
+    softValidate: function(v) {
+      return /^CI-[A-Z]{2,4}-\d{2}-\d{4}-[A-Z0-9]+-\d{4,6}$/i.test(v);
+    }
+  },
+  CM: {
+    hint: 'Ex : RC/YAO/2016/M/02386',
+    placeholder: 'RC/YAO/2016/M/02386',
+    examples: [
+      'RC/YAO/2016/M/02386  (Yaoundé)',
+      'RC/DLA/2019/B/04521  (Douala)',
+    ],
+    detect: function(v) { return /^RC\//i.test(v); },
+    softValidate: function(v) {
+      return /^RC\/[A-Z]{2,4}\/\d{4}\/[A-Z]+\/\d{4,6}$/i.test(v);
+    }
+  },
+  SN: {
+    hint: 'Ex : SN-DKR-2023-B-12345',
+    placeholder: 'SN-DKR-2023-B-12345',
+    examples: [
+      'SN-DKR-2023-B-12345  (Dakar)',
+      'SN-THS-2021-A-00712  (Thiès)',
+    ],
+    detect: function(v) { return /^SN-/i.test(v); },
+    softValidate: function(v) {
+      return /^SN-[A-Z]{2,4}-\d{4}-[A-Z0-9]+-\d{4,6}$/i.test(v);
+    }
+  }
+};
+
+function onPaysChange() {
+  var pays = document.getElementById('dm-pays').value;
+  var info = RCCM_INFO[pays];
+  var input = document.getElementById('dm-rccm');
+  var hint  = document.getElementById('dm-rccm-hint');
+  var help  = document.getElementById('dm-rccm-help');
+  var exDiv = document.getElementById('dm-rccm-examples');
+
+  if (info) {
+    hint.textContent = info.hint;
+    input.placeholder = info.placeholder;
+    // Afficher les exemples du pays
+    exDiv.innerHTML = '<strong style="color:var(--text3);font-size:9px;letter-spacing:.8px;text-transform:uppercase;">Formats acceptés :</strong><br>'
+      + info.examples.join('<br>');
+    exDiv.style.display = 'block';
+  }
+  // Re-valider si un RCCM est déjà saisi
+  if (input.value.trim()) onRccmInput(input);
+  else {
+    help.className = 'rccm-help';
+    input.className = 'field-input';
+  }
+}
+
+function onRccmInput(input) {
+  var val  = input.value.trim();
+  var pays = document.getElementById('dm-pays').value;
+  var help = document.getElementById('dm-rccm-help');
+  var info = RCCM_INFO[pays];
+
+  if (!val) {
+    help.className = 'rccm-help';
+    input.className = 'field-input';
+    return;
+  }
+
+  if (!info) return;
+
+  if (info.softValidate(val)) {
+    // Format reconnu et valide
+    help.className = 'rccm-help show ok';
+    help.textContent = '✅ Format reconnu — RCCM valide';
+    input.className = 'field-input valid';
+  } else if (info.detect(val) && val.length >= 10) {
+    // Commence bien mais format non standard (ex : format étendu CI non reconnu)
+    // → On accepte avec un avertissement doux, on ne bloque pas
+    help.className = 'rccm-help show warn';
+    help.innerHTML = '⚠️ Format non standard mais <strong>accepté</strong>. Vérifiez votre numéro RCCM officiel.';
+    input.className = 'field-input'; // ni valid ni invalid — neutre
+  } else if (val.length < 8) {
+    // Trop court pour se prononcer
+    help.className = 'rccm-help show info';
+    help.textContent = 'Continuez à saisir votre numéro RCCM…';
+    input.className = 'field-input';
+  } else {
+    // Pas du tout le bon format pour ce pays
+    help.className = 'rccm-help show warn';
+    help.innerHTML = '⚠️ Format inattendu pour '
+      + ({CI:"la Côte d'Ivoire",CM:"le Cameroun",SN:"le Sénégal"}[pays]||pays)
+      + '. Exemples ci-dessous. Vous pouvez quand même soumettre.';
+    input.className = 'field-input';
+  }
+}
+
+/* Init exemples au chargement */
+(function() { onPaysChange(); })();
+
+/* ══ SOUMISSION ════════════════════════ */
+function submitDemo() {
+  var nom   = document.getElementById('dm-nom').value.trim();
+  var email = document.getElementById('dm-email').value.trim();
+  var rccm  = document.getElementById('dm-rccm').value.trim();
+  var pays  = document.getElementById('dm-pays').value;
+  var plan  = document.getElementById('dm-plan').value;
+
+  if (!nom || !email) {
+    alert('⚠️ Veuillez renseigner au minimum le nom et l\'email.');
+    return;
+  }
+  if (email && !email.includes('@')) {
+    alert('⚠️ Format d\'email invalide.');
+    return;
+  }
+  // RCCM : plus de blocage — on soumet même si format non reconnu
+  // (l'équipe vérifiera manuellement)
+
+  // → Brancher ici le webhook Make.com
+  // Données : { nom, email, rccm, pays, plan, codePromo }
+
+  closeDemo();
+  var msg = '✅ Demande envoyée !\n\nVous recevrez vos identifiants pa

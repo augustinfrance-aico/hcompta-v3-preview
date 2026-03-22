@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H-Compta AI — Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Supabase SDK + Auth V3 (CdC V3 Section 4.3) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth_v3.js"></script>
+<style>
+/* ══════════════════════════════════════════════
+   CHARTE H-COMPTA AI V5 — Light / Pennylane
+   Identique au Dashboard_V5_PME.html
+══════════════════════════════════════════════ */
+:root {
+  /* Couleurs principales (identiques V5) */
+  --green:     #1a7a4a;
+  --green2:    #22a262;
+  --green-l:   rgba(26,122,74,.10);
+  --green-ll:  rgba(26,122,74,.06);
+  --gold:      #e8920a;
+  --gold-l:    rgba(232,146,10,.10);
+  --red:       #d93025;
+  --red-l:     rgba(217,48,37,.10);
+  --cyan:      #00a3a8;
+  --cyan-l:    rgba(0,163,168,.10);
+  --blue:      #1a6fbe;
+  --purple:    #7048d0;
+
+  /* Fonds & surfaces */
+  --bg:        #f5f6f8;
+  --bg2:       #eef0f3;
+  --surface:   #ffffff;
+
+  /* Textes */
+  --text:      #1a1a2e;
+  --text2:     #4a5568;
+  --text3:     #9aa3b2;
+  --text4:     #c4cdd6;
+
+  /* Borders & shadows */
+  --border:    #e8edf3;
+  --border2:   #d1d9e0;
+  --shadow:    0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow2:   0 4px 16px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
+  --shadow3:   0 12px 40px rgba(0,0,0,.10), 0 4px 12px rgba(0,0,0,.06);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  height:100%;
+  font-family:'Inter', sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+
+/* ══ FOND PAGE ══════════════════════════ */
+.page-bg {
+  position:fixed; inset:0; z-index:0;
+  background:var(--bg);
+  overflow:hidden;
+}
+/* Gradient doux en haut à gauche — couleur sidebar V5 */
+.page-bg::before {
+  content:'';
+  position:absolute;
+  top:-120px; left:-80px;
+  width:480px; height:480px;
+  border-radius:50%;
+  background:radial-gradient(ellipse, rgba(26,58,42,.07) 0%, transparent 70%);
+}
+/* Tache verte douce en bas à droite */
+.page-bg::after {
+  content:'';
+  position:absolute;
+  bottom:-100px; right:-60px;
+  width:360px; height:360px;
+  border-radius:50%;
+  background:radial-gradient(ellipse, rgba(26,122,74,.06) 0%, transparent 70%);
+}
+/* Motif grille très légère */
+.bg-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size:40px 40px;
+  opacity:.35;
+}
+
+/* ══ LAYOUT 3 COLONNES ══════════════════ */
+.page {
+  position:relative; z-index:10;
+  height:100vh;
+  display:grid;
+  grid-template-columns:1fr 460px 1fr;
+  align-items:center;
+}
+
+/* ══ PANNEAU GAUCHE — Branding ══════════ */
+.left-panel {
+  grid-column:1;
+  padding:48px 48px 48px 56px;
+  display:flex; flex-direction:column;
+  justify-content:space-between;
+  height:100%;
+  max-width:400px;
+  margin-left:auto;
+}
+
+.brand { animation:fadeUp .55s ease both; }
+
+.brand-logo {
+  display:flex; align-items:center; gap:13px;
+  margin-bottom:44px;
+}
+.brand-icon {
+  width:42px; height:42px; border-radius:11px; flex-shrink:0;
+  background:linear-gradient(135deg,#00c2a0,var(--green));
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 14px rgba(26,122,74,.25);
+}
+.brand-icon svg { width:22px; height:22px; }
+.brand-name { font-size:17px; font-weight:800; color:var(--text); letter-spacing:-.3px; }
+.brand-name span { color:var(--green); }
+.brand-tagline { font-size:9px; color:var(--text3); letter-spacing:.8px; text-transform:uppercase; margin-top:2px; }
+
+.brand-headline {
+  font-size:32px; font-weight:800; line-height:1.2;
+  color:var(--text); margin-bottom:16px; letter-spacing:-.5px;
+}
+.brand-headline em { color:var(--green); font-style:normal; }
+
+.brand-sub {
+  font-size:13px; color:var(--text2); line-height:1.8;
+  max-width:310px; margin-bottom:28px;
+}
+
+.brand-flags { display:flex; gap:8px; flex-wrap:wrap; }
+.flag-chip {
+  display:flex; align-items:center; gap:6px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:20px; padding:5px 13px;
+  font-size:11px; color:var(--text2);
+  box-shadow:var(--shadow);
+}
+.flag-chip span { font-size:14px; }
+
+/* Métriques clés */
+.brand-stats {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px; margin-top:28px;
+}
+.stat-item {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:12px 14px;
+  box-shadow:var(--shadow);
+}
+.stat-val {
+  font-size:18px; font-weight:800; color:var(--green);
+  font-family:'JetBrains Mono',monospace; line-height:1;
+  margin-bottom:3px;
+}
+.stat-label { font-size:10px; color:var(--text3); font-weight:500; }
+
+.brand-bottom { padding-bottom:8px; }
+.brand-copy { font-size:10px; color:var(--text4); font-family:'JetBrains Mono',monospace; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ══ CENTRE — Carte formulaire ══════════ */
+.card-wrap {
+  grid-column:2;
+  display:flex; align-items:center; justify-content:center;
+  height:100%; padding:32px 0;
+}
+
+.card {
+  width:100%; max-width:420px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:38px 36px;
+  box-shadow:var(--shadow3);
+  animation:fadeUp .6s ease .08s both;
+  position:relative; overflow:hidden;
+}
+/* Barre accent verte en haut */
+.card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  border-radius:18px 18px 0 0;
+  background:linear-gradient(90deg, var(--green), #00c2a0, var(--green2));
+}
+
+/* ── En-tête carte ── */
+.card-header { text-align:center; margin-bottom:28px; }
+.card-logo-wrap {
+  width:54px; height:54px; margin:0 auto 14px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#00c2a0,var(--green));
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 20px rgba(26,122,74,.22);
+}
+.card-logo-wrap svg { width:28px; height:28px; }
+.card-title { font-size:20px; font-weight:800; color:var(--text); margin-bottom:5px; }
+.card-sub { font-size:12px; color:var(--text3); }
+
+/* ── Sélecteur de rôle ── */
+.role-tabs { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:24px; }
+.role-tab {
+  background:var(--bg); border:1.5px solid var(--border);
+  border-radius:10px; padding:12px 10px;
+  cursor:pointer; transition:all .18s; text-align:center;
+}
+.role-tab:hover { border-color:var(--border2); background:var(--bg2); }
+.role-tab.selected {
+  border-color:var(--green);
+  background:var(--green-l);
+  box-shadow:0 0 0 1px rgba(26,122,74,.15);
+}
+.role-tab.selected.expert {
+  border-color:var(--gold);
+  background:var(--gold-l);
+  box-shadow:0 0 0 1px rgba(232,146,10,.15);
+}
+.rt-icon { font-size:20px; margin-bottom:5px; }
+.rt-name { font-size:12px; font-weight:700; color:var(--text); }
+.rt-desc { font-size:10px; color:var(--text3); margin-top:2px; font-family:'JetBrains Mono',monospace; }
+.role-tab.selected .rt-name { color:var(--green); }
+.role-tab.selected.expert .rt-name { color:var(--gold); }
+
+/* ── Alertes ── */
+.alert-box {
+  border-radius:8px; padding:10px 13px; margin-bottom:14px;
+  font-size:12px; line-height:1.5; display:none;
+  animation:fadeUp .25s ease;
+}
+.alert-err {
+  background:var(--red-l); border:1px solid rgba(217,48,37,.2);
+  color:var(--red);
+}
+.alert-ok {
+  background:var(--green-l); border:1px solid rgba(26,122,74,.2);
+  color:var(--green);
+}
+
+/* ── Champs ── */
+.field { margin-bottom:16px; }
+.field-label {
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:11px; font-weight:600; color:var(--text2);
+  margin-bottom:7px;
+}
+.field-forgot {
+  font-size:11px; color:var(--green); text-decoration:none;
+  font-weight:500; transition:color .15s;
+}
+.field-forgot:hover { color:var(--green2); }
+
+.field-input {
+  width:100%;
+  background:var(--bg);
+  border:1.5px solid var(--border);
+  border-radius:9px;
+  padding:12px 15px;
+  font-family:'Inter',sans-serif; font-size:13px;
+  color:var(--text); outline:none; transition:all .18s;
+}
+.field-input::placeholder { color:var(--text4); }
+.field-input:focus {
+  border-color:var(--green);
+  background:var(--surface);
+  box-shadow:0 0 0 3px var(--green-l);
+}
+.field-input.expert-mode:focus {
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px var(--gold-l);
+}
+
+.pwd-wrap { position:relative; }
+.pwd-toggle {
+  position:absolute; right:13px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:var(--text3); cursor:pointer;
+  font-size:15px; padding:4px; transition:color .15s;
+}
+.pwd-toggle:hover { color:var(--text2); }
+
+/* ── Bouton ── */
+.btn-submit {
+  width:100%; padding:13px;
+  border:none; border-radius:9px;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:14px;
+  cursor:pointer; transition:all .2s;
+  position:relative; overflow:hidden;
+  margin-top:6px; letter-spacing:.1px;
+}
+.btn-pme {
+  background:var(--green); color:#fff;
+}
+.btn-pme:hover {
+  background:var(--green2);
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(26,122,74,.28);
+}
+.btn-expert {
+  background:var(--gold); color:#fff;
+}
+.btn-expert:hover {
+  background:#d4820a;
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(232,146,10,.28);
+}
+.btn-submit:active { transform:translateY(0); }
+.btn-submit.loading { pointer-events:none; opacity:.7; }
+
+/* Shimmer hover */
+.btn-submit::after {
+  content:''; position:absolute; top:0; left:-100%; width:60%; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+  transition:left .45s;
+}
+.btn-submit:hover::after { left:140%; }
+
+/* Spinner */
+.spinner {
+  display:none; width:18px; height:18px; margin:0 auto;
+  border:2px solid rgba(255,255,255,.25);
+  border-top-color:#fff; border-radius:50%;
+  animation:spin .6s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── Pied de carte ── */
+.card-footer { margin-top:20px; text-align:center; }
+.card-footer a {
+  font-size:11px; color:var(--text3); text-decoration:none;
+  transition:color .15s; font-weight:500;
+}
+.card-footer a:hover { color:var(--green); }
+.card-footer .sep { margin:0 9px; color:var(--text4); }
+
+/* Comptes test */
+.test-accounts {
+  margin-top:16px;
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:8px; padding:11px 13px;
+}
+.ta-title {
+  font-size:9px; font-weight:700; color:var(--text3);
+  letter-spacing:1px; text-transform:uppercase; margin-bottom:7px;
+  display:flex; align-items:center; gap:5px;
+}
+.ta-row {
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:10px; color:var(--text2); margin-bottom:4px;
+  font-family:'JetBrains Mono',monospace;
+}
+.ta-row:last-child { margin-bottom:0; }
+.ta-tag {
+  font-size:9px; font-weight:600; padding:1px 6px; border-radius:4px;
+}
+.ta-pme   { background:var(--green-l); color:var(--green); }
+.ta-exp   { background:var(--gold-l);  color:var(--gold); }
+.ta-fill {
+  font-size:10px; color:var(--green); text-decoration:none;
+  cursor:pointer; font-family:'Inter',sans-serif; font-weight:500;
+}
+.ta-fill:hover { color:var(--green2); text-decoration:underline; }
+
+/* ══ PANNEAU DROIT — Flux technique ════ */
+.right-panel {
+  grid-column:3;
+  padding:48px 48px 48px 40px;
+  display:flex; flex-direction:column; justify-content:center;
+  max-width:360px;
+  animation:fadeUp .65s ease .15s both;
+}
+
+.flow-title {
+  font-size:9px; font-weight:700; color:var(--text3);
+  letter-spacing:1.5px; text-transform:uppercase; margin-bottom:18px;
+  display:flex; align-items:center; gap:7px;
+}
+.flow-title::before {
+  content:''; width:20px; height:2px;
+  background:var(--green); border-radius:1px;
+  flex-shrink:0;
+}
+
+.flow-steps { display:flex; flex-direction:column; }
+.flow-step {
+  display:flex; align-items:flex-start; gap:13px;
+  padding:12px 0; position:relative;
+}
+.flow-step:not(:last-child)::after {
+  content:''; position:absolute; left:14px; top:44px; bottom:0; width:1px;
+  background:linear-gradient(180deg, var(--border2), transparent);
+}
+.fs-dot {
+  width:28px; height:28px; border-radius:8px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; border:1px solid var(--border);
+  background:var(--surface); box-shadow:var(--shadow);
+}
+.fsd-login  { border-color:rgba(26,122,74,.3);   background:var(--green-l); }
+.fsd-make   { border-color:rgba(112,72,208,.25); background:rgba(112,72,208,.07); }
+.fsd-air    { border-color:rgba(217,48,37,.2);   background:var(--red-l); }
+.fsd-token  { border-color:rgba(232,146,10,.25); background:var(--gold-l); }
+.fsd-dash   { border-color:rgba(26,122,74,.3);   background:var(--green-l); }
+.fs-name {
+  font-size:11px; font-weight:700; margin-bottom:2px; color:var(--text);
+}
+.fs-desc { font-size:11px; color:var(--text2); line-height:1.55; }
+
+.security-note {
+  margin-top:22px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:13px 15px;
+  box-shadow:var(--shadow);
+}
+.sn-title {
+  font-size:9px; font-weight:700; color:var(--green);
+  letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;
+  display:flex; align-items:center; gap:6px;
+}
+.sn-title::before {
+  content:'🔒'; font-size:10px;
+}
+.sn-item {
+  font-size:11px; color:var(--text2); line-height:1.6;
+  display:flex; align-items:flex-start; gap:7px;
+}
+.sn-item::before { content:'·'; color:var(--green); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+/* ══ RESPONSIVE ══════════════════════════ */
+@media (max-width:1100px) {
+  .left-panel, .right-panel { display:none; }
+  .page { grid-template-columns:1fr; }
+  .card-wrap { grid-column:1; padding:20px; }
+}
+@media (max-width:480px) {
+  .card { padding:28px 22px; border-radius:14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Fond -->
+<div class="page-bg"><div class="bg-grid"></div></div>
+
+<div class="page">
+
+  <!-- ══ PANNEAU GAUCHE ══════════════════ -->
+  <div class="left-panel">
+    <div class="brand">
+
+      <div class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="5" width="5" height="14" rx="1.5" fill="white"/>
+            <rect x="16" y="5" width="5" height="14" rx="1.5" fill="white"/>
+            <rect x="7" y="10.5" width="10" height="3" rx="1.5" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">H-Compta <span>AI</span></div>
+          <div class="brand-tagline">Portail Comptabilité</div>
+        </div>
+      </div>
+
+      <div class="brand-headline">
+        La comptabilité<br><em>intelligente</em><br>pour l'Afrique.
+      </div>
+
+      <p class="brand-sub">
+        SYSCOHADA · Sage 100 · Odoo · Traitement automatique des pièces comptables en 28 secondes.
+      </p>
+
+      <div class="brand-flags">
+        <div class="flag-chip"><span>🇨🇮</span> Côte d'Ivoire</div>
+        <div class="flag-chip"><span>🇨🇲</span> Cameroun</div>
+        <div class="flag-chip"><span>🇸🇳</span> Sénégal</div>
+      </div>
+
+      <div class="brand-stats">
+        <div class="stat-item">
+          <div class="stat-val">28s</div>
+          <div class="stat-label">Traitement moyen par pièce</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">87%</div>
+          <div class="stat-label">Taux succès IA SYSCOHADA</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">3</div>
+          <div class="stat-label">Pays couverts · TVA auto</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">100%</div>
+          <div class="stat-label">Conforme SYSCOHADA révisé</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="brand-bottom">
+      <p class="brand-copy">© 2026 H-Compta AI · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="43202c2d37222037032b202c2e3337226d222a">[email&#160;protected]</a></p>
+    </div>
+  </div>
+
+  <!-- ══ CARTE CONNEXION ══════════════════ -->
+  <div class="card-wrap">
+    <div class="card">
+
+      <div class="card-header">
+        <div class="card-logo-wrap">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="5" width="5" height="14" rx="1.5" fill="white"/>
+            <rect x="16" y="5" width="5" height="14" rx="1.5" fill="white"/>
+            <rect x="7" y="10.5" width="10" height="3" rx="1.5" fill="white"/>
+          </svg>
+        </div>
+        <div class="card-title">Connexion</div>
+        <div class="card-sub">Accédez à votre espace H-Compta AI</div>
+      </div>
+
+      <!-- Sélecteur rôle -->
+      <div class="role-tabs">
+        <div class="role-tab selected" id="tab-pme" onclick="setRole('pme')">
+          <div class="rt-icon">🏢</div>
+          <div class="rt-name">PME</div>
+          <div class="rt-desc">Client abonné</div>
+        </div>
+        <div class="role-tab" id="tab-expert" onclick="setRole('expert')">
+          <div class="rt-icon">👨‍💼</div>
+          <div class="rt-name">Expert-Comptable</div>
+          <div class="rt-desc">Cabinet partenaire</div>
+        </div>
+      </div>
+
+      <!-- Alertes -->
+      <div class="alert-box alert-err" id="alert-err"></div>
+      <div class="alert-box alert-ok"  id="alert-ok"></div>
+
+      <!-- Email -->
+      <div class="field">
+        <div class="field-label"><span>Adresse email</span></div>
+        <input class="field-input" id="inp-email" type="email"
+          placeholder="votre@email.com" autocomplete="email">
+      </div>
+
+      <!-- Mot de passe -->
+      <div class="field">
+        <div class="field-label">
+          <span>Mot de passe</span>
+          <a class="field-forgot" href="#" onclick="showForgot()">Mot de passe oublié ?</a>
+        </div>
+        <div class="pwd-wrap">
+          <input class="field-input" id="inp-pwd" type="password"
+            placeholder="••••••••" autocomplete="current-password">
+          <button class="pwd-toggle" onclick="togglePwd()" tabindex="-1" title="Afficher/masquer">👁</button>
+        </div>
+      </div>
+
+      <!-- Bouton connexion -->
+      <button class="btn-submit btn-pme" id="btn-login" onclick="doLogin()">
+        <span id="btn-text">Se connecter</span>
+        <div class="spinner" id="btn-spinner"></div>
+      </button>
+
+      <!-- Comptes de test -->
+      <div class="test-accounts">
+        <div class="ta-title">🧪 Comptes de démonstration</div>
+        <div class="ta-row">
+          <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="97e7faf2d7e3f2e4e3b9f4fe">[email&#160;protected]</a> · hcompta2026</span>
+          <span><span class="ta-tag ta-pme">PME</span></span>
+          <a class="ta-fill" onclick="fillTest('pme')">Remplir →</a>
+        </div>
+        <div class="ta-row">
+          <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6005181005121420140513144e0309">[email&#160;protected]</a> · hcompta2026</span>
+          <span><span class="ta-tag ta-exp">EXPERT</span></span>
+          <a class="ta-fill" onclick="fillTest('expert')">Remplir →</a>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <a href="index.html">← Retour à l'accueil</a>
+        <span class="sep">·</span>
+        <a href="/cdn-cgi/l/email-protection#d2b1bdbca6b3b1a692bab1bdbfa2a6b3fcb3bb">Assistance</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ PANNEAU DROIT — Flux ═════════════ -->
+  <div class="right-panel">
+    <div class="flow-title">Comment fonctionne la connexion</div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="fs-dot fsd-login">🔐</div>
+        <div>
+          <div class="fs-name" style="color:var(--green)">1. Saisie des identifiants</div>
+          <div class="fs-desc">Email + mot de passe envoyés au webhook Make.com via HTTPS.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-dot fsd-make">⚙️</div>
+        <div>
+          <div class="fs-name" style="color:var(--purple)">2. Make.com vérifie</div>
+          <div class="fs-desc">Recherche l'email dans PME_liste ou Cabinets. Compare le mot de passe hashé.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-dot fsd-air">🗄️</div>
+        <div>
+          <div class="fs-name" style="color:var(--red)">3. Airtable répond</div>
+          <div class="fs-desc">Retourne : rôle (PME/EXPERT), PME_ID, nom, statut du compte.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-dot fsd-token">🎟️</div>
+        <div>
+          <div class="fs-name" style="color:var(--gold)">4. Token enregistré</div>
+          <div class="fs-desc">Un JWT sécurisé est géré automatiquement par Supabase Auth (1h + refresh).</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-dot fsd-dash">✅</div>
+        <div>
+          <div class="fs-name" style="color:var(--green)">5. Redirection automatique</div>
+          <div class="fs-desc">PME → Dashboard PME · Expert → Dashboard Cabinet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="security-note">
+      <div class="sn-title">Sécurité appliquée</div>
+      <div class="sn-item">Token expiré après 8h d'inactivité</div>
+      <div class="sn-item">Rôle vérifié à chaque ouverture de dashboard</div>
+      <div class="sn-item">Webhook Make.com en HTTPS uniquement</div>
+      <div class="sn-item">Mot de passe jamais stocké en clair</div>
+    </div>
+  </div>
+
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ══════════════════════════════════════════
+   CONFIG V3 — Supabase Auth (CdC V3 Section 4)
+   SIMULATION_MODE supprimé — auth réelle via Supabase
+══════════════════════════════════════════ */
+
+/* ══ ÉTAT ══════════════════════════════ */
+let currentRole = 'pme';
+
+/* ══ RÔLE ══════════════════════════════ */
+function setRole(role) {
+  currentRole = role;
+  const tabPme    = document.getElementById('tab-pme');
+  const tabExpert = document.getElementById('tab-expert');
+  const btn       = document.getElementById('btn-login');
+  const emailInp  = document.getElementById('inp-email');
+  const pwdInp    = document.getElementById('inp-pwd');
+
+  tabPme.classList.toggle('selected', role === 'pme');
+  tabExpert.classList.toggle('selected', role === 'expert');
+  tabExpert.classList.toggle('expert', role === 'expert');
+
+  if (role === 'expert') {
+    btn.className = 'btn-submit btn-expert';
+    document.getElementById('btn-text').textContent = 'Accès Expert-Comptable';
+    emailInp.classList.add('expert-mode');
+    pwdInp.classList.add('expert-mode');
+    emailInp.placeholder = 'expert@cabinet.ci';
+  } else {
+    btn.className = 'btn-submit btn-pme';
+    document.getElementById('btn-text').textContent = 'Se connecter';
+    emailInp.classList.remove('expert-mode');
+    pwdInp.classList.remove('expert-mode');
+    emailInp.placeholder = 'votre@email.com';
+  }
+  clearAlerts();
+}
+
+/* ══ REMPLISSAGE DEMO ═══════════════════ */
+function fillTest(type) {
+  if (type === 'pme') {
+    document.getElementById('inp-email').value = 'pme@test.ci';
+    setRole('pme');
+  } else {
+    document.getElementById('inp-email').value = 'expert@test.ci';
+    setRole('expert');
+  }
+  document.getElementById('inp-pwd').value = 'hcompta2026';
+  clearAlerts();
+}
+
+/* ══ MOT DE PASSE ═══════════════════════ */
+function togglePwd() {
+  const inp = document.getElementById('inp-pwd');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+/* ══ ALERTES ════════════════════════════ */
+function showErr(msg) {
+  const el = document.getElementById('alert-err');
+  el.textContent = '⚠️  ' + msg;
+  el.style.display = 'block';
+  document.getElementById('alert-ok').style.display = 'none';
+}
+function showOk(msg) {
+  const el = document.getElementById('alert-ok');
+  el.textContent = '✅  ' + msg;
+  el.style.display = 'block';
+  document.getElementById('alert-err').style.display = 'none';
+}
+function clearAlerts() {
+  document.getElementById('alert-err').style.display = 'none';
+  document.getElementById('alert-ok').style.display  = 'none';
+}
+
+/* ══ CHARGEMENT ═════════════════════════ */
+function setLoading(on) {
+  const btn  = document.getElementById('btn-login');
+  const text = document.getElementById('btn-text');
+  const spin = document.getElementById('btn-spinner');
+  btn.classList.toggle('loading', on);
+  text.style.display = on ? 'none'  : 'block';
+  spin.style.display = on ? 'block' : 'none';
+}
+
+/* ══ CONNEXION PRINCIPALE — Supabase Auth ═══════════════
+   CdC V3 Section 4.2 : signInWithPassword → JWT → redirect
+   Remplace : SIMULATION_MODE + makeLogin + saveSession
+══════════════════════════════════════════════════════════ */
+async function doLogin() {
+  clearAlerts();
+  const email = document.getElementById('inp-email').value.trim();
+  const pwd   = document.getElementById('inp-pwd').value;
+
+  if (!email)              { showErr("Veuillez saisir votre adresse email."); return; }
+  if (!email.includes('@')){ showErr("Format d'email invalide."); return; }
+  if (!pwd || pwd.length < 6){ showErr("Mot de passe trop court (6 caractères minimum)."); return; }
+
+  setLoading(true);
+
+  try {
+    // Connexion Supabase Auth (remplace SIMULATION_MODE + makeLogin)
+    const session = await HC.connexion({ email, password: pwd });
+
+    if (session) {
+      showOk("Connexion réussie. Redirection en cours…");
+      setTimeout(() => HC.redirectByRole(session.role), 800);
+    } else {
+      showErr("Identifiants incorrects. Vérifiez votre email et mot de passe.");
+      setLoading(false);
+    }
+  } catch(err) {
+    showErr(err.message || "Erreur de connexion. Vérifiez votre connexion internet et réessayez.");
+    console.error('Auth error:', err);
+    setLoading(false);
+  }
+}
+
+/* ══ MOT DE PASSE OUBLIÉ — Supabase Auth natif ═════════
+   CdC V3 : S7 quasi supprimé — Supabase gère nativement
+══════════════════════════════════════════════════════════ */
+async function showForgot() {
+  clearAlerts();
+  const email = document.getElementById('inp-email').value.trim();
+  if (!email || !email.includes('@')) {
+    showErr("Saisissez d'abord votre email puis cliquez sur 'Mot de passe oublié'.");
+    return;
+  }
+  try {
+    await HC.resetPassword(email);
+    showOk("Un email de réinitialisation a été envoyé à " + email + ". Vérifiez votre boîte mail.");
+  } catch(err) {
+    showErr("Erreur : " + err.message);
+  }
+}
+
+/* ══ TOUCHE ENTRÉE ══════════════════════ */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+
+/* ══ NETTOYAGE SESSION AU CHARGEMENT ════
+   On arrive sur le login → on efface la session
+   CdC V3 Condition recette n°9 : déconnexion → session invalidée
+══════════════════════════════════════════ */
+(async function clearOnLoad() {
+  try {
+    sessionStorage.removeItem('hc_session');
+    // Déconnecter proprement côté Supabase aussi
+    const sb = HC.getSupabase();
+    await sb.auth.signOut();
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>

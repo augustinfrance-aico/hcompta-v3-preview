@@ -1,0 +1,29 @@
+# H-COMPTA AI — Configuration Netlify
+# CdC V3 Section 7.2
+
+[build]
+  publish = "."
+
+# Redirects propres (URLs sans .html)
+[[redirects]]
+  from = "/dashboard-pme"
+  to = "/dashboard-pme.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard-expert"
+  to = "/dashboard-expert.html"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200
+
+# Headers sécurité (CdC V3 Section 7.2)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

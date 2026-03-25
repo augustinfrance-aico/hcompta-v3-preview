@@ -20,8 +20,8 @@
 // CONFIG — Remplacer par les vraies valeurs du projet Supabase
 // Dashboard → Settings → API
 // ============================================================
-const SUPABASE_URL  = 'https://auxhvovqrevwhkpmpwrc.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1eGh2b3ZxcmV2d2hrcG1wd3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNjQwMjUsImV4cCI6MjA4ODg0MDAyNX0.tCtDc2_pAtBrMawZUy49zteocUS6rBKaMOBNrsseoiw';
+const SUPABASE_URL  = window.HC_SUPABASE_URL || 'https://auxhvovqrevwhkpmpwrc.supabase.co';
+const SUPABASE_ANON = window.HC_SUPABASE_ANON || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1eGh2b3ZxcmV2d2hrcG1wd3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNjQwMjUsImV4cCI6MjA4ODg0MDAyNX0.tCtDc2_pAtBrMawZUy49zteocUS6rBKaMOBNrsseoiw';
 
 // ============================================================
 // INIT SUPABASE CLIENT (singleton)
@@ -414,16 +414,28 @@ async function hcGetJWT() {
 }
 
 // ============================================================
+// SHA256 — Audit trail hash (Web Crypto API)
+// ============================================================
+async function _sha256(data) {
+  const encoder = new TextEncoder();
+  const buffer = await crypto.subtle.digest('SHA-256', encoder.encode(data));
+  return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ============================================================
 // LOG SESSION — Audit sécurité (table sessions_log)
 // ============================================================
 async function _logSession(userId, pmeId, role) {
   if (!userId) return;
   const sb = getSupabase();
   try {
+    const hashInput = [userId, role, pmeId, new Date().toISOString().slice(0,10)].join('|');
+    const sessionHash = await _sha256(hashInput);
     await sb.from('sessions_log').insert({
       user_id: userId,
       pme_id:  pmeId,
-      role
+      role,
+      session_hash: sessionHash
     });
   } catch (e) {
     // Silencieux — le log ne doit pas bloquer la connexion

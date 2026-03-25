@@ -23,6 +23,18 @@ let _refreshInterval = null;
 let _realtimeChannel = null;  // FIX #3.9 : Garder une ref pour cleanup
 
 // ============================================================
+// DEVISE — Formatage multi-devises FCFA (CdC V3)
+// ============================================================
+function hcFormatMontant(amount, pays) {
+  const n = Number(amount) || 0;
+  const devises = { 'CI': 'XOF', 'CM': 'XAF', 'SN': 'XOF' };
+  const devise = devises[pays] || 'XOF';
+  // Format with thousands separator (space for FCFA)
+  const formatted = n.toLocaleString('fr-FR', { maximumFractionDigits: 0 });
+  return formatted + ' ' + devise;
+}
+
+// ============================================================
 // BOOT — Appelé au DOMContentLoaded
 // ============================================================
 async function hcDashboardInit() {
@@ -39,6 +51,9 @@ async function hcDashboardInit() {
 
   // 3. Injecter les infos dans le DOM
   _injectSessionUI();
+
+  // 3b. Appliquer la devise du pays sur les labels statiques
+  _applyCurrencyLabels();
 
   // 4. Masquer/afficher selon le rôle
   _applyRoleGuards();
@@ -91,7 +106,7 @@ async function hcLoadKPIs() {
     _setEl('kpi-nb', kpis.total);
     _setEl('kpi-av', kpis.aValider);
     _setEl('kpi-ia', kpis.total > 0 ? Math.round((kpis.auto / kpis.total) * 100) + '%' : '0%');
-    _setEl('kpi-tva', _formatCurrency(kpis.montant * (_session.tva / 100 || 0.18), _session.pays));
+    _setEl('kpi-tva', hcFormatMontant(kpis.montant * (_session.tva / 100 || 0.18), _session.pays));
 
   } catch (e) {
     console.error('[KPI ERROR]', e);
@@ -136,7 +151,7 @@ function _renderEcrituresTable(ecritures) {
     row.innerHTML = `
       <td>${_formatDate(e.created_at)}</td>
       <td>${e.fournisseur || '—'}</td>
-      <td>${_formatCurrency(e.montant_ttc, _session.pays)}</td>
+      <td>${hcFormatMontant(e.montant_ttc, _session.pays)}</td>
       <td>${e.journal || '—'}</td>
       <td>${e.compte_debit || '—'}</td>
       <td>${_statutBadge(e.statut)}</td>
@@ -454,6 +469,32 @@ function hcCleanup() {
 // ============================================================
 // UI HELPERS
 // ============================================================
+function _applyCurrencyLabels() {
+  const pays = _session?.pays;
+  const devises = { 'CI': 'XOF', 'CM': 'XAF', 'SN': 'XOF' };
+  const devise = devises[pays] || 'XOF';
+  const paysLabels = { 'CI': "Côte d'Ivoire", 'CM': 'Cameroun', 'SN': 'Sénégal' };
+  const tauxTVA = { 'CI': '18%', 'CM': '19,25%', 'SN': '18%' };
+
+  // KPI TVA label
+  _setEl('kpi-tva-label', 'TVA à déclarer (' + devise + ')');
+
+  // TVA section country label
+  const tvaLbl = document.getElementById('tva-pays-lbl');
+  if (tvaLbl) tvaLbl.textContent = (paysLabels[pays] || pays || '') + ' ' + (tauxTVA[pays] || '');
+
+  // Rewrite hardcoded FCFA in .hc-montant cells
+  document.querySelectorAll('.hc-montant').forEach(el => {
+    const raw = el.textContent.replace(/\s*(FCFA|XOF|XAF)\s*$/, '').trim();
+    el.textContent = raw + ' ' + devise;
+  });
+
+  // Subscription period labels
+  document.querySelectorAll('.abo-period').forEach(el => {
+    el.textContent = el.textContent.replace(/FCFA|XOF|XAF/, devise);
+  });
+}
+
 function _injectSessionUI() {
   // IDs du Dashboard PME V5 de Noé
   _setEl('sb-name', _session.nomPme || _session.nomCabinet || _session.email);
@@ -547,3 +588,4 @@ window.hcMariahSend        = hcMariahSend;
 window.hcLoadInvitations   = hcLoadInvitations;
 window.hcLoadPortefeuille  = hcLoadPortefeuille;
 window.hcCleanup           = hcCleanup;
+window.hcFormatMontant     = hcFormatMontant;

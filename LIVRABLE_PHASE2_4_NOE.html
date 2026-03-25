@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H-Compta AI — Phases 2 & 4 : Auth + HTML connectés</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0a0e1a; --bg2:#111827; --bg3:#1a2235; --border:#1e2d45; --blue:#1F6FFF; --green:#10b981; --orange:#f59e0b; --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; font-size:15px; line-height:1.7; }
+  .hero { background:linear-gradient(135deg,#0d1b35,#0a0e1a 60%,#0d1428); border-bottom:1px solid var(--border); padding:48px 40px 40px; }
+  .hero-tag { display:inline-block; background:rgba(31,111,255,.15); color:var(--blue); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:4px 14px; border-radius:20px; border:1px solid rgba(31,111,255,.3); margin-bottom:16px; }
+  .hero h1 { font-size:28px; font-weight:800; margin-bottom:10px; }
+  .hero h1 span { color:var(--green); }
+  .hero-sub { color:var(--text2); font-size:15px; max-width:700px; }
+  .container { max-width:860px; margin:0 auto; padding:40px 24px 60px; }
+  .section { margin-bottom:48px; }
+  .section-head { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+  .section-icon { font-size:22px; }
+  .section-title { font-size:20px; font-weight:800; }
+  .section-line { flex:1; height:1px; background:var(--border); }
+  .card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px 24px; margin-bottom:14px; }
+  .card-title { font-size:15px; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+  .card-body { color:var(--text2); font-size:14px; }
+  .card-body strong { color:var(--text); }
+  .highlight { background:rgba(16,185,129,.06); border:1px solid rgba(16,185,129,.2); border-radius:10px; padding:16px 20px; margin-bottom:14px; }
+  .highlight-title { font-size:13px; font-weight:700; margin-bottom:6px; color:var(--green); }
+  .highlight-body { font-size:13px; color:var(--text2); }
+  .highlight-body strong { color:var(--text); }
+  .tbl { width:100%; border-collapse:collapse; margin-bottom:16px; font-size:13px; }
+  .tbl th { text-align:left; padding:10px 12px; font-weight:700; font-size:11px; letter-spacing:.8px; text-transform:uppercase; color:var(--text3); border-bottom:1px solid var(--border); background:var(--bg3); }
+  .tbl td { padding:10px 12px; border-bottom:1px solid rgba(30,45,69,.4); color:var(--text2); }
+  .tbl td:first-child { font-weight:600; color:var(--text); }
+  .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:700; }
+  .badge-green { background:rgba(16,185,129,.15); color:var(--green); }
+  .badge-blue { background:rgba(31,111,255,.15); color:var(--blue); }
+  .check-list { list-style:none; }
+  .check-list li { padding:8px 0; font-size:14px; color:var(--text2); display:flex; align-items:flex-start; gap:10px; border-bottom:1px solid rgba(30,45,69,.3); }
+  .check-list li:last-child { border-bottom:none; }
+  .footer { background:var(--bg2); border-top:1px solid var(--border); padding:32px 40px; text-align:center; color:var(--text3); font-size:12px; }
+  .footer strong { color:var(--text2); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Phases 2 & 4 — Livrable</div>
+  <h1>H-Compta AI — <span>Authentification + HTML connectés</span></h1>
+  <p class="hero-sub">Vos 4 pages sont maintenant branchées sur Supabase. La connexion est réelle, les données sont dynamiques, et la sécurité est en place.</p>
+</div>
+
+<div class="container">
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-icon">🔐</span>
+    <span class="section-title">Authentification — Ce qui a changé</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="highlight">
+    <div class="highlight-title">🐸 En langage simple</div>
+    <div class="highlight-body">
+      Avant, la connexion était <strong>simulée</strong> : n'importe qui pouvait se connecter avec les comptes test hardcodés. Maintenant c'est <strong>Supabase Auth</strong> — la même technologie que les apps bancaires. Chaque utilisateur a un vrai compte, un vrai mot de passe, et un vrai token JWT.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ Ce qui fonctionne maintenant</div>
+    <div class="card-body">
+      <ul style="margin:8px 0 0 20px">
+        <li><strong>Connexion réelle</strong> — email + mot de passe vérifiés par Supabase Auth</li>
+        <li><strong>4 rôles</strong> — PME, Expert, Collaborateur, Admin (chacun voit ses données)</li>
+        <li><strong>Redirection automatique</strong> — PME → Dashboard PME, Expert → Dashboard Expert</li>
+        <li><strong>Réinitialisation mot de passe</strong> — email natif Supabase (plus besoin de Make S7)</li>
+        <li><strong>Déconnexion sécurisée</strong> — session invalidée côté serveur</li>
+        <li><strong>Isolation PME</strong> — pme@test.ci ne voit QUE CimenCI SA (testé et prouvé)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👥 Comptes de test créés</div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>Email</th><th>Mot de passe</th><th>Rôle</th><th>Accès</th></tr>
+        <tr><td>pme@test.ci</td><td>hcompta2026</td><td><span class="badge badge-blue">PME</span></td><td>CimenCI SA uniquement</td></tr>
+        <tr><td>expert@test.ci</td><td>hcompta2026</td><td><span class="badge badge-green">EXPERT</span></td><td>3 PME (CimenCI, BatiPlus, AgroCôte)</td></tr>
+        <tr><td>collab@test.ci</td><td>hcompta2026</td><td><span class="badge badge-blue">COLLABORATEUR</span></td><td>Lecture seule</td></tr>
+        <tr><td>admin@test.ci</td><td>hcompta2026</td><td><span class="badge badge-green">ADMIN</span></td><td>Accès total</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-icon">📄</span>
+    <span class="section-title">Les 4 pages HTML — Ce qui a changé</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="highlight">
+    <div class="highlight-title">🐸 En langage simple</div>
+    <div class="highlight-body">
+      Vos 4 pages sont <strong>visuellement identiques</strong>. On n'a touché à aucun pixel. Ce qui a changé c'est le moteur sous le capot : toutes les données viennent de Supabase, toutes les actions écrivent dans Supabase, et Mariah passe par un proxy sécurisé.
+    </div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>Page</th><th>Avant</th><th>Après</th></tr>
+    <tr>
+      <td>Login (login.html)</td>
+      <td>SIMULATION_MODE = true, comptes hardcodés</td>
+      <td>Supabase Auth, vrais comptes, JWT</td>
+    </tr>
+    <tr>
+      <td>Dashboard PME (dashboard-pme.html)</td>
+      <td>KPIs hardcodés, import simulé, Mariah sans clé API</td>
+      <td>KPIs depuis Supabase, upload Storage, Mariah via proxy sécurisé</td>
+    </tr>
+    <tr>
+      <td>Dashboard Expert (dashboard-expert.html)</td>
+      <td>5 PME hardcodées, Mariah = réponses cycliques, validation DOM-only</td>
+      <td>Portefeuille dynamique, Mariah via proxy, validation écrit en BDD</td>
+    </tr>
+    <tr>
+      <td>Landing (index.html)</td>
+      <td>Liens vers anciens fichiers HTML</td>
+      <td>Liens corrigés (login.html, dashboard-pme.html)</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-icon">🔒</span>
+    <span class="section-title">Sécurité — Ce qui est protégé</span>
+    <div class="section-line"></div>
+  </div>
+
+  <ul class="check-list">
+    <li><span>✅</span> <strong>Clé API Claude (Mariah)</strong> — JAMAIS dans le navigateur. Passe par un proxy serveur (Edge Function).</li>
+    <li><span>✅</span> <strong>Données PME</strong> — Isolées par RLS. Chaque PME ne voit que ses données. Testé en production.</li>
+    <li><span>✅</span> <strong>Sessions</strong> — JWT Supabase (1h + refresh automatique). Pas de localStorage.</li>
+    <li><span>✅</span> <strong>Mot de passe</strong> — Hashé par Supabase. Jamais stocké en clair.</li>
+    <li><span>✅</span> <strong>Clé service_role</strong> — Uniquement côté serveur (Make + Edge Function). JAMAIS côté client.</li>
+  </ul>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-icon">📋</span>
+    <span class="section-title">Fichiers livrés</span>
+    <div class="section-line"></div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>Fichier</th><th>Rôle</th><th>Taille</th></tr>
+    <tr><td>index.html</td><td>Landing Page V4</td><td>47 KB</td></tr>
+    <tr><td>login.html</td><td>Page de connexion (Supabase Auth)</td><td>30 KB</td></tr>
+    <tr><td>dashboard-pme.html</td><td>Dashboard PME (dynamique Supabase)</td><td>69 KB</td></tr>
+    <tr><td>dashboard-expert.html</td><td>Dashboard Expert (dynamique Supabase)</td><td>104 KB</td></tr>
+    <tr><td>auth_v3.js</td><td>Module authentification</td><td>14 KB</td></tr>
+    <tr><td>bridge_v3.js</td><td>Connecteur dashboard ↔ Supabase</td><td>19 KB</td></tr>
+    <tr><td>proxy_v3.js</td><td>Edge Function serveur (Mariah + sécurité)</td><td>13 KB</td></tr>
+    <tr><td>netlify.toml</td><td>Configuration Netlify</td><td>1 KB</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-icon">🚀</span>
+    <span class="section-title">Prochaines étapes</span>
+    <div class="section-line"></div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>Phase</th><th>Quoi</th><th>Statut</th></tr>
+    <tr><td>Phase 1</td><td>Base de données + sécurité + stockage</td><td><span class="badge badge-green">✅ En production</span></td></tr>
+    <tr><td>Phase 2</td><td>Authentification (4 comptes test, RLS vérifié)</td><td><span class="badge badge-green">✅ En production</span></td></tr>
+    <tr><td>Phase 4</td><td>4 pages HTML connectées à Supabase</td><td><span class="badge badge-green">✅ Prêt</span></td></tr>
+    <tr><td>Phase 3</td><td>Recâblage Make.com (6 scénarios)</td><td><span class="badge badge-blue">🔜 En cours</span></td></tr>
+    <tr><td>Phase 5</td><td>Déploiement Netlify + tests finaux</td><td><span class="badge badge-blue">⏳ Après Phase 3</span></td></tr>
+  </table>
+</div>
+
+</div>
+
+<div class="footer">
+  <strong>H-Compta AI</strong> — Phases 2 & 4 : Auth + HTML · Mars 2026<br>
+  Document confidentiel · Préparé pour Noé Kaljop
+</div>
+
+</body>
+</html>

@@ -4,25 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>H-Compta AI — Cabinet Expert</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!-- Supabase SDK + Auth + Bridge (CdC V3) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth_v3.js"></script>
 <script src="bridge_v3.js"></script>
 <style>
 :root {
-  --navy:#0F1F3D; --navy2:#162844; --navy3:#1E3A5F;
-  --cyan:#00C2CB; --cyan2:#00A8B0; --cyan-l:rgba(0,194,203,0.12); --cyan-ll:rgba(0,194,203,0.06);
-  --bg:#F4F6FA; --bg2:#FFFFFF; --bg3:#EEF1F7;
-  --border:#E2E8F0; --border2:#CBD5E1;
-  --text:#0F1F3D; --text2:#475569; --text3:#94A3B8;
-  --green:#10B981; --green-l:rgba(16,185,129,0.1);
+  --navy:#243A3A; --navy2:#1C2E2E; --navy3:#2E8269;
+  --cyan:#2E8269; --cyan2:#243A3A; --cyan-l:rgba(46,130,105,0.12); --cyan-ll:rgba(46,130,105,0.06);
+  --bg:#F4F6FA; --bg2:#FFFFFF; --bg3:#E5F4EE;
+  --border:#E2E8E4; --border2:#CBD5CE;
+  --text:#243A3A; --text2:#475569; --text3:#94A3B8;
+  --green:#2E8269; --green-l:rgba(46,130,105,0.1);
   --red:#EF4444; --red-l:rgba(239,68,68,0.1);
   --orange:#F59E0B; --orange-l:rgba(245,158,11,0.1);
   --blue:#3B82F6; --blue-l:rgba(59,130,246,0.1);
   --purple:#8B5CF6; --purple-l:rgba(139,92,246,0.1);
-  --shadow:0 1px 3px rgba(15,31,61,0.08),0 1px 2px rgba(15,31,61,0.05);
-  --shadow2:0 4px 16px rgba(15,31,61,0.1);
+  --shadow:0 1px 3px rgba(46,130,105,0.08),0 1px 2px rgba(46,130,105,0.05);
+  --shadow2:0 4px 16px rgba(46,130,105,0.1);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;}
@@ -31,18 +31,18 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .app{display:grid;grid-template-columns:220px 1fr 310px;grid-template-rows:60px 1fr;height:100vh;}
 
 /* ── TOPBAR ── */
-.topbar{grid-column:1/-1;background:var(--navy);display:flex;align-items:center;padding:0 20px;gap:14px;box-shadow:0 2px 8px rgba(15,31,61,0.3);z-index:100;}
+.topbar{grid-column:1/-1;background:var(--navy);display:flex;align-items:center;padding:0 20px;gap:14px;box-shadow:0 2px 8px rgba(36,58,58,0.3);z-index:100;}
 .logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#00C2CB,#3B82F6);display:flex;align-items:center;justify-content:center;}
+.logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#98CBB5,#2E8269);display:flex;align-items:center;justify-content:center;}
 .logo-icon svg{width:20px;height:20px;}
 .logo-text{font-size:16px;font-weight:700;color:white;letter-spacing:-0.3px;}
 .logo-text span{color:var(--cyan);}
 .tb-cabinet{font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);border-left:1px solid rgba(255,255,255,0.15);padding-left:14px;flex-shrink:0;}
-.tb-role-pill{font-size:10px;font-weight:600;background:rgba(0,194,203,0.18);border:1px solid rgba(0,194,203,0.4);color:var(--cyan);padding:3px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0;}
+.tb-role-pill{font-size:10px;font-weight:600;background:rgba(46,130,105,0.18);border:1px solid rgba(46,130,105,0.4);color:var(--cyan);padding:3px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0;}
 .tb-search-wrap{flex:1;max-width:360px;margin-left:8px;position:relative;}
 .tb-search{width:100%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 14px 8px 36px;color:white;font-size:13px;outline:none;transition:all 0.2s;font-family:'Inter',sans-serif;}
 .tb-search::placeholder{color:rgba(255,255,255,0.35);}
-.tb-search:focus{background:rgba(255,255,255,0.15);border-color:rgba(0,194,203,0.5);}
+.tb-search:focus{background:rgba(255,255,255,0.15);border-color:rgba(46,130,105,0.5);}
 .tb-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.35);font-size:13px;}
 .tb-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
 .tb-btn{width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.7);font-size:16px;transition:all 0.15s;position:relative;}
@@ -51,7 +51,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .tb-sep{width:1px;height:28px;background:rgba(255,255,255,0.12);}
 .tb-expert-btn{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 10px;border-radius:8px;transition:all 0.15s;}
 .tb-expert-btn:hover{background:rgba(255,255,255,0.08);}
-.expert-av{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;flex-shrink:0;}
+.expert-av{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#98CBB5,var(--green));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;flex-shrink:0;}
 .expert-name{font-size:12.5px;font-weight:600;color:white;}
 .expert-sub{font-size:10px;color:rgba(255,255,255,0.45);}
 
@@ -62,12 +62,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .nav-section{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:14px 18px 5px;}
 .nav-item{display:flex;align-items:center;gap:11px;padding:9px 18px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.6);transition:all 0.15s;border-left:3px solid transparent;}
 .nav-item:hover{color:white;background:rgba(255,255,255,0.05);}
-.nav-item.active{color:white;border-left-color:var(--cyan);background:rgba(0,194,203,0.08);}
+.nav-item.active{color:white;border-left-color:var(--cyan);background:rgba(46,130,105,0.08);}
 .nav-item.active .nav-icon{color:var(--cyan);}
 .nav-icon{font-size:16px;flex-shrink:0;}
 .nav-count{margin-left:auto;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;}
 .nc-red{background:rgba(239,68,68,0.2);color:#FCA5A5;}
-.nc-cyan{background:rgba(0,194,203,0.15);color:var(--cyan);}
+.nc-cyan{background:rgba(46,130,105,0.15);color:var(--cyan);}
 
 /* Mariah nav spécial */
 .nav-mariah{display:flex;align-items:center;gap:11px;padding:10px 18px;cursor:pointer;color:white;transition:all 0.15s;border-left:3px solid var(--purple);background:rgba(139,92,246,0.12);position:relative;overflow:hidden;}
@@ -78,8 +78,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .nm-badge{margin-left:auto;font-size:9px;font-weight:700;background:var(--purple);color:white;padding:2px 7px;border-radius:10px;letter-spacing:0.3px;}
 
 .sidebar-bottom{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08);}
-.invite-btn{width:100%;padding:9px;border-radius:8px;border:1px dashed rgba(0,194,203,0.4);background:rgba(0,194,203,0.06);color:var(--cyan);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
-.invite-btn:hover{background:rgba(0,194,203,0.13);border-color:var(--cyan);}
+.invite-btn{width:100%;padding:9px;border-radius:8px;border:1px dashed rgba(46,130,105,0.4);background:rgba(46,130,105,0.06);color:var(--cyan);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.invite-btn:hover{background:rgba(46,130,105,0.13);border-color:var(--cyan);}
 
 /* ── MAIN ── */
 .main{overflow-y:auto;background:var(--bg);}
@@ -160,7 +160,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .ecr-bar{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:4px;}
 .ecr-fill{height:100%;border-radius:2px;}
 .open-btn{padding:7px 14px;border-radius:8px;border:none;background:var(--navy);color:white;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
-.open-btn:hover{background:var(--navy3);transform:translateY(-1px);box-shadow:0 4px 12px rgba(15,31,61,0.2);}
+.open-btn:hover{background:var(--navy3);transform:translateY(-1px);box-shadow:0 4px 12px rgba(36,58,58,0.2);}
 
 /* ── PANEL CLIENTS (liste PME sidebar) ── */
 #panel-clients{padding:20px 24px;}
@@ -183,14 +183,14 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .mariah-header{padding:20px 24px 0;flex-shrink:0;}
 .mh-hero{background:linear-gradient(135deg,var(--navy) 0%,#1a1060 50%,#0d3b5e 100%);border-radius:14px;padding:22px 24px;margin-bottom:16px;position:relative;overflow:hidden;}
 .mh-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(139,92,246,0.15);}
-.mh-hero::after{content:'';position:absolute;bottom:-30px;left:60px;width:120px;height:120px;border-radius:50%;background:rgba(0,194,203,0.1);}
+.mh-hero::after{content:'';position:absolute;bottom:-30px;left:60px;width:120px;height:120px;border-radius:50%;background:rgba(46,130,105,0.1);}
 .mh-top{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
 .mh-av{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--purple),#6366F1);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 4px 14px rgba(139,92,246,0.4);}
 .mh-text{}
 .mh-name{font-size:18px;font-weight:800;color:white;letter-spacing:-0.3px;}
 .mh-desc{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px;}
 .mh-status{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.7);}
-.mh-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;}
+.mh-dot{width:6px;height:6px;border-radius:50%;background:#98CBB5;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 .mh-quick{display:flex;gap:8px;flex-wrap:wrap;}
 .mhq{font-size:11px;font-weight:500;padding:5px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.07);transition:all 0.13s;}
@@ -205,10 +205,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .mc-msg.u{flex-direction:row-reverse;}
 .mc-av{width:28px;height:28px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;}
 .mav-m{background:var(--purple-l);border:1px solid rgba(139,92,246,0.2);}
-.mav-u{background:var(--cyan-l);border:1px solid rgba(0,194,203,0.2);}
+.mav-u{background:var(--cyan-l);border:1px solid rgba(46,130,105,0.2);}
 .mc-bbl{max-width:380px;border-radius:11px;padding:10px 14px;font-size:13px;line-height:1.65;}
 .bbl-m{background:#F3F0FF;border:1px solid rgba(139,92,246,0.15);border-top-left-radius:2px;color:var(--text);}
-.bbl-u{background:var(--cyan-ll);border:1px solid rgba(0,194,203,0.18);border-top-right-radius:2px;color:var(--text);}
+.bbl-u{background:var(--cyan-ll);border:1px solid rgba(46,130,105,0.18);border-top-right-radius:2px;color:var(--text);}
 .mc-bbl code{font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;}
 .mc-bbl ul{padding-left:16px;margin-top:4px;}
 .mc-bbl li{margin-bottom:2px;}
@@ -260,7 +260,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .toggle.off::after{right:auto;left:3px;}
 .edit-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);font-size:11px;color:var(--text2);cursor:pointer;}
 .edit-btn:hover{background:var(--border);}
-.country-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:6px;background:var(--cyan-l);color:var(--cyan2);border:1px solid rgba(0,194,203,0.3);}
+.country-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:6px;background:var(--cyan-l);color:var(--cyan2);border:1px solid rgba(46,130,105,0.3);}
 .danger-btn{padding:6px 14px;border-radius:7px;border:1px solid rgba(239,68,68,0.3);background:var(--red-l);color:var(--red);font-size:11px;font-weight:600;cursor:pointer;}
 .danger-btn:hover{background:rgba(239,68,68,0.18);}
 
@@ -274,21 +274,21 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .eb-back:hover{background:rgba(255,255,255,0.1);color:white;}
 .eb-sep{width:1px;height:22px;background:rgba(255,255,255,0.15);flex-shrink:0;}
 .eb-pme-name{font-size:14px;font-weight:700;color:white;}
-.eb-role-tag{font-size:10px;font-weight:600;background:rgba(0,194,203,0.18);border:1px solid rgba(0,194,203,0.4);color:var(--cyan);padding:2px 9px;border-radius:4px;letter-spacing:0.5px;}
+.eb-role-tag{font-size:10px;font-weight:600;background:rgba(46,130,105,0.18);border:1px solid rgba(46,130,105,0.4);color:var(--cyan);padding:2px 9px;border-radius:4px;letter-spacing:0.5px;}
 
 /* Boutons Mariah dans le bandeau */
 .mariah-action-btns{display:flex;gap:7px;margin-left:16px;flex-wrap:wrap;}
 .mab{padding:6px 13px;border-radius:7px;border:1px solid;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
 .mab-mariah{background:rgba(139,92,246,0.2);border-color:rgba(139,92,246,0.5);color:#C4B5FD;}
 .mab-mariah:hover{background:rgba(139,92,246,0.32);}
-.mab-rapport{background:rgba(0,194,203,0.12);border-color:rgba(0,194,203,0.35);color:var(--cyan);}
-.mab-rapport:hover{background:rgba(0,194,203,0.22);}
+.mab-rapport{background:rgba(46,130,105,0.12);border-color:rgba(46,130,105,0.35);color:var(--cyan);}
+.mab-rapport:hover{background:rgba(46,130,105,0.22);}
 .mab-anomalie{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.35);color:#FCA5A5;}
 .mab-anomalie:hover{background:rgba(239,68,68,0.22);}
 .mab-cloture{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.35);color:#FCD34D;}
 .mab-cloture:hover{background:rgba(245,158,11,0.22);}
-.mab-briefing{background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.35);color:#6EE7B7;}
-.mab-briefing:hover{background:rgba(16,185,129,0.22);}
+.mab-briefing{background:rgba(46,130,105,0.12);border-color:rgba(46,130,105,0.35);color:#98CBB5;}
+.mab-briefing:hover{background:rgba(46,130,105,0.22);}
 .eb-right{margin-left:auto;display:flex;gap:7px;}
 .eb-btn{padding:6px 13px;border-radius:7px;border:1px solid;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;}
 .eb-valid{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.25);color:white;}
@@ -340,7 +340,7 @@ tr:hover td{background:#F8FAFF;}
 .act-cell{display:flex;gap:4px;}
 .act{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:all 0.13s;background:var(--bg2);}
 .act:hover{transform:scale(1.1);}
-.a-ok:hover{background:var(--green-l);border-color:rgba(16,185,129,0.4);}
+.a-ok:hover{background:var(--green-l);border-color:rgba(46,130,105,0.4);}
 .a-ko:hover{background:var(--red-l);border-color:rgba(239,68,68,0.4);}
 .a-edit:hover{background:var(--blue-l);border-color:rgba(59,130,246,0.4);}
 .a-m:hover{background:var(--purple-l);border-color:rgba(139,92,246,0.4);}
@@ -356,8 +356,8 @@ tr:hover td{background:#F8FAFF;}
 .ac-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px;}
 .ac-btns{display:flex;gap:6px;flex-wrap:wrap;}
 .acb{font-size:11px;font-weight:600;padding:4px 11px;border-radius:6px;cursor:pointer;border:1px solid;transition:all 0.13s;}
-.acb-ok{background:var(--green-l);border-color:rgba(16,185,129,0.3);color:var(--green);}
-.acb-ok:hover{background:rgba(16,185,129,0.18);}
+.acb-ok{background:var(--green-l);border-color:rgba(46,130,105,0.3);color:var(--green);}
+.acb-ok:hover{background:rgba(46,130,105,0.18);}
 .acb-m{background:var(--purple-l);border-color:rgba(139,92,246,0.3);color:var(--purple);}
 .acb-m:hover{background:rgba(139,92,246,0.18);}
 
@@ -398,7 +398,7 @@ tr:hover td{background:#F8FAFF;}
 .pm-av2{width:26px;height:26px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;}
 .pm-bbl{max-width:230px;border-radius:10px;padding:9px 11px;font-size:12px;line-height:1.65;}
 .pbbl-m{background:#F3F0FF;border:1px solid rgba(139,92,246,0.13);border-top-left-radius:2px;color:var(--text);}
-.pbbl-u{background:var(--cyan-ll);border:1px solid rgba(0,194,203,0.16);border-top-right-radius:2px;color:var(--text);}
+.pbbl-u{background:var(--cyan-ll);border:1px solid rgba(46,130,105,0.16);border-top-right-radius:2px;color:var(--text);}
 .pm-bbl code{font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;}
 .pm-bbl ul{padding-left:14px;margin-top:3px;}
 .pm-bbl li{margin-bottom:2px;}
@@ -472,9 +472,9 @@ tr:hover td{background:#F8FAFF;}
 .mt-unreads{font-size:10px;color:var(--cyan);font-weight:600;margin-top:2px;}
 
 /* ── MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,31,61,0.55);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(36,58,58,0.55);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--bg2);border-radius:14px;box-shadow:0 20px 60px rgba(15,31,61,0.25);width:90%;max-width:480px;overflow:hidden;animation:mopen 0.25s ease;}
+.modal{background:var(--bg2);border-radius:14px;box-shadow:0 20px 60px rgba(36,58,58,0.25);width:90%;max-width:480px;overflow:hidden;animation:mopen 0.25s ease;}
 @keyframes mopen{from{opacity:0;transform:scale(0.94);}to{opacity:1;transform:scale(1);}}
 .modal-hd{background:var(--navy);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;}
 .modal-title{font-size:15px;font-weight:700;color:white;}
@@ -491,7 +491,7 @@ tr:hover td{background:#F8FAFF;}
 .btn-modal-ok:hover{background:var(--navy3);}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--navy);color:white;border-radius:9px;padding:11px 18px;font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(15,31,61,0.3);transform:translateY(70px);opacity:0;transition:all 0.25s;max-width:320px;display:flex;align-items:center;gap:8px;}
+.toast{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--navy);color:white;border-radius:9px;padding:11px 18px;font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(36,58,58,0.3);transform:translateY(70px);opacity:0;transition:all 0.25s;max-width:320px;display:flex;align-items:center;gap:8px;}
 .toast.show{transform:translateY(0);opacity:1;}</style>
 </head>
 <body>
@@ -607,23 +607,23 @@ tr:hover td{background:#F8FAFF;}
         <svg class="spark-svg" viewBox="0 0 480 80" preserveAspectRatio="none">
           <defs>
             <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#00C2CB" stop-opacity="0.25"/>
-              <stop offset="100%" stop-color="#00C2CB" stop-opacity="0"/>
+              <stop offset="0%" stop-color="#2E8269" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#2E8269" stop-opacity="0"/>
             </linearGradient>
           </defs>
           <line x1="0" y1="20" x2="480" y2="20" stroke="#E2E8F0" stroke-width="1"/>
           <line x1="0" y1="40" x2="480" y2="40" stroke="#E2E8F0" stroke-width="1"/>
           <line x1="0" y1="60" x2="480" y2="60" stroke="#E2E8F0" stroke-width="1"/>
           <path d="M0,58 L96,50 L192,44 L288,36 L384,26 L480,16 L480,80 L0,80 Z" fill="url(#sg)"/>
-          <polyline points="0,58 96,50 192,44 288,36 384,26 480,16" fill="none" stroke="#00C2CB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="0" cy="58" r="4" fill="#00C2CB"/>
-          <circle cx="96" cy="50" r="4" fill="#00C2CB"/>
-          <circle cx="192" cy="44" r="4" fill="#00C2CB"/>
-          <circle cx="288" cy="36" r="4" fill="#00C2CB"/>
-          <circle cx="384" cy="26" r="4" fill="#00C2CB"/>
-          <circle cx="480" cy="16" r="5" fill="white" stroke="#00C2CB" stroke-width="2.5"/>
+          <polyline points="0,58 96,50 192,44 288,36 384,26 480,16" fill="none" stroke="#2E8269" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="0" cy="58" r="4" fill="#2E8269"/>
+          <circle cx="96" cy="50" r="4" fill="#2E8269"/>
+          <circle cx="192" cy="44" r="4" fill="#2E8269"/>
+          <circle cx="288" cy="36" r="4" fill="#2E8269"/>
+          <circle cx="384" cy="26" r="4" fill="#2E8269"/>
+          <circle cx="480" cy="16" r="5" fill="white" stroke="#2E8269" stroke-width="2.5"/>
           <text x="2" y="74" font-size="9" fill="#94A3B8" font-family="JetBrains Mono">83%</text>
-          <text x="448" y="12" font-size="9" fill="#00A8B0" font-family="JetBrains Mono" font-weight="600">87%</text>
+          <text x="448" y="12" font-size="9" fill="#243A3A" font-family="JetBrains Mono" font-weight="600">87%</text>
         </svg>
         <div class="spark-months"><span>Oct.</span><span>Nov.</span><span>Déc.</span><span>Jan.</span><span>Fév.</span><span>Mars</span></div>
       </div>
@@ -647,57 +647,7 @@ tr:hover td{background:#F8FAFF;}
           <div></div><div>Entreprise</div><div>IA Auto</div><div>Alertes</div><div>TVA mars</div><div>Écritures</div><div>Action</div>
         </div>
         <div id="pme-rows">
-
-          <div class="pme-row crit" data-tags="alerte valider" onclick="openPME('PME-001','CimenCI SA','CI','#0F1F3D',78,'crit')">
-            <div class="row-n">01</div>
-            <div class="pme-info"><div class="pme-av" style="background:linear-gradient(135deg,#0F1F3D,#1E3A5F)">CI</div><div><div class="pme-name">CimenCI SA</div><div class="pme-meta">BTP · Abidjan · PME</div></div></div>
-            <div class="ia-cell"><div class="ia-top"><span class="ia-pct" style="color:#F59E0B">78%</span><span class="ia-label">Moyen</span></div><div class="ia-bar"><div class="ia-fill" style="width:78%;background:#F59E0B"></div></div></div>
-            <div class="alert-cell"><div class="ac-num ac-crit">3</div><span style="font-size:10px;color:var(--red)">dont 1 crit.</span></div>
-            <div><span class="tva-badge tva-due">À déclarer</span></div>
-            <div class="ecr-cell"><span style="font-weight:600">42</span><span style="color:var(--text3)"> / 50</span><div class="ecr-bar"><div class="ecr-fill" style="width:84%;background:#F59E0B"></div></div></div>
-            <div onclick="event.stopPropagation()"><button class="open-btn" onclick="openPME('PME-001','CimenCI SA','CI','#0F1F3D',78,'crit')">Ouvrir →</button></div>
-          </div>
-
-          <div class="pme-row" data-tags="valider" onclick="openPME('PME-002','BatiPlusCi','BP','#1D4ED8',92,'ok')">
-            <div class="row-n">02</div>
-            <div class="pme-info"><div class="pme-av" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">BP</div><div><div class="pme-name">BatiPlusCi</div><div class="pme-meta">Construction · Yamoussoukro</div></div></div>
-            <div class="ia-cell"><div class="ia-top"><span class="ia-pct" style="color:var(--green)">92%</span><span class="ia-label">Excellent</span></div><div class="ia-bar"><div class="ia-fill" style="width:92%;background:var(--green)"></div></div></div>
-            <div class="alert-cell"><div class="ac-num ac-ok">0</div></div>
-            <div><span class="tva-badge tva-ok">✓ Déclarée</span></div>
-            <div class="ecr-cell"><span style="font-weight:600">38</span><span style="color:var(--text3)"> / 40</span><div class="ecr-bar"><div class="ecr-fill" style="width:95%;background:var(--green)"></div></div></div>
-            <div onclick="event.stopPropagation()"><button class="open-btn" onclick="openPME('PME-002','BatiPlusCi','BP','#1D4ED8',92,'ok')">Ouvrir →</button></div>
-          </div>
-
-          <div class="pme-row warn" data-tags="alerte valider" onclick="openPME('PME-003','AgroCôte SA','AC','#059669',81,'warn')">
-            <div class="row-n">03</div>
-            <div class="pme-info"><div class="pme-av" style="background:linear-gradient(135deg,#059669,#10B981)">AC</div><div><div class="pme-name">AgroCôte SA</div><div class="pme-meta">Agro-industrie · Bouaké</div></div></div>
-            <div class="ia-cell"><div class="ia-top"><span class="ia-pct" style="color:#F59E0B">81%</span><span class="ia-label">Bon</span></div><div class="ia-bar"><div class="ia-fill" style="width:81%;background:#F59E0B"></div></div></div>
-            <div class="alert-cell"><div class="ac-num" style="background:var(--orange-l);color:var(--orange)">2</div><span style="font-size:10px;color:var(--orange)">majeures</span></div>
-            <div><span class="tva-badge tva-due">À déclarer</span></div>
-            <div class="ecr-cell"><span style="font-weight:600">27</span><span style="color:var(--text3)"> / 30</span><div class="ecr-bar"><div class="ecr-fill" style="width:90%;background:#F59E0B"></div></div></div>
-            <div onclick="event.stopPropagation()"><button class="open-btn" onclick="openPME('PME-003','AgroCôte SA','AC','#059669',81,'warn')">Ouvrir →</button></div>
-          </div>
-
-          <div class="pme-row" data-tags="" onclick="openPME('PME-004','ImmoCôte','IC','#7C3AED',95,'ok')">
-            <div class="row-n">04</div>
-            <div class="pme-info"><div class="pme-av" style="background:linear-gradient(135deg,#7C3AED,#8B5CF6)">IC</div><div><div class="pme-name">ImmoCôte</div><div class="pme-meta">Immobilier · Abidjan</div></div></div>
-            <div class="ia-cell"><div class="ia-top"><span class="ia-pct" style="color:var(--green)">95%</span><span class="ia-label">Excellent</span></div><div class="ia-bar"><div class="ia-fill" style="width:95%;background:var(--green)"></div></div></div>
-            <div class="alert-cell"><div class="ac-num ac-ok">0</div></div>
-            <div><span class="tva-badge tva-ok">✓ Déclarée</span></div>
-            <div class="ecr-cell"><span style="font-weight:600">44</span><span style="color:var(--text3)"> / 44</span><div class="ecr-bar"><div class="ecr-fill" style="width:100%;background:var(--green)"></div></div></div>
-            <div onclick="event.stopPropagation()"><button class="open-btn" onclick="openPME('PME-004','ImmoCôte','IC','#7C3AED',95,'ok')">Ouvrir →</button></div>
-          </div>
-
-          <div class="pme-row" data-tags="valider" onclick="openPME('PME-005','MétalCI','MC','#B45309',88,'ok')">
-            <div class="row-n">05</div>
-            <div class="pme-info"><div class="pme-av" style="background:linear-gradient(135deg,#B45309,#D97706)">MC</div><div><div class="pme-name">MétalCI</div><div class="pme-meta">Métallurgie · San-Pédro</div></div></div>
-            <div class="ia-cell"><div class="ia-top"><span class="ia-pct" style="color:var(--green)">88%</span><span class="ia-label">Bon</span></div><div class="ia-bar"><div class="ia-fill" style="width:88%;background:var(--green)"></div></div></div>
-            <div class="alert-cell"><div class="ac-num ac-ok">0</div></div>
-            <div><span class="tva-badge tva-ok">✓ Déclarée</span></div>
-            <div class="ecr-cell"><span style="font-weight:600">31</span><span style="color:var(--text3)"> / 35</span><div class="ecr-bar"><div class="ecr-fill" style="width:89%;background:var(--green)"></div></div></div>
-            <div onclick="event.stopPropagation()"><button class="open-btn" onclick="openPME('PME-005','MétalCI','MC','#B45309',88,'ok')">Ouvrir →</button></div>
-          </div>
-
+          <div style="padding:24px;text-align:center;color:var(--text3)">Chargement du portefeuille…</div>
         </div>
       </div>
     </div>
@@ -708,31 +658,7 @@ tr:hover td{background:#F8FAFF;}
     <div class="cl-title">Mes clients — 🇨🇮 Côte d'Ivoire (5 PME)</div>
     <input class="cl-search" placeholder="Rechercher une PME…" oninput="searchClients(this.value)">
     <div id="clients-list">
-      <div class="cl-item" onclick="openPME('PME-001','CimenCI SA','CI','#0F1F3D',78,'crit')">
-        <div class="cl-av" style="background:linear-gradient(135deg,#0F1F3D,#1E3A5F)">CI</div>
-        <div class="cl-info"><div class="cl-name">CimenCI SA</div><div class="cl-meta">BTP · Abidjan · PME</div></div>
-        <div class="cl-right"><div class="cl-score" style="color:#F59E0B">78%</div><div class="cl-alert-dot"></div></div>
-      </div>
-      <div class="cl-item" onclick="openPME('PME-002','BatiPlusCi','BP','#1D4ED8',92,'ok')">
-        <div class="cl-av" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">BP</div>
-        <div class="cl-info"><div class="cl-name">BatiPlusCi</div><div class="cl-meta">Construction · Yamoussoukro</div></div>
-        <div class="cl-right"><div class="cl-score" style="color:var(--green)">92%</div></div>
-      </div>
-      <div class="cl-item" onclick="openPME('PME-003','AgroCôte SA','AC','#059669',81,'warn')">
-        <div class="cl-av" style="background:linear-gradient(135deg,#059669,#10B981)">AC</div>
-        <div class="cl-info"><div class="cl-name">AgroCôte SA</div><div class="cl-meta">Agro-industrie · Bouaké</div></div>
-        <div class="cl-right"><div class="cl-score" style="color:#F59E0B">81%</div><div class="cl-alert-dot" style="background:var(--orange)"></div></div>
-      </div>
-      <div class="cl-item" onclick="openPME('PME-004','ImmoCôte','IC','#7C3AED',95,'ok')">
-        <div class="cl-av" style="background:linear-gradient(135deg,#7C3AED,#8B5CF6)">IC</div>
-        <div class="cl-info"><div class="cl-name">ImmoCôte</div><div class="cl-meta">Immobilier · Abidjan</div></div>
-        <div class="cl-right"><div class="cl-score" style="color:var(--green)">95%</div></div>
-      </div>
-      <div class="cl-item" onclick="openPME('PME-005','MétalCI','MC','#B45309',88,'ok')">
-        <div class="cl-av" style="background:linear-gradient(135deg,#B45309,#D97706)">MC</div>
-        <div class="cl-info"><div class="cl-name">MétalCI</div><div class="cl-meta">Métallurgie · San-Pédro</div></div>
-        <div class="cl-right"><div class="cl-score" style="color:var(--green)">88%</div></div>
-      </div>
+      <div style="padding:16px;text-align:center;color:var(--text3)">Chargement des clients…</div>
     </div>
   </div>
 
@@ -856,50 +782,10 @@ tr:hover td{background:#F8FAFF;}
     <div class="rp-tab" id="rpt-m" onclick="switchRp('msgs')">💬 Messages</div>
   </div>
   <div class="rp-body" id="rp-alertes">
-    <div class="rp-section">Critiques</div>
-    <div class="notif-item unread" onclick="openPME('PME-001','CimenCI SA','CI','#0F1F3D',78,'crit')">
-      <div class="ni-icon ni-red">🔴</div>
-      <div class="ni-body"><div class="ni-title">TVA incohérente</div><div class="ni-sub">CimenCI SA · FAC-089 · Écart 39 813 FCFA</div><div class="ni-meta">Il y a 2h</div></div>
-    </div>
-    <div class="rp-section">Majeures</div>
-    <div class="notif-item unread warn" onclick="openPME('PME-003','AgroCôte SA','AC','#059669',81,'warn')">
-      <div class="ni-icon ni-orange">🟠</div>
-      <div class="ni-body"><div class="ni-title">Journal ambigu</div><div class="ni-sub">AgroCôte SA · FAC-041 · AC ou OD ?</div><div class="ni-meta">Il y a 5h</div></div>
-    </div>
-    <div class="notif-item unread warn" onclick="openPME('PME-003','AgroCôte SA','AC','#059669',81,'warn')">
-      <div class="ni-icon ni-orange">🟠</div>
-      <div class="ni-body"><div class="ni-title">Fournisseur sans N° contribuable</div><div class="ni-sub">AgroCôte SA · FAC-038 · TVA déductible risquée</div><div class="ni-meta">Hier</div></div>
-    </div>
-    <div class="rp-section">Informations</div>
-    <div class="notif-item unread info" onclick="openPME('PME-002','BatiPlusCi','BP','#1D4ED8',92,'ok')">
-      <div class="ni-icon ni-cyan">📄</div>
-      <div class="ni-body"><div class="ni-title">14 pièces traitées</div><div class="ni-sub">BatiPlusCi · Prêtes à valider</div><div class="ni-meta">Il y a 4h</div></div>
-    </div>
-    <div class="notif-item">
-      <div class="ni-icon ni-green">✅</div>
-      <div class="ni-body"><div class="ni-title">TVA mars générée</div><div class="ni-sub">ImmoCôte · Clôture complète</div><div class="ni-meta">Hier 09h14</div></div>
-    </div>
+    <div style="padding:16px;text-align:center;color:var(--text3);font-size:13px;">Les alertes s'afficheront ici quand des écritures nécessitent votre attention.</div>
   </div>
   <div class="rp-body" id="rp-msgs" style="display:none;">
-    <div class="rp-section">Messages PME</div>
-    <div class="msg-thread unread" onclick="openPME('PME-001','CimenCI SA','CI','#0F1F3D',78,'crit');setTimeout(()=>switchPrTab('comment'),300)">
-      <div class="mt-top"><div class="mt-av" style="background:linear-gradient(135deg,#0F1F3D,#1E3A5F)">CI</div><div class="mt-name">CimenCI SA</div><div class="mt-time">11:32</div></div>
-      <div class="mt-prev">Bonjour, pouvez-vous vérifier FAC-089 ?</div>
-      <div class="mt-unreads">2 non lus</div>
-    </div>
-    <div class="msg-thread unread" onclick="openPME('PME-003','AgroCôte SA','AC','#059669',81,'warn');setTimeout(()=>switchPrTab('comment'),300)">
-      <div class="mt-top"><div class="mt-av" style="background:linear-gradient(135deg,#059669,#10B981)">AC</div><div class="mt-name">AgroCôte SA</div><div class="mt-time">09:15</div></div>
-      <div class="mt-prev">Urgent : journal FAC-041, que choisir ?</div>
-      <div class="mt-unreads">1 non lu</div>
-    </div>
-    <div class="msg-thread" onclick="openPME('PME-002','BatiPlusCi','BP','#1D4ED8',92,'ok')">
-      <div class="mt-top"><div class="mt-av" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">BP</div><div class="mt-name">BatiPlusCi</div><div class="mt-time">Hier</div></div>
-      <div class="mt-prev">Merci pour la validation du mois</div>
-    </div>
-    <div class="msg-thread" onclick="openPME('PME-004','ImmoCôte','IC','#7C3AED',95,'ok')">
-      <div class="mt-top"><div class="mt-av" style="background:linear-gradient(135deg,#7C3AED,#8B5CF6)">IC</div><div class="mt-name">ImmoCôte</div><div class="mt-time">Lun.</div></div>
-      <div class="mt-prev">Export TVA reçu, merci !</div>
-    </div>
+    <div style="padding:16px;text-align:center;color:var(--text3);font-size:13px;">Les messages de vos PME s'afficheront ici.</div>
   </div>
 </div>
 
@@ -913,7 +799,7 @@ tr:hover td{background:#F8FAFF;}
     <div class="eb-sep"></div>
     <div>
       <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-bottom:1px;">Dossier ouvert</div>
-      <div class="eb-pme-name" id="eb-pme-name">CimenCI SA</div>
+      <div class="eb-pme-name" id="eb-pme-name">—</div>
     </div>
     <div class="eb-sep"></div>
     <span class="eb-role-tag">Mode Expert · Correction &amp; Commentaires</span>
@@ -1013,7 +899,7 @@ tr:hover td{background:#F8FAFF;}
 
       <!-- Validation -->
       <div class="sub" id="valid-tab">
-        <div style="background:rgba(15,31,61,0.04);border:1px solid rgba(15,31,61,0.1);border-radius:8px;padding:9px 13px;margin-bottom:12px;font-size:12px;color:var(--text2);">🔐 <strong>Zone Expert</strong> — Validez, corrigez ou commentez. Actions enregistrées dans Airtable.</div>
+        <div style="background:rgba(36,58,58,0.04);border:1px solid rgba(36,58,58,0.1);border-radius:8px;padding:9px 13px;margin-bottom:12px;font-size:12px;color:var(--text2);">🔐 <strong>Zone Expert</strong> — Validez, corrigez ou commentez. Actions enregistrées dans Supabase.</div>
         <div class="etbl">
           <div class="etbl-top"><div class="etbl-title">À valider (3)</div><button class="open-btn" style="padding:5px 12px;font-size:11px;" onclick="valTout()">Valider tout ✓</button></div>
           <table><thead><tr><th>Pièce</th><th>Libellé</th><th>Montant</th><th>Score</th><th>Statut</th><th>Actions</th></tr></thead>
@@ -1027,7 +913,7 @@ tr:hover td{background:#F8FAFF;}
 
       <!-- Historique corrections -->
       <div class="sub" id="histo-tab">
-        <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Historique corrections — <span id="histo-pme">CimenCI SA</span></div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Historique corrections — <span id="histo-pme">—</span></div>
         <div class="histo-item"><div class="hi-top"><span class="hi-badge hi-corr">CORRECTION</span><span class="hi-ref">FAC-041</span><span class="hi-date">01/03/2026 14h22</span></div><div class="hi-text">Journal corrigé de OD → AC. Prestation informatique externe · Compte 624 retenu selon SYSCOHADA CI.</div><div class="hi-expert">👨‍💼 <strong>M. Kouassi</strong> · Cabinet Kouassi &amp; Associés</div></div>
         <div class="histo-item"><div class="hi-top"><span class="hi-badge hi-valid">VALIDATION</span><span class="hi-ref">FAC-071</span><span class="hi-date">01/03/2026 09h45</span></div><div class="hi-text">Écriture validée sans correction. Score IA 95/100 — cohérence parfaite.</div><div class="hi-expert">👨‍💼 <strong>M. Kouassi</strong> · Cabinet Kouassi &amp; Associés</div></div>
         <div class="histo-item"><div class="hi-top"><span class="hi-badge hi-corr">CORRECTION</span><span class="hi-ref">FAC-089</span><span class="hi-date">28/02/2026 16h10</span></div><div class="hi-text">TVA recalculée : 261 000 → 221 187 FCFA (18% × 1 228 814). Écriture corrective D445 / C401.</div><div class="hi-expert">👨‍💼 <strong>M. Kouassi</strong> · Cabinet Kouassi &amp; Associés</div></div>
@@ -1073,7 +959,7 @@ tr:hover td{background:#F8FAFF;}
             <div class="pm-av2 mav-m">✦</div>
             <div>
               <div class="pm-who">Mariah</div>
-              <div class="pm-bbl pbbl-m">Dossier <strong id="pm-pme-ctx">CimenCI SA</strong> chargé. 1 alerte critique détectée. Utilisez les raccourcis ou posez votre question.</div>
+              <div class="pm-bbl pbbl-m">Dossier <strong id="pm-pme-ctx">—</strong> chargé. 1 alerte critique détectée. Utilisez les raccourcis ou posez votre question.</div>
               <div class="pm-time">Maintenant</div>
             </div>
           </div>
@@ -1099,7 +985,7 @@ tr:hover td{background:#F8FAFF;}
         </select>
         <div class="cmt-label">Votre commentaire / correction</div>
         <textarea class="cmt-ta" id="cmt-ta" placeholder="Correction apportée ou note pour la PME…" rows="4"></textarea>
-        <button class="cmt-save" onclick="saveCmt()">💾 Enregistrer dans Airtable</button>
+        <button class="cmt-save" onclick="saveCmt()">💾 Enregistrer dans Supabase</button>
         <div class="cmt-prev">
           <div class="cmt-label" style="margin-top:4px;">Commentaires précédents</div>
           <div class="cp-item" id="cmt-history">
@@ -1129,12 +1015,61 @@ tr:hover td{background:#F8FAFF;}
     <div class="modal-footer">
       <button class="btn-modal-cancel" onclick="closeModal()">Annuler</button>
 <script>
+// ══ PORTEFEUILLE DYNAMIQUE — Chargement PME depuis Supabase ══
+async function _loadExpertPortfolio(session){
+  const container = document.getElementById('pme-rows');
+  let pmes;
+  try{
+    if(typeof hcLoadPortefeuille !== 'function'){
+      throw new Error('bridge_v3.js non chargé');
+    }
+    pmes = await hcLoadPortefeuille();
+  }catch(e){
+    console.error('[EXPERT] Erreur chargement portefeuille:',e);
+    container.innerHTML='<div style="padding:24px;text-align:center;color:var(--red)">Erreur de connexion — vérifiez votre connexion internet et rechargez la page.</div>';
+    return;
+  }
+  if(!pmes || pmes.length===0){
+    container.innerHTML='<div style="padding:24px;text-align:center;color:var(--text3)">Aucune PME assignée à votre cabinet.</div>';
+    return;
+  }
+  // Charger les écritures pour chaque PME
+  const sb = HC.getSupabase();
+  let html='';
+  for(let i=0;i<pmes.length;i++){
+    const p=pmes[i];
+    const score=p.score_conformite||0;
+    const {count:nbEcr}=await sb.from('ecritures').select('*',{count:'exact',head:true}).eq('pme_id',p.id);
+    const {count:nbVal}=await sb.from('ecritures').select('*',{count:'exact',head:true}).eq('pme_id',p.id).eq('statut','Validé');
+    const {count:nbAlert}=await sb.from('ecritures').select('*',{count:'exact',head:true}).eq('pme_id',p.id).in('statut',['Rejeté','En attente']);
+    const pct=nbEcr>0?Math.round(nbVal/nbEcr*100):0;
+    const scoreColor=score>=85?'var(--green)':score>=60?'#F59E0B':'var(--red)';
+    const scoreLabel=score>=85?'Excellent':score>=60?'Bon':'À risque';
+    const status=nbAlert>0?(nbAlert>2?'crit':'warn'):'ok';
+    const init=p.nom_pme.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    // Stocker dans PME_DATA pour openPME
+    PME_DATA[p.id]={pieces:nbEcr||0,score:score+'%',scoreColor:scoreColor,tva:'—',alertes:nbAlert||0,alertesSub:nbAlert>0?nbAlert+' en attente':'Aucune',actionsHtml:nbAlert>0?'<div style="color:var(--orange)">'+nbAlert+' écritures à traiter</div>':'<div style="color:var(--green)">✅ Dossier en ordre</div>'};
+    html+=`<div class="pme-row ${status==='crit'?'crit':status==='warn'?'warn':''}" data-tags="${nbAlert>0?'alerte ':''}" onclick="openPME('${p.id}','${p.nom_pme.replace(/'/g,"\\'")}','${init}','#243A3A',${score},'${status}')">
+      <div class="row-n">${String(i+1).padStart(2,'0')}</div>
+      <div class="pme-info"><div class="pme-av" style="background:linear-gradient(135deg,#243A3A,#2E8269)">${init}</div><div><div class="pme-name">${p.nom_pme}</div><div class="pme-meta">${p.pays} · ${p.plan||'PME'}</div></div></div>
+      <div class="ia-cell"><div class="ia-top"><span class="ia-pct" style="color:${scoreColor}">${score}%</span><span class="ia-label">${scoreLabel}</span></div><div class="ia-bar"><div class="ia-fill" style="width:${score}%;background:${scoreColor}"></div></div></div>
+      <div class="alert-cell"><div class="ac-num ${nbAlert>2?'ac-crit':nbAlert>0?'':'ac-ok'}">${nbAlert||0}</div></div>
+      <div><span class="tva-badge ${nbAlert>0?'tva-due':'tva-ok'}">${nbAlert>0?'À vérifier':'✓ OK'}</span></div>
+      <div class="ecr-cell"><span style="font-weight:600">${nbVal||0}</span><span style="color:var(--text3)"> / ${nbEcr||0}</span><div class="ecr-bar"><div class="ecr-fill" style="width:${pct}%;background:${scoreColor}"></div></div></div>
+      <div onclick="event.stopPropagation()"><button class="open-btn" onclick="openPME('${p.id}','${p.nom_pme.replace(/'/g,"\\'")}','${init}','#243A3A',${score},'${status}')">Ouvrir →</button></div>
+    </div>`;
+  }
+  container.innerHTML=html;
+  // Mettre à jour compteur
+  const clTitle=document.querySelector('.cl-title');
+  if(clTitle)clTitle.textContent='Mes clients — '+pmes.length+' PME';
+}
+
 // ══ SESSION — Supabase Auth (CdC V3 Section 4) ══════════
 (async function(){
   try{
     const s = HC.requireRole('EXPERT');
-    if(!s) return; // redirect géré par requireRole
-    // Rafraîchir depuis Supabase
+    if(!s) return;
     const session = await HC.getSession();
     if(!session){window.location.href='login.html';return;}
     const nom = session.nomCabinet || session.email || 'Expert';
@@ -1143,9 +1078,9 @@ tr:hover td{background:#F8FAFF;}
     document.getElementById('exp-av').textContent=nom.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
     document.getElementById('p-nom').textContent=nom;
     if(session.email)document.getElementById('p-email').textContent=session.email;
-    // Écouter déconnexion auto
     HC.initAuthListener();
-  }catch(e){window.location.href='login.html';}
+    await _loadExpertPortfolio(session);
+  }catch(e){console.error('[EXPERT] Init error:',e);window.location.href='login.html';}
 })();
 
 // ══ NAVIGATION PANELS ════════════════════════════════════
@@ -1192,13 +1127,7 @@ function switchRp(tab){
 
 // ══ VUE PME ══════════════════════════════════════════════
 let curPME=null;
-const PME_DATA={
-  'PME-001':{pieces:42,score:'78%',scoreColor:'#F59E0B',tva:'418K',alertes:3,alertesSub:'1 critique',actionsHtml:'<div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--red)">🔴</span><span style="color:var(--text2)">TVA incohérente FAC-089 — corriger avant déclaration</span><button class="open-btn" style="margin-left:auto;padding:4px 10px;font-size:11px;" onclick="switchPt(\'alert-tab\')">Traiter</button></div><div style="display:flex;align-items:center;gap:8px;margin-top:7px;"><span style="color:var(--orange)">📋</span><span style="color:var(--text2)">8 écritures en attente de validation</span><button class="open-btn" style="margin-left:auto;padding:4px 10px;font-size:11px;" onclick="switchPt(\'valid-tab\')">Valider</button></div>'},
-  'PME-002':{pieces:38,score:'92%',scoreColor:'#10B981',tva:'302K',alertes:0,alertesSub:'Aucune',actionsHtml:'<div style="color:var(--green);font-size:13px;">✅ Aucune action urgente. 4 écritures à valider.</div>'},
-  'PME-003':{pieces:27,score:'81%',scoreColor:'#F59E0B',tva:'215K',alertes:2,alertesSub:'2 majeures',actionsHtml:'<div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--orange)">🟠</span><span style="color:var(--text2)">2 alertes majeures à traiter</span><button class="open-btn" style="margin-left:auto;padding:4px 10px;font-size:11px;" onclick="switchPt(\'alert-tab\')">Traiter</button></div>'},
-  'PME-004':{pieces:44,score:'95%',scoreColor:'#10B981',tva:'389K',alertes:0,alertesSub:'Aucune',actionsHtml:'<div style="color:var(--green);font-size:13px;">✅ Dossier impeccable. Aucune action requise.</div>'},
-  'PME-005':{pieces:31,score:'88%',scoreColor:'#10B981',tva:'278K',alertes:0,alertesSub:'Aucune',actionsHtml:'<div style="color:var(--green);font-size:13px;">✅ Dossier sain. 2 écritures mineures à valider.</div>'},
-};
+const PME_DATA={}; // Rempli dynamiquement par _loadExpertPortfolio()
 
 function openPME(id,nom,init,color,score,status){
   curPME={id,nom};
@@ -1208,7 +1137,7 @@ function openPME(id,nom,init,color,score,status){
   document.getElementById('pm-pme-ctx').textContent=nom;
   document.getElementById('histo-pme').textContent=nom;
   // Charger données
-  const d=PME_DATA[id]||PME_DATA['PME-001'];
+  const d=PME_DATA[id]||{pieces:0,score:'0%',scoreColor:'var(--text3)',tva:'—',alertes:0,alertesSub:'Aucune',actionsHtml:'<div style="color:var(--text3)">Aucune donnée disponible</div>'};
   document.getElementById('as-pieces').textContent=d.pieces;
   document.getElementById('as-score').textContent=d.score;
   document.getElementById('as-score').style.color=d.scoreColor;
@@ -1288,7 +1217,7 @@ function resolveAl(id){
   if(!el)return;
   el.style.opacity='0.35';el.style.pointerEvents='none';
   el.querySelector('.ac-title').style.textDecoration='line-through';
-  showToast('✅ Alerte résolue · Enregistrée dans Airtable');
+  showToast('✅ Alerte résolue · Enregistrée dans Supabase');
 }
 
 // ══ COMMENTAIRE ══════════════════════════════════════════
@@ -1305,7 +1234,7 @@ function saveCmt(){
   newItem.innerHTML=`<div class="cp-hd"><span>👨‍💼 Expert</span><span style="margin-left:auto">${now} · ${ref}</span></div><div class="cp-txt">${txt}</div>`;
   hist.parentNode.insertBefore(newItem,hist);
   ta.value='';
-  showToast('💾 Commentaire enregistré dans Airtable');
+  showToast('💾 Commentaire enregistré dans Supabase');
 }
 
 // ══ INVITATIONS ══════════════════════════════════════════

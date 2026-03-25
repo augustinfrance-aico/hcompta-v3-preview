@@ -11,28 +11,28 @@
    Vert sauge profond · Beige doux · Blanc pur
 ══════════════════════════════════════════════ */
 :root {
-  /* Couleurs Pennylane */
-  --green:      #1B4D3E;   /* vert profond principal */
-  --green2:     #22614e;   /* vert hover */
-  --green3:     #2d7a61;   /* vert accent */
-  --green-l:    #E8F5EE;   /* vert très clair bg sections */
-  --green-ll:   #f0faf4;   /* vert ultra léger */
-  --green-t:    rgba(27,77,62,.10);
+  /* Couleurs H-Compta (Charte graphique) */
+  --green:      #2E8269;   /* vert H-Compta principal */
+  --green2:     #358F76;   /* vert hover */
+  --green3:     #98CBB5;   /* vert clair accent */
+  --green-l:    #E5F4EE;   /* vert aqua bg sections */
+  --green-ll:   #E5F4EE;   /* vert aqua léger */
+  --green-t:    rgba(46,130,105,.10);
 
-  --gold:       #C97B2A;
-  --gold-l:     rgba(201,123,42,.10);
+  --gold:       #FFD54D;
+  --gold-l:     rgba(255,213,77,.10);
   --red:        #C0392B;
   --red-l:      rgba(192,57,43,.09);
   --blue:       #1a5f9e;
 
   /* Fonds */
-  --bg:         #FAFAF8;   /* beige très léger Pennylane */
-  --bg-section: #F4F6F1;   /* vert-beige section alternée */
-  --bg-green:   #E8F3EC;   /* section verte claire */
+  --bg:         #FAFAF8;   /* beige très léger */
+  --bg-section: #F4F6F1;   /* section alternée */
+  --bg-green:   #E5F4EE;   /* section verte claire */
   --white:      #FFFFFF;
 
   /* Textes */
-  --text:       #1a1a2e;
+  --text:       #243A3A;
   --text2:      #4a5568;
   --text3:      #8a96a8;
   --text4:      #c4cdd6;
@@ -42,9 +42,9 @@
   --border2:    #CBD5CE;
 
   /* Ombres */
-  --shadow:     0 1px 4px rgba(27,77,62,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow2:    0 4px 20px rgba(27,77,62,.09), 0 2px 8px rgba(0,0,0,.05);
-  --shadow3:    0 12px 48px rgba(27,77,62,.12), 0 4px 16px rgba(0,0,0,.06);
+  --shadow:     0 1px 4px rgba(46,130,105,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow2:    0 4px 20px rgba(46,130,105,.09), 0 2px 8px rgba(0,0,0,.05);
+  --shadow3:    0 12px 48px rgba(46,130,105,.12), 0 4px 16px rgba(0,0,0,.06);
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -62,7 +62,7 @@ img { max-width:100%; }
 .max { max-width:1160px; margin:0 auto; padding:0 24px; }
 .badge {
   display:inline-flex; align-items:center; gap:6px;
-  background:var(--green-l); border:1px solid rgba(27,77,62,.15);
+  background:var(--green-l); border:1px solid rgba(46,130,105,.15);
   border-radius:20px; padding:4px 13px;
   font-size:11px; font-weight:700; color:var(--green);
   letter-spacing:.3px; text-transform:uppercase;
@@ -80,7 +80,7 @@ img { max-width:100%; }
 .btn-primary {
   background:var(--green); color:#fff;
 }
-.btn-primary:hover { background:var(--green2); transform:translateY(-1px); box-shadow:0 6px 20px rgba(27,77,62,.28); }
+.btn-primary:hover { background:var(--green2); transform:translateY(-1px); box-shadow:0 6px 20px rgba(46,130,105,.28); }
 .btn-outline {
   background:transparent; border:1.5px solid var(--border2);
   color:var(--text2);
@@ -108,9 +108,9 @@ nav {
 }
 .nav-logo-icon {
   width:36px; height:36px; border-radius:9px; flex-shrink:0;
-  background:linear-gradient(135deg,#2d9e7a,var(--green));
+  background:linear-gradient(135deg,#98CBB5,var(--green));
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 2px 8px rgba(27,77,62,.25);
+  box-shadow:0 2px 8px rgba(46,130,105,.25);
 }
 .nav-logo-icon svg { width:20px; height:20px; }
 .nav-logo-text {
@@ -344,7 +344,7 @@ section { padding:88px 0; }
   white-space:nowrap;
 }
 .plan-trial {
-  background:var(--green-l); border:1px solid rgba(27,77,62,.15);
+  background:var(--green-l); border:1px solid rgba(46,130,105,.15);
   border-radius:8px; padding:8px 12px;
   font-size:11px; color:var(--green); font-weight:600;
   text-align:center; margin-bottom:18px;
@@ -474,7 +474,7 @@ footer {
 .modal-box::before {
   content:''; position:absolute; top:0; left:0; right:0; height:4px;
   border-radius:20px 20px 0 0;
-  background:linear-gradient(90deg,var(--green),#2d9e7a);
+  background:linear-gradient(90deg,var(--green),#98CBB5);
 }
 .modal-close {
   position:absolute; top:16px; right:16px;
@@ -525,8 +525,8 @@ footer {
 }
 .rccm-help.show { display:block; }
 .rccm-help.ok { background:rgba(34,197,94,.08); color:#15803d; border:1px solid rgba(34,197,94,.2); }
-.rccm-help.warn { background:var(--gold-l); color:#92400e; border:1px solid rgba(201,123,42,.2); }
-.rccm-help.info { background:var(--green-l); color:var(--green); border:1px solid rgba(27,77,62,.15); }
+.rccm-help.warn { background:var(--gold-l); color:#92400e; border:1px solid rgba(255,213,77,.2); }
+.rccm-help.info { background:var(--green-l); color:var(--green); border:1px solid rgba(46,130,105,.15); }
 .rccm-examples {
   margin-top:5px; font-size:10px; color:var(--text3);
   font-family:'JetBrains Mono',monospace; line-height:1.8;
@@ -534,7 +534,7 @@ footer {
 
 /* Champ code promo */
 .promo-field {
-  background:var(--green-l); border:1.5px solid rgba(27,77,62,.25);
+  background:var(--green-l); border:1.5px solid rgba(46,130,105,.25);
   border-radius:9px; padding:11px 14px;
   color:var(--green); font-weight:700; letter-spacing:2px;
   width:100%; font-size:13px; font-family:'Inter',sans-serif;
@@ -559,6 +559,139 @@ footer {
 }
 .btn-send:hover { background:var(--green2); transform:translateY(-1px); }
 
+/* ══ FAQ ACCORDION ═══════════════════════ */
+.faq-title-bar {
+  display:inline-block;
+  position:relative;
+  margin-bottom:6px;
+}
+.faq-title-bar::after {
+  content:'';
+  position:absolute; bottom:-6px; left:0;
+  width:100%; height:3px;
+  background:var(--green3);
+  border-radius:2px;
+}
+.faq-list {
+  max-width:800px;
+  margin:0 auto;
+}
+.faq-item {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:12px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:box-shadow .22s, border-color .22s;
+}
+.faq-item:hover {
+  box-shadow:var(--shadow2);
+  border-color:var(--green3);
+}
+.faq-question {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  width:100%;
+  padding:18px 22px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  color:var(--text);
+  text-align:left;
+  line-height:1.5;
+  transition:color .15s;
+}
+.faq-question:hover {
+  color:var(--green);
+}
+.faq-icon {
+  flex-shrink:0;
+  width:28px; height:28px;
+  border-radius:50%;
+  background:var(--green-l);
+  color:var(--green);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:300;
+  transition:transform .3s, background .2s;
+  line-height:1;
+}
+.faq-item.open .faq-icon {
+  transform:rotate(45deg);
+  background:var(--green);
+  color:#fff;
+}
+.faq-answer-wrap {
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .35s ease;
+}
+.faq-answer {
+  padding:0 22px 20px;
+  font-size:13px;
+  color:var(--text2);
+  line-height:1.8;
+  border-top:1px solid var(--border);
+  margin:0 12px;
+  padding-top:16px;
+}
+
+/* ══ QR AMBASSADEUR ═════════════════════ */
+.qr-ambassador {
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:16px; padding:32px; max-width:460px;
+  margin:0 auto; text-align:center;
+  box-shadow:var(--shadow);
+}
+.qr-ambassador h3 {
+  font-size:20px; font-weight:800; color:var(--text);
+  margin-bottom:6px;
+}
+.qr-ambassador .qr-sub {
+  font-size:13px; color:var(--text2); margin-bottom:20px;
+}
+.qr-input-row {
+  display:flex; gap:8px; margin-bottom:18px;
+}
+.qr-input-row input {
+  flex:1; padding:10px 14px; border-radius:8px;
+  border:1.5px solid var(--border2); font-size:13px;
+  font-family:'Inter',sans-serif; color:var(--text);
+  background:var(--bg); outline:none; transition:border .15s;
+}
+.qr-input-row input:focus { border-color:var(--green); }
+.qr-input-row .btn-copy {
+  padding:10px 16px; border-radius:8px;
+  background:var(--green); color:#fff; border:none;
+  cursor:pointer; font-size:12px; font-weight:700;
+  font-family:'Inter',sans-serif; transition:all .2s;
+  white-space:nowrap;
+}
+.qr-input-row .btn-copy:hover { background:var(--green2); }
+.qr-img-wrap {
+  display:inline-block; padding:12px;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:12px; box-shadow:var(--shadow);
+}
+.qr-img-wrap img { display:block; border-radius:4px; }
+.qr-hint {
+  font-size:11px; color:var(--text3); margin-top:12px;
+  font-style:italic;
+}
+.qr-copied {
+  display:inline-block; font-size:11px; color:var(--green);
+  font-weight:600; margin-left:8px; opacity:0; transition:opacity .2s;
+}
+.qr-copied.show { opacity:1; }
+
 /* ══ RESPONSIVE ══════════════════════════ */
 @media (max-width:960px) {
   .hero-inner { grid-template-columns:1fr; gap:40px; }
@@ -576,6 +709,9 @@ footer {
   .proof-inner { gap:24px; }
   .sec-title { font-size:28px; }
   .cta-title { font-size:28px; }
+  .faq-question { padding:15px 16px; font-size:13px; }
+  .faq-answer { padding:0 16px 16px; margin:0 8px; padding-top:14px; font-size:12px; }
+  .faq-icon { width:24px; height:24px; font-size:16px; }
 }
 </style>
 </head>
@@ -598,6 +734,7 @@ footer {
       <a href="#comment">Comment ça marche</a>
       <a href="#pays">Pays couverts</a>
       <a href="#pricing">Tarifs</a>
+      <a href="#faq">FAQ</a>
     </div>
     <div class="nav-pays">
       <button class="np on">🇨🇮 CI</button>
@@ -796,7 +933,7 @@ footer {
         <button class="plan-btn" onclick="openDemo()">Démarrer l'essai gratuit</button>
       </div>
       <div class="plan">
-        <div class="plan-trial" style="background:var(--gold-l);border-color:rgba(201,123,42,.2);color:var(--gold)">📞 Devis personnalisé</div>
+        <div class="plan-trial" style="background:var(--gold-l);border-color:rgba(255,213,77,.2);color:var(--gold)">📞 Devis personnalisé</div>
         <div class="plan-ico">🏭</div>
         <div class="plan-name">ETI</div>
         <div class="plan-price" style="font-size:22px;line-height:1.3">Sur mesure</div>
@@ -816,6 +953,126 @@ footer {
     </div>
     <div style="text-align:center;margin-top:28px;font-size:13px;color:var(--text3)">
       🔒 Vos identifiants vous sont envoyés par email après validation de votre demande de démo · 1 compte par entreprise
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ═════════════════════════════════ -->
+<section id="faq">
+  <div class="max">
+    <div class="sec-head" style="text-align:center">
+      <span class="badge">❓ FAQ</span>
+      <h2 class="sec-title" style="margin-top:14px">
+        <span class="faq-title-bar">Questions fréquentes</span>
+      </h2>
+      <p class="sec-sub" style="margin-left:auto;margin-right:auto">Tout ce que vous devez savoir sur H-Compta AI avant de démarrer.</p>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Qu'est-ce que H-Compta AI ?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer-wrap">
+          <div class="faq-answer">H-Compta AI est une plateforme SaaS qui automatise la comptabilité des PME en zone SYSCOHADA (Côte d'Ivoire, Cameroun, Sénégal) grâce à l'intelligence artificielle. Elle analyse vos factures, génère les écritures comptables et exporte vers Sage 100 ou Odoo.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Comment fonctionne l'IA Mariah ?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer-wrap">
+          <div class="faq-answer">Mariah est notre assistante IA spécialisée en comptabilité SYSCOHADA. Elle analyse vos documents (factures, relevés, reçus) et génère automatiquement les écritures avec les bons comptes à 6 chiffres, le journal approprié et le calcul de TVA selon votre pays.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Mes données sont-elles sécurisées ?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer-wrap">
+          <div class="faq-answer">Absolument. Chaque PME est isolée par Row Level Security (RLS) : vos données ne sont accessibles qu'à vous et à votre expert-comptable assigné. L'authentification est gérée par JWT sécurisé avec expiration automatique.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Quels pays sont supportés ?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer-wrap">
+          <div class="faq-answer">Actuellement : Côte d'Ivoire (TVA 18%), Cameroun (TVA 19.25%) et Sénégal (TVA 18%). Les taux de TVA et les normes SYSCOHADA sont intégrés nativement. D'autres pays OHADA seront ajoutés prochainement.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Combien coûte H-Compta AI ?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer-wrap">
+          <div class="faq-answer">Nous proposons 3 plans : TPE (gratuit, 1 utilisateur), PME (à partir de 15 000 FCFA/mois, 3 utilisateurs) et ETI (sur devis, utilisateurs illimités). Chaque plan inclut l'IA Mariah et les exports Sage/Odoo.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Puis-je inviter mon expert-comptable ?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer-wrap">
+          <div class="faq-answer">Oui. Depuis votre dashboard, envoyez une invitation par email. Votre expert accède à un tableau de bord dédié avec la vue sur tous ses clients PME, la validation des écritures et l'assistant IA Mariah.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>L'export est-il compatible avec mon logiciel comptable ?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer-wrap">
+          <div class="faq-answer">Oui. H-Compta génère des fichiers .txt compatibles Sage 100 et .csv compatibles Odoo. Le format respecte les normes SYSCOHADA avec les journaux (ACH, VTE, BQ, CAI, OD, IMM, PAI) et les comptes à 6 chiffres.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Comment démarrer ?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer-wrap">
+          <div class="faq-answer">Créez votre compte en 2 minutes, importez votre première facture et laissez Mariah faire le reste. Pas besoin d'installation — tout fonctionne dans votre navigateur.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ QR AMBASSADEUR ═════════════════════ -->
+<section id="ambassadeur" class="sec-bg-alt" style="display:none">
+  <div class="max">
+    <div class="sec-head" style="text-align:center">
+      <span class="badge">🤝 Programme Ambassadeur</span>
+      <h2 class="sec-title" style="margin-top:14px">Partagez votre <em>code ambassadeur</em></h2>
+      <p class="sec-sub" style="margin:8px auto 0">Invitez vos confrères à rejoindre H-Compta AI et gagnez des avantages exclusifs.</p>
+    </div>
+    <div class="qr-ambassador">
+      <h3>🎁 Votre lien de parrainage</h3>
+      <p class="qr-sub">Scannez ce QR code pour inviter un client</p>
+      <div class="qr-input-row">
+        <input type="text" id="qr-link" readonly>
+        <button class="btn-copy" onclick="copyAmbassadorLink()">Copier le lien</button>
+        <span class="qr-copied" id="qr-copied">Copié !</span>
+      </div>
+      <div class="qr-img-wrap">
+        <img id="qr-img" width="200" height="200" alt="QR Code ambassadeur">
+      </div>
+      <p class="qr-hint">Faites une capture d'écran ou clic droit → Enregistrer l'image</p>
     </div>
   </div>
 </section>
@@ -934,6 +1191,19 @@ var codePromo = getUrlParam('code');
 if (codePromo) {
   document.getElementById('dm-promo').value = codePromo;
   document.getElementById('dm-promo-wrap').style.display = 'block';
+  /* ══ QR AMBASSADEUR ══════════════════ */
+  var ambUrl = 'https://app.hcompta.ai/?code=' + encodeURIComponent(codePromo);
+  document.getElementById('qr-link').value = ambUrl;
+  document.getElementById('qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(ambUrl);
+  document.getElementById('ambassadeur').style.display = '';
+}
+function copyAmbassadorLink() {
+  var link = document.getElementById('qr-link');
+  navigator.clipboard.writeText(link.value).then(function(){
+    var badge = document.getElementById('qr-copied');
+    badge.classList.add('show');
+    setTimeout(function(){ badge.classList.remove('show'); }, 1800);
+  });
 }
 
 /* ══ MODAL ═════════════════════════════ */
@@ -1094,4 +1364,32 @@ function submitDemo() {
   // Données : { nom, email, rccm, pays, plan, codePromo }
 
   closeDemo();
-  var msg = '✅ Demande envoyée !\n\nVous recevrez vos identifiants pa
+  var msg = '✅ Demande envoyée !\n\nVous recevrez vos identifiants par email dans les 24h.\n30 jours d\'essai gratuit inclus.';
+  alert(msg);
+}
+
+/* ══ FAQ ACCORDION ═════════════════════ */
+function toggleFaq(btn) {
+  var item = btn.closest('.faq-item');
+  var wrap = item.querySelector('.faq-answer-wrap');
+  var isOpen = item.classList.contains('open');
+
+  // Close all other items
+  document.querySelectorAll('.faq-item.open').forEach(function(el) {
+    if (el !== item) {
+      el.classList.remove('open');
+      el.querySelector('.faq-answer-wrap').style.maxHeight = null;
+    }
+  });
+
+  if (isOpen) {
+    item.classList.remove('open');
+    wrap.style.maxHeight = null;
+  } else {
+    item.classList.add('open');
+    wrap.style.maxHeight = wrap.scrollHeight + 'px';
+  }
+}
+</script>
+</body>
+</html>

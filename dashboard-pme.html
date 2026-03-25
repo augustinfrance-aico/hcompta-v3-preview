@@ -15,9 +15,9 @@
 ══════════════════════════════════════════ */
 :root{
   /* Sidebar */
-  --sb-bg:#1a3a2a;
-  --sb-bg2:#15301f;
-  --sb-active:#22503a;
+  --sb-bg:#243A3A;
+  --sb-bg2:#1C2E2E;
+  --sb-active:#2E8269;
   --sb-border:rgba(255,255,255,.07);
   --sb-text:rgba(255,255,255,.65);
   --sb-text-active:#fff;
@@ -28,13 +28,13 @@
   --bg3:#f0f2f5;
 
   /* Accents */
-  --green:#1a7a4a;
-  --green2:#22a262;
-  --green-l:rgba(26,122,74,.1);
+  --green:#2E8269;
+  --green2:#358F76;
+  --green-l:rgba(46,130,105,.1);
   --cyan:#00a3a8;
   --cyan-l:rgba(0,163,168,.1);
-  --gold:#e8920a;
-  --gold-l:rgba(232,146,10,.1);
+  --gold:#FFD54D;
+  --gold-l:rgba(255,213,77,.1);
   --red:#d93025;
   --red-l:rgba(217,48,37,.1);
   --blue:#1a6fbe;
@@ -42,7 +42,7 @@
   --purple:#7048d0;
 
   /* Text */
-  --text:#1a1a2e;
+  --text:#243A3A;
   --text2:#4a5568;
   --text3:#9aa3b2;
   --text4:#c4cdd6;
@@ -80,13 +80,13 @@ button{font-family:'Inter',sans-serif}
 }
 .logo-icon{
   width:34px;height:34px;border-radius:9px;flex-shrink:0;
-  background:linear-gradient(135deg,#00c2a0,#1a7a4a);
+  background:linear-gradient(135deg,#98CBB5,#2E8269);
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(0,194,160,.35);
+  box-shadow:0 2px 8px rgba(152,203,181,.35);
 }
 .logo-icon svg{width:19px;height:19px}
 .logo-text{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1.1}
-.logo-text span{color:#00c2a0}
+.logo-text span{color:#98CBB5}
 .logo-sub{font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.8px;text-transform:uppercase;margin-top:1px}
 
 .sb-nav{flex:1;padding:8px 0;overflow-y:auto}
@@ -107,7 +107,7 @@ button{font-family:'Inter',sans-serif}
 .nav-item:hover{background:rgba(255,255,255,.05);color:#fff}
 .nav-item.on{
   background:var(--sb-active);color:var(--sb-text-active);
-  border-left-color:#00c2a0;
+  border-left-color:#98CBB5;
 }
 .nav-item.disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
 .nav-ico{font-size:15px;width:18px;text-align:center;flex-shrink:0}
@@ -116,7 +116,7 @@ button{font-family:'Inter',sans-serif}
   padding:1px 6px;border-radius:9px;min-width:16px;text-align:center;
 }
 .nb-red{background:rgba(217,48,37,.85);color:#fff}
-.nb-green{background:rgba(0,194,160,.2);color:#00c2a0}
+.nb-green{background:rgba(152,203,181,.2);color:#98CBB5}
 .nb-gold{background:rgba(232,146,10,.2);color:#e8920a}
 .nb-grey{background:rgba(154,163,178,.2);color:var(--text3)}
 
@@ -132,7 +132,7 @@ button{font-family:'Inter',sans-serif}
   font-family:'Inter',sans-serif;
 }
 .pays-btn:hover{border-color:rgba(255,255,255,.3);color:#fff}
-.pays-btn.on{background:rgba(0,194,160,.18);border-color:#00c2a0;color:#00c2a0}
+.pays-btn.on{background:rgba(152,203,181,.18);border-color:#98CBB5;color:#98CBB5}
 .pays-flag{font-size:14px;display:block;margin-bottom:1px}
 
 .sb-foot{
@@ -141,7 +141,7 @@ button{font-family:'Inter',sans-serif}
 }
 .sb-av{
   width:30px;height:30px;border-radius:50%;
-  background:linear-gradient(135deg,#00c2a0,var(--green));
+  background:linear-gradient(135deg,#98CBB5,var(--green));
   display:flex;align-items:center;justify-content:center;
   font-size:11px;font-weight:700;color:#fff;flex-shrink:0;
 }
@@ -186,7 +186,7 @@ button{font-family:'Inter',sans-serif}
   border:none;cursor:pointer;font-size:12px;font-weight:600;
   transition:all .2s;white-space:nowrap;
 }
-.tb-import:hover{background:var(--green2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,122,74,.3)}
+.tb-import:hover{background:var(--green2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(46,130,105,.3)}
 .tb-logout{
   width:34px;height:34px;border-radius:8px;
   background:var(--bg3);border:1px solid var(--border);
@@ -215,7 +215,7 @@ button{font-family:'Inter',sans-serif}
   top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;
 }
 .kpi.k-green::after{background:linear-gradient(90deg,var(--green),var(--green2))}
-.kpi.k-cyan::after{background:linear-gradient(90deg,var(--cyan),#00c2a0)}
+.kpi.k-cyan::after{background:linear-gradient(90deg,var(--cyan),#98CBB5)}
 .kpi.k-gold::after{background:linear-gradient(90deg,var(--gold),#f5a623)}
 .kpi.k-red::after{background:linear-gradient(90deg,var(--red),#e05a50)}
 .kpi-icon{
@@ -233,7 +233,7 @@ button{font-family:'Inter',sans-serif}
   position:absolute;top:14px;right:14px;
   font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;
 }
-.kt-up{background:rgba(26,122,74,.1);color:var(--green)}
+.kt-up{background:rgba(46,130,105,.1);color:var(--green)}
 .kt-dn{background:var(--red-l);color:var(--red)}
 .kt-warn{background:var(--gold-l);color:var(--gold)}
 
@@ -476,19 +476,19 @@ button{font-family:'Inter',sans-serif}
 }
 #mariah-avatar{
   width:36px;height:36px;border-radius:50%;
-  background:linear-gradient(135deg,#00c2a0,var(--green));
+  background:linear-gradient(135deg,#98CBB5,var(--green));
   display:flex;align-items:center;justify-content:center;
   font-size:16px;flex-shrink:0;
-  box-shadow:0 0 0 3px rgba(0,194,160,.2);
+  box-shadow:0 0 0 3px rgba(152,203,181,.2);
 }
 #mariah-name{font-size:14px;font-weight:700;color:#fff;font-family:'Inter',sans-serif}
 #mariah-status{
-  font-size:10px;color:#00c2a0;
+  font-size:10px;color:#98CBB5;
   display:flex;align-items:center;gap:5px;margin-top:2px;
 }
 #mariah-status::before{
   content:'';width:6px;height:6px;border-radius:50%;
-  background:#00c2a0;display:inline-block;
+  background:#98CBB5;display:inline-block;
   animation:pulse-g 2s infinite;
 }
 @keyframes pulse-g{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
@@ -522,7 +522,7 @@ button{font-family:'Inter',sans-serif}
   display:flex;align-items:center;justify-content:center;
   font-size:12px;margin-top:2px;
 }
-.msg.mariah .msg-avatar{background:linear-gradient(135deg,#00c2a0,var(--green))}
+.msg.mariah .msg-avatar{background:linear-gradient(135deg,#98CBB5,var(--green))}
 .msg.user .msg-avatar{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
 .msg-bubble{
   max-width:82%;padding:9px 12px;border-radius:12px;
@@ -533,7 +533,7 @@ button{font-family:'Inter',sans-serif}
   color:var(--text);border-radius:4px 12px 12px 12px;
 }
 .msg.user .msg-bubble{
-  background:var(--green-l);border:1px solid rgba(26,122,74,.2);
+  background:var(--green-l);border:1px solid rgba(46,130,105,.2);
   color:var(--text);border-radius:12px 4px 12px 12px;
 }
 .msg-sig{font-size:9px;color:var(--green);margin-top:5px;font-family:'JetBrains Mono',monospace;opacity:.8}
@@ -597,7 +597,7 @@ button{font-family:'Inter',sans-serif}
 .prog-wrap{display:none;margin-top:14px}
 .prog-label{font-size:11px;color:var(--green);margin-bottom:6px;font-weight:500}
 .prog-track{height:5px;background:var(--bg3);border-radius:5px;overflow:hidden}
-.prog-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),#00c2a0);border-radius:5px;transition:width .3s}
+.prog-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),#98CBB5);border-radius:5px;transition:width .3s}
 </style>
 </head>
 <body>
@@ -735,7 +735,7 @@ button{font-family:'Inter',sans-serif}
         <div class="kpi k-gold">
           <div class="kpi-icon">📋</div>
           <div class="kpi-val" id="kpi-tva">472K</div>
-          <div class="kpi-label">TVA à déclarer (FCFA)</div>
+          <div class="kpi-label" id="kpi-tva-label">TVA à déclarer (FCFA)</div>
           <div class="kpi-trend kt-warn">Échéance proche</div>
         </div>
       </div>
@@ -903,20 +903,20 @@ button{font-family:'Inter',sans-serif}
                 <div class="tva-kpi-label">TVA Collectée</div>
               </div>
               <div class="tva-kpi">
-                <div class="tva-kpi-val" style="color:var(--gold)">284 000</div>
+                <div class="tva-kpi-val" style="color:var(--gold)" id="tva-ded">284 000</div>
                 <div class="tva-kpi-label">TVA Déductible</div>
               </div>
               <div class="tva-kpi">
-                <div class="tva-kpi-val" style="color:var(--red)">472 000</div>
+                <div class="tva-kpi-val" style="color:var(--red)" id="tva-pay">472 000</div>
                 <div class="tva-kpi-label">TVA à payer</div>
               </div>
             </div>
             <div style="background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:14px">
               <div style="font-size:9px;color:var(--text3);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Détail des opérations</div>
               <table class="tbl">
-                <tr><td style="color:var(--text2)">Orange CI</td><td class="tbl-mono" style="color:var(--gold)">16 092 FCFA</td></tr>
-                <tr><td style="color:var(--text2)">Sodeci</td><td class="tbl-mono" style="color:var(--gold)">8 136 FCFA</td></tr>
-                <tr><td style="color:var(--text2)">CimenCI SA</td><td class="tbl-mono" style="color:var(--gold)">18 090 FCFA</td></tr>
+                <tr><td style="color:var(--text2)">Orange CI</td><td class="tbl-mono hc-montant" style="color:var(--gold)">16 092 FCFA</td></tr>
+                <tr><td style="color:var(--text2)">Sodeci</td><td class="tbl-mono hc-montant" style="color:var(--gold)">8 136 FCFA</td></tr>
+                <tr><td style="color:var(--text2)">CimenCI SA</td><td class="tbl-mono hc-montant" style="color:var(--gold)">18 090 FCFA</td></tr>
               </table>
             </div>
             <button onclick="showToast('📥 Export TVA téléchargé')" style="width:100%;padding:10px;border-radius:8px;background:var(--green);color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">📥 Exporter Déclaration TVA</button>
@@ -1415,5 +1415,143 @@ async function doLogout(){
 </script>
 <div style="text-align:center;padding:16px;font-size:12px;color:#9CA3AF;border-top:1px solid #E5E7EB;margin-top:20px"><a href="cgu.html" style="color:#2E8269;text-decoration:underline">Conditions G&eacute;n&eacute;rales d'Utilisation</a> &middot; <a href="cgu.pdf" style="color:#2E8269;text-decoration:underline">T&eacute;l&eacute;charger PDF</a> &middot; &copy; 2026 H-Compta AI</div>
 <script src="rgpd-banner.js"></script>
+
+<!-- ══ ONBOARDING OVERLAY ═══════════════════ -->
+<style>
+.ob-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;
+  background:rgba(36,58,58,.65);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.ob-overlay.show{opacity:1;pointer-events:all}
+.ob-modal{
+  background:#fff;border-radius:16px;width:480px;max-width:92vw;
+  box-shadow:0 24px 64px rgba(0,0,0,.18),0 8px 24px rgba(0,0,0,.1);
+  overflow:hidden;transform:translateY(16px) scale(.97);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.ob-overlay.show .ob-modal{transform:translateY(0) scale(1)}
+.ob-top{
+  background:linear-gradient(135deg,#243A3A,#2E8269);
+  padding:32px 32px 28px;text-align:center;position:relative;
+}
+.ob-close{
+  position:absolute;top:12px;right:14px;
+  width:28px;height:28px;border-radius:50%;border:none;
+  background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);
+  font-size:16px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:all .15s;line-height:1;
+}
+.ob-close:hover{background:rgba(255,255,255,.25);color:#fff}
+.ob-icon{
+  width:56px;height:56px;border-radius:14px;margin:0 auto 16px;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+}
+.ob-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:6px;letter-spacing:-.3px}
+.ob-desc{font-size:13px;color:rgba(255,255,255,.78);line-height:1.6;max-width:380px;margin:0 auto}
+.ob-dots{
+  display:flex;justify-content:center;gap:8px;padding:18px 0 0;
+}
+.ob-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.25);transition:all .25s;cursor:pointer;
+}
+.ob-dot.on{background:#fff;transform:scale(1.2)}
+.ob-bottom{padding:20px 32px 24px;display:flex;align-items:center;justify-content:space-between}
+.ob-check{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:11px;color:var(--text3);user-select:none}
+.ob-check input{accent-color:var(--green);width:14px;height:14px;cursor:pointer}
+.ob-btns{display:flex;gap:8px}
+.ob-btn{
+  padding:9px 20px;border-radius:8px;font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif;
+}
+.ob-prev{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.ob-prev:hover{background:var(--border);color:var(--text)}
+.ob-prev:disabled{opacity:.35;cursor:not-allowed}
+.ob-next{background:var(--green);color:#fff}
+.ob-next:hover{background:var(--green2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(46,130,105,.3)}
+</style>
+
+<div class="ob-overlay" id="obOverlay">
+  <div class="ob-modal">
+    <div class="ob-top">
+      <button class="ob-close" id="obClose">&times;</button>
+      <div class="ob-icon" id="obIcon"></div>
+      <div class="ob-title" id="obTitle"></div>
+      <div class="ob-desc" id="obDesc"></div>
+      <div class="ob-dots" id="obDots"></div>
+    </div>
+    <div class="ob-bottom">
+      <label class="ob-check"><input type="checkbox" id="obNoShow"> Ne plus afficher</label>
+      <div class="ob-btns">
+        <button class="ob-btn ob-prev" id="obPrev">&larr; Pr&eacute;c&eacute;dent</button>
+        <button class="ob-btn ob-next" id="obNext">Suivant &rarr;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(localStorage.getItem('hc_onboarding_done')) return;
+
+  var steps=[
+    {icon:'\uD83D\uDC4B',title:'Bienvenue sur H-Compta AI',desc:'Votre comptabilit\u00e9 SYSCOHADA automatis\u00e9e. En 4 \u00e9tapes, d\u00e9couvrez comment g\u00e9rer vos factures, exporter vers Sage\u00a0100 et suivre votre conformit\u00e9.'},
+    {icon:'\uD83D\uDCC4',title:'Importez vos factures',desc:'Glissez un PDF ou une image dans la zone d\u2019import. Mariah, notre IA, l\u2019analyse en moins de 60\u00a0secondes et g\u00e9n\u00e8re l\u2019\u00e9criture comptable.'},
+    {icon:'\uD83D\uDCCA',title:'Suivez vos KPIs',desc:'Score de conformit\u00e9, TVA due, \u00e9critures valid\u00e9es \u2014 tout est visible en temps r\u00e9el sur votre tableau de bord.'},
+    {icon:'\uD83D\uDCE4',title:'Exportez vers Sage 100',desc:'Un clic pour g\u00e9n\u00e9rer votre fichier d\u2019export compatible Sage\u00a0100 ou Odoo. Retrouvez-le dans votre espace fichiers.'}
+  ];
+
+  var cur=0;
+  var overlay=document.getElementById('obOverlay');
+  var icon=document.getElementById('obIcon');
+  var title=document.getElementById('obTitle');
+  var desc=document.getElementById('obDesc');
+  var dots=document.getElementById('obDots');
+  var prev=document.getElementById('obPrev');
+  var next=document.getElementById('obNext');
+  var noShow=document.getElementById('obNoShow');
+
+  /* Build dots */
+  steps.forEach(function(_,i){
+    var d=document.createElement('span');
+    d.className='ob-dot'+(i===0?' on':'');
+    d.addEventListener('click',function(){goTo(i)});
+    dots.appendChild(d);
+  });
+
+  function render(){
+    var s=steps[cur];
+    icon.textContent=s.icon;
+    title.textContent=s.title;
+    desc.textContent=s.desc;
+    var allDots=dots.querySelectorAll('.ob-dot');
+    allDots.forEach(function(d,i){d.className='ob-dot'+(i===cur?' on':'')});
+    prev.disabled=cur===0;
+    prev.style.visibility=cur===0?'hidden':'visible';
+    next.innerHTML=cur===steps.length-1?'Commencer \u2713':'Suivant \u2192';
+  }
+
+  function goTo(i){cur=i;render()}
+
+  function finish(){
+    overlay.classList.remove('show');
+    localStorage.setItem('hc_onboarding_done','true');
+  }
+
+  prev.addEventListener('click',function(){if(cur>0){cur--;render()}});
+  next.addEventListener('click',function(){if(cur<steps.length-1){cur++;render()}else finish()});
+  document.getElementById('obClose').addEventListener('click',finish);
+
+  overlay.addEventListener('click',function(e){if(e.target===overlay) finish()});
+
+  /* Show */
+  render();
+  requestAnimationFrame(function(){overlay.classList.add('show')});
+})();
+</script>
 </body>
 </html>

@@ -15,10 +15,10 @@
 ══════════════════════════════════════════════ */
 :root {
   /* Couleurs principales (identiques V5) */
-  --green:     #1a7a4a;
-  --green2:    #22a262;
-  --green-l:   rgba(26,122,74,.10);
-  --green-ll:  rgba(26,122,74,.06);
+  --green:     #2E8269;
+  --green2:    #358F76;
+  --green-l:   rgba(46,130,105,.10);
+  --green-ll:  rgba(46,130,105,.06);
   --gold:      #e8920a;
   --gold-l:    rgba(232,146,10,.10);
   --red:       #d93025;
@@ -79,7 +79,7 @@ html, body {
   bottom:-100px; right:-60px;
   width:360px; height:360px;
   border-radius:50%;
-  background:radial-gradient(ellipse, rgba(26,122,74,.06) 0%, transparent 70%);
+  background:radial-gradient(ellipse, rgba(46,130,105,.06) 0%, transparent 70%);
 }
 /* Motif grille très légère */
 .bg-grid {
@@ -119,9 +119,9 @@ html, body {
 }
 .brand-icon {
   width:42px; height:42px; border-radius:11px; flex-shrink:0;
-  background:linear-gradient(135deg,#00c2a0,var(--green));
+  background:linear-gradient(135deg,#98CBB5,var(--green));
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 14px rgba(26,122,74,.25);
+  box-shadow:0 4px 14px rgba(46,130,105,.25);
 }
 .brand-icon svg { width:22px; height:22px; }
 .brand-name { font-size:17px; font-weight:800; color:var(--text); letter-spacing:-.3px; }
@@ -196,7 +196,7 @@ html, body {
   content:'';
   position:absolute; top:0; left:0; right:0; height:3px;
   border-radius:18px 18px 0 0;
-  background:linear-gradient(90deg, var(--green), #00c2a0, var(--green2));
+  background:linear-gradient(90deg, var(--green), #98CBB5, var(--green2));
 }
 
 /* ── En-tête carte ── */
@@ -204,9 +204,9 @@ html, body {
 .card-logo-wrap {
   width:54px; height:54px; margin:0 auto 14px;
   border-radius:14px;
-  background:linear-gradient(135deg,#00c2a0,var(--green));
+  background:linear-gradient(135deg,#98CBB5,var(--green));
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 6px 20px rgba(26,122,74,.22);
+  box-shadow:0 6px 20px rgba(46,130,105,.22);
 }
 .card-logo-wrap svg { width:28px; height:28px; }
 .card-title { font-size:20px; font-weight:800; color:var(--text); margin-bottom:5px; }
@@ -223,7 +223,7 @@ html, body {
 .role-tab.selected {
   border-color:var(--green);
   background:var(--green-l);
-  box-shadow:0 0 0 1px rgba(26,122,74,.15);
+  box-shadow:0 0 0 1px rgba(46,130,105,.15);
 }
 .role-tab.selected.expert {
   border-color:var(--gold);
@@ -247,7 +247,7 @@ html, body {
   color:var(--red);
 }
 .alert-ok {
-  background:var(--green-l); border:1px solid rgba(26,122,74,.2);
+  background:var(--green-l); border:1px solid rgba(46,130,105,.2);
   color:var(--green);
 }
 
@@ -307,7 +307,7 @@ html, body {
 .btn-pme:hover {
   background:var(--green2);
   transform:translateY(-1px);
-  box-shadow:0 6px 20px rgba(26,122,74,.28);
+  box-shadow:0 6px 20px rgba(46,130,105,.28);
 }
 .btn-expert {
   background:var(--gold); color:#fff;
@@ -409,11 +409,11 @@ html, body {
   font-size:12px; border:1px solid var(--border);
   background:var(--surface); box-shadow:var(--shadow);
 }
-.fsd-login  { border-color:rgba(26,122,74,.3);   background:var(--green-l); }
+.fsd-login  { border-color:rgba(46,130,105,.3);   background:var(--green-l); }
 .fsd-make   { border-color:rgba(112,72,208,.25); background:rgba(112,72,208,.07); }
 .fsd-air    { border-color:rgba(217,48,37,.2);   background:var(--red-l); }
 .fsd-token  { border-color:rgba(232,146,10,.25); background:var(--gold-l); }
-.fsd-dash   { border-color:rgba(26,122,74,.3);   background:var(--green-l); }
+.fsd-dash   { border-color:rgba(46,130,105,.3);   background:var(--green-l); }
 .fs-name {
   font-size:11px; font-weight:700; margin-bottom:2px; color:var(--text);
 }
@@ -606,21 +606,21 @@ html, body {
         <div class="fs-dot fsd-login">🔐</div>
         <div>
           <div class="fs-name" style="color:var(--green)">1. Saisie des identifiants</div>
-          <div class="fs-desc">Email + mot de passe envoyés au webhook Make.com via HTTPS.</div>
+          <div class="fs-desc">Email + mot de passe envoyés à Supabase Auth via HTTPS.</div>
         </div>
       </div>
       <div class="flow-step">
         <div class="fs-dot fsd-make">⚙️</div>
         <div>
-          <div class="fs-name" style="color:var(--purple)">2. Make.com vérifie</div>
-          <div class="fs-desc">Recherche l'email dans PME_liste ou Cabinets. Compare le mot de passe hashé.</div>
+          <div class="fs-name" style="color:var(--purple)">2. Supabase Auth vérifie</div>
+          <div class="fs-desc">Vérifie vos identifiants contre la base utilisateurs sécurisée.</div>
         </div>
       </div>
       <div class="flow-step">
         <div class="fs-dot fsd-air">🗄️</div>
         <div>
-          <div class="fs-name" style="color:var(--red)">3. Airtable répond</div>
-          <div class="fs-desc">Retourne : rôle (PME/EXPERT), PME_ID, nom, statut du compte.</div>
+          <div class="fs-name" style="color:var(--red)">3. JWT sécurisé retourné</div>
+          <div class="fs-desc">Supabase retourne un token JWT contenant : rôle (PME/EXPERT), ID, nom, statut.</div>
         </div>
       </div>
       <div class="flow-step">
@@ -643,7 +643,7 @@ html, body {
       <div class="sn-title">Sécurité appliquée</div>
       <div class="sn-item">Token expiré après 8h d'inactivité</div>
       <div class="sn-item">Rôle vérifié à chaque ouverture de dashboard</div>
-      <div class="sn-item">Webhook Make.com en HTTPS uniquement</div>
+      <div class="sn-item">Connexion Supabase Auth en HTTPS uniquement</div>
       <div class="sn-item">Mot de passe jamais stocké en clair</div>
     </div>
   </div>

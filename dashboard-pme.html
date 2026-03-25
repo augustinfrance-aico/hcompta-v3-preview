@@ -598,6 +598,21 @@ button{font-family:'Inter',sans-serif}
 .prog-label{font-size:11px;color:var(--green);margin-bottom:6px;font-weight:500}
 .prog-track{height:5px;background:var(--bg3);border-radius:5px;overflow:hidden}
 .prog-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),#98CBB5);border-radius:5px;transition:width .3s}
+
+/* Dark Mode */
+.dm-toggle{background:none;border:1px solid var(--border);border-radius:8px;padding:4px 8px;cursor:pointer;font-size:16px;transition:all .2s;}
+.dm-toggle:hover{background:var(--green-l);}
+body.dark{--bg:#0F1214;--bg-section:#161A1E;--white:#1C2024;--text:#E8ECF0;--text2:#A0AAB4;--text3:#6B7580;--text4:#3A4248;--border:#2A3038;--border2:#3A4248;--shadow:0 1px 4px rgba(0,0,0,.3);--shadow2:0 4px 20px rgba(0,0,0,.4);}
+body.dark .dm-toggle{border-color:#3A4248;}
+body.dark input,body.dark select,body.dark textarea{background:#1C2024;color:#E8ECF0;border-color:#2A3038;}
+body.dark .dm-toggle::after{content:'☀️';}
+body.dark .dm-toggle{font-size:0;}
+body.dark .dm-toggle::after{font-size:16px;}
+.sync-indicator{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3);padding:4px 10px;border:1px solid var(--border);border-radius:8px;}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;}
+.sync-dot.warn{background:#f59e0b;animation:none;}
+.sync-dot.error{background:#ef4444;animation:none;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 </style>
 </head>
 <body>
@@ -689,6 +704,11 @@ button{font-family:'Inter',sans-serif}
     <button class="tb-import" onclick="openModal()">
       📎 Importer pièce
     </button>
+    <button class="dm-toggle" onclick="toggleDarkMode()" title="Mode sombre">🌙</button>
+    <div class="sync-indicator" id="sync-status" title="Statut de connexion">
+      <span class="sync-dot" id="sync-dot"></span>
+      <span class="sync-text" id="sync-text">Connecté</span>
+    </div>
     <button class="tb-logout" title="Se déconnecter" onclick="doLogout()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -775,7 +795,12 @@ button{font-family:'Inter',sans-serif}
             </div>
             <a class="card-link" onclick="showToast('📄 Affichage de toutes les pièces...')">Voir tout →</a>
           </div>
-          <table class="tbl">
+          <div style="margin-bottom:12px;display:flex;gap:8px;align-items:center;">
+            <input id="ecr-search" style="flex:1;max-width:320px;padding:8px 12px;font-size:13px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font-family:'Inter',sans-serif;outline:none;" placeholder="Rechercher une écriture (fournisseur, montant, statut…)" oninput="filterEcritures(this.value)">
+            <span id="ecr-count" style="font-size:12px;color:var(--text3);"></span>
+            <button style="padding:6px 14px;font-size:12px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text);font-family:'Inter',sans-serif;" onclick="exportCSV()">📥 Télécharger CSV</button>
+          </div>
+          <table class="tbl" id="ecritures-table">
             <thead>
               <tr>
                 <th>Date</th><th>Fournisseur</th><th>Montant TTC</th>
@@ -1153,10 +1178,10 @@ button{font-family:'Inter',sans-serif}
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-title">📎 Importer une pièce comptable</div>
-    <div class="modal-sub">La pièce sera récupérée depuis votre Dropbox PME et analysée par Mariah AI</div>
+    <div class="modal-sub">La pièce sera récupérée depuis votre espace fichiers et analysée par Mariah AI</div>
     <div class="import-zone" onclick="simulerImport()">
       <div class="import-ico">📁</div>
-      <div class="import-txt">Cliquez pour sélectionner dans Dropbox</div>
+      <div class="import-txt">Cliquez pour sélectionner un fichier</div>
       <div class="import-hint">PDF, JPG, PNG · Max 10 Mo · Factures, reçus, relevés</div>
     </div>
     <div class="prog-wrap" id="import-progress">
@@ -1165,7 +1190,7 @@ button{font-family:'Inter',sans-serif}
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-      <button class="btn-ok" onclick="simulerImport()">Importer depuis Dropbox</button>
+      <button class="btn-ok" onclick="simulerImport()">Importer un fichier</button>
     </div>
   </div>
 </div>
@@ -1404,7 +1429,60 @@ function showToast(msg){
   toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
+/* ══ RECHERCHE ÉCRITURES ════════════════════════ */
+function filterEcritures(q){
+  q=q.toLowerCase();
+  let shown=0,total=0;
+  document.querySelectorAll('#ecritures-table tbody tr').forEach(r=>{
+    total++;
+    const text=r.textContent.toLowerCase();
+    const match=!q||text.includes(q);
+    r.style.display=match?'':'none';
+    if(match)shown++;
+  });
+  const c=document.getElementById('ecr-count');
+  if(c)c.textContent=q?(shown+'/'+total+' résultats'):'';
+}
+
+/* ══ EXPORT CSV ═════════════════════════════════ */
+function exportCSV(){
+  const rows=document.querySelectorAll('#ecritures-table tbody tr');
+  if(!rows.length){alert('Aucune écriture à exporter');return;}
+  let csv='Date;Fournisseur;Montant TTC;Compte;Statut;Actions\n';
+  rows.forEach(r=>{
+    if(r.style.display==='none')return;
+    const cells=r.querySelectorAll('td');
+    const vals=[];
+    cells.forEach(c=>vals.push('"'+c.textContent.trim().replace(/"/g,'""')+'"'));
+    csv+=vals.join(';')+'\n';
+  });
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='ecritures_hcompta_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+/* ══ SYNC STATUS INDICATOR ═══════════════════ */
+let _lastSync=Date.now();
+function _updateSyncStatus(){
+  const ago=Math.round((Date.now()-_lastSync)/1000);
+  const dot=document.getElementById('sync-dot');
+  const txt=document.getElementById('sync-text');
+  if(!dot||!txt)return;
+  if(ago<60){
+    dot.className='sync-dot';txt.textContent='Synchro il y a '+ago+'s';
+  }else if(ago<300){
+    dot.className='sync-dot warn';txt.textContent='Synchro il y a '+Math.round(ago/60)+'min';
+  }else{
+    dot.className='sync-dot error';txt.textContent='Déconnecté';
+  }
+}
+setInterval(_updateSyncStatus,5000);
+
 /* ══ BOOT — Supabase Auth + Bridge (CdC V3) ═════ */
+const _origHcLoadAll=window.hcLoadAll;
+window.hcLoadAll=async function(){await _origHcLoadAll();_lastSync=Date.now();};
 document.addEventListener('DOMContentLoaded', hcDashboardInit);
 
 /* ══ DÉCONNEXION — Supabase Auth (CdC V3 Condition n°9) ══ */
@@ -1412,6 +1490,14 @@ async function doLogout(){
   if(!confirm('Se déconnecter de H-Compta AI ?')) return;
   await HC.deconnexion();
 }
+
+function toggleDarkMode(){
+  document.body.classList.toggle('dark');
+  localStorage.setItem('hc_dark_mode', document.body.classList.contains('dark') ? '1' : '');
+  document.querySelector('.dm-toggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+}
+// Auto-apply on load
+if(localStorage.getItem('hc_dark_mode')==='1'){document.body.classList.add('dark');const b=document.querySelector('.dm-toggle');if(b)b.textContent='☀️';}
 </script>
 <div style="text-align:center;padding:16px;font-size:12px;color:#9CA3AF;border-top:1px solid #E5E7EB;margin-top:20px"><a href="cgu.html" style="color:#2E8269;text-decoration:underline">Conditions G&eacute;n&eacute;rales d'Utilisation</a> &middot; <a href="cgu.pdf" style="color:#2E8269;text-decoration:underline">T&eacute;l&eacute;charger PDF</a> &middot; &copy; 2026 H-Compta AI</div>
 <script src="rgpd-banner.js"></script>

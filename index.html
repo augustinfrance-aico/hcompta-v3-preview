@@ -294,7 +294,9 @@ section { padding:88px 0; }
   content:'→';
   position:absolute; right:-13px; top:50%; transform:translateY(-50%);
   color:var(--green3); font-size:18px; font-weight:700; z-index:1;
+  opacity:0; transition:opacity .4s .2s;
 }
+.step-card.revealed:not(:last-child)::after { opacity:1; }
 .step-num {
   width:30px; height:30px; border-radius:50%;
   background:var(--green); color:#fff;
@@ -333,7 +335,10 @@ section { padding:88px 0; }
   position:relative; transition:all .22s;
   box-shadow:var(--shadow);
 }
-.plan:hover { box-shadow:var(--shadow2); transform:translateY(-4px); }
+.plan:hover { box-shadow:var(--shadow2); transform:translateY(-4px) rotateX(2deg); }
+.plan { perspective:800px; transform-style:preserve-3d; }
+.plan.pop { animation:glowPulse 3s ease-in-out infinite; }
+@keyframes glowPulse { 0%,100%{box-shadow:0 0 0 1px var(--green),var(--shadow2)} 50%{box-shadow:0 0 18px 2px rgba(46,130,105,.25),0 0 0 1px var(--green),var(--shadow2)} }
 .plan.pop {
   border-color:var(--green);
   box-shadow:0 0 0 1px var(--green), var(--shadow2);
@@ -715,6 +720,12 @@ footer {
   .faq-answer { padding:0 16px 16px; margin:0 8px; padding-top:14px; font-size:12px; }
   .faq-icon { width:24px; height:24px; font-size:16px; }
 }
+/* ══ ANIMATIONS ════════════════════════════ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.revealed{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}.reveal-d4{transition-delay:.4s}
+.hero-title .typed-cursor{display:inline-block;width:2px;height:.85em;background:var(--green);margin-left:2px;animation:blink .7s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 </style>
 </head>
 <body>
@@ -830,25 +841,25 @@ footer {
       <p class="sec-sub">De la facture papier à l'écriture comptable SYSCOHADA, entièrement automatisé grâce à l'IA.</p>
     </div>
     <div class="steps-grid">
-      <div class="step-card">
+      <div class="step-card reveal reveal-d1">
         <div class="step-num">1</div>
         <div class="step-ico">📁</div>
         <div class="step-title">Déposez la facture</div>
         <p class="step-txt">Prenez une photo ou scannez votre facture. Déposez dans votre espace sécurisé.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card reveal reveal-d2">
         <div class="step-num">2</div>
         <div class="step-ico">🧠</div>
         <div class="step-title">Notre AI analyse</div>
         <p class="step-txt">L'IA lit la facture, identifie le fournisseur, les montants et impute le compte SYSCOHADA correct.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card reveal reveal-d3">
         <div class="step-num">3</div>
         <div class="step-ico">✅</div>
         <div class="step-title">Vous validez</div>
         <p class="step-txt">Visualisez les écritures dans votre dashboard. Corrigez si nécessaire. L'expert-comptable contrôle.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card reveal reveal-d4">
         <div class="step-num">4</div>
         <div class="step-ico">📤</div>
         <div class="step-title">Export Sage auto</div>
@@ -898,7 +909,7 @@ footer {
       <p class="sec-sub">Testez gratuitement pendant 30 jours. Vos identifiants vous sont envoyés par email après votre demande de démo.</p>
     </div>
     <div class="pricing-grid">
-      <div class="plan">
+      <div class="plan reveal reveal-d1">
         <div class="plan-trial">🎁 30 jours d'essai gratuit inclus</div>
         <div class="plan-ico">🏪</div>
         <div class="plan-name">TPE</div>
@@ -916,7 +927,7 @@ footer {
         </ul>
         <button class="plan-btn" onclick="openDemo()">Démarrer l'essai gratuit</button>
       </div>
-      <div class="plan pop">
+      <div class="plan pop reveal reveal-d2">
         <div class="plan-badge">⭐ RECOMMANDÉ PME</div>
         <div class="plan-trial">🎁 30 jours d'essai gratuit inclus</div>
         <div class="plan-ico">🏢</div>
@@ -936,7 +947,7 @@ footer {
         </ul>
         <button class="plan-btn" onclick="openDemo()">Démarrer l'essai gratuit</button>
       </div>
-      <div class="plan">
+      <div class="plan reveal reveal-d3">
         <div class="plan-trial" style="background:var(--green-t);border-color:rgba(46,130,105,.2);color:var(--green)">📞 Devis personnalisé</div>
         <div class="plan-ico">🏭</div>
         <div class="plan-name">ETI</div>
@@ -1374,6 +1385,87 @@ function toggleFaq(btn) {
     wrap.style.maxHeight = wrap.scrollHeight + 'px';
   }
 }
+
+/* ══ ANIM 1 — Compteur hero stats ══════════ */
+function animateCounters(){
+  document.querySelectorAll('.hs-val').forEach(function(el){
+    var text=el.textContent.trim();
+    var suffix=text.replace(/[\d]/g,'');
+    var num=parseInt(text)||0;
+    if(!num||el.dataset.done)return;
+    el.dataset.done='1';
+    var start=0,dur=1200,t0=null;
+    function step(ts){
+      if(!t0)t0=ts;
+      var p=Math.min((ts-t0)/dur,1);
+      var ease=1-Math.pow(1-p,3);
+      el.textContent=Math.round(start+num*ease)+suffix;
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+/* ══ ANIM 2 — Scroll reveal ════════════════ */
+var revealObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('revealed');
+      revealObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(function(el){revealObs.observe(el);});
+
+/* ══ ANIM 3 — Steps connector (arrows reveal with cards) ══ */
+/* Handled by CSS: .step-card.revealed:not(:last-child)::after { opacity:1 } */
+
+/* ══ ANIM 4 — Typing effect hero ══════════ */
+(function(){
+  var title=document.querySelector('.hero-title');
+  if(!title)return;
+  var lines=['Une PME bien gérée.','Un cabinet libéré.'];
+  title.innerHTML='';
+  var cursor=document.createElement('span');
+  cursor.className='typed-cursor';
+  title.appendChild(cursor);
+  var li=0,ci=0,speed=45;
+  function typeNext(){
+    if(li>=lines.length){cursor.remove();return;}
+    if(ci<lines[li].length){
+      cursor.before(document.createTextNode(lines[li][ci]));
+      ci++;
+      setTimeout(typeNext,speed);
+    }else{
+      if(li<lines.length-1){
+        title.insertBefore(document.createElement('br'),cursor);
+      }
+      li++;ci=0;
+      setTimeout(typeNext,400);
+    }
+  }
+  setTimeout(typeNext,500);
+})();
+
+/* ══ ANIM 5 — Pricing 3D hover ════════════ */
+document.querySelectorAll('.plan').forEach(function(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-.5;
+    var y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform='translateY(-4px) rotateY('+x*6+'deg) rotateX('+-y*4+'deg)';
+  });
+  card.addEventListener('mouseleave',function(){
+    card.style.transform='';
+  });
+});
+
+/* ══ ANIM 1 trigger — counter on hero visible ══ */
+var heroObs=new IntersectionObserver(function(entries){
+  if(entries[0].isIntersecting){animateCounters();heroObs.disconnect();}
+},{threshold:0.3});
+var heroStats=document.querySelector('.hero-stats');
+if(heroStats)heroObs.observe(heroStats);
 </script>
 </body>
 </html>

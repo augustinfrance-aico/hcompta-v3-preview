@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>H-Compta AI – La comptabilité intelligente pour l'Afrique</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════
    CHARTE PENNYLANE — H-Compta AI Landing V4
@@ -163,8 +163,9 @@ nav {
 }
 .hero-badge-wrap { margin-bottom:20px; }
 .hero-title {
-  font-size:50px; font-weight:800; line-height:1.1;
+  font-size:50px; font-weight:700; line-height:1.1;
   color:var(--text); margin-bottom:18px; letter-spacing:-.8px;
+  font-family:'DM Sans','Inter',sans-serif;
 }
 .hero-title em {
   font-style:italic; color:var(--green3);
@@ -265,8 +266,9 @@ section { padding:88px 0; }
 .sec-bg-green { background:var(--bg-green); }
 .sec-bg-dark { background:var(--green); }
 .sec-title {
-  font-size:38px; font-weight:800; line-height:1.15;
+  font-size:38px; font-weight:700; line-height:1.15;
   color:var(--text); margin-bottom:13px; letter-spacing:-.5px;
+  font-family:'DM Sans','Inter',sans-serif;
 }
 .sec-title em { font-style:italic; color:var(--green3); }
 .sec-title-white { color:#fff; }
@@ -756,14 +758,14 @@ footer {
         <span class="badge"><span class="badge-dot"></span> Disponible en Côte d'Ivoire, Cameroun &amp; Sénégal</span>
       </div>
       <h1 class="hero-title">
-        La comptabilité<br><em>intelligente</em><br>pour les PME africaines
+        Une PME bien gérée.<br>Un cabinet libéré.
       </h1>
       <p class="hero-sub">
-        Déposez vos factures sur la plateforme. Notre AI les analyse, les impute selon SYSCOHADA et génère votre export Sage en 28 secondes. Sans aucune compétence technique.
+        H-Compta AI connecte les PME de la zone OHADA à leurs experts-comptables — autour d'une comptabilité SYSCOHADA automatisée, fiable et exportable vers Sage 100 et Odoo.
       </p>
       <div class="hero-btns">
-        <button class="btn btn-primary btn-lg" onclick="openDemo()">🚀 Demander la démo gratuite</button>
-        <a href="dashboard-pme.html" class="btn btn-outline btn-lg">👁 Voir le dashboard</a>
+        <a href="dashboard-expert.html" class="btn btn-primary btn-lg">👔 Espace Expert-Comptable</a>
+        <a href="dashboard-pme.html" class="btn btn-outline btn-lg">🏢 Espace PME</a>
       </div>
       <div class="hero-stats">
         <div class="hs"><div class="hs-val">28s</div><div class="hs-lbl">par facture</div></div>
@@ -900,7 +902,7 @@ footer {
         <div class="plan-trial">🎁 30 jours d'essai gratuit inclus</div>
         <div class="plan-ico">🏪</div>
         <div class="plan-name">TPE</div>
-        <div class="plan-price">19 990</div>
+        <div class="plan-price">12 500</div>
         <div class="plan-period">FCFA HT / mois</div>
         <ul class="plan-feats">
           <li>1 entreprise de moins de 5 salariés · 1 pays</li>
@@ -918,7 +920,7 @@ footer {
         <div class="plan-trial">🎁 30 jours d'essai gratuit inclus</div>
         <div class="plan-ico">🏢</div>
         <div class="plan-name">PME</div>
-        <div class="plan-price">50 000</div>
+        <div class="plan-price">25 000</div>
         <div class="plan-period">FCFA HT / mois</div>
         <ul class="plan-feats">
           <li>1 entreprise de 6 à 50 salariés · Multi-pays</li>
@@ -933,7 +935,7 @@ footer {
         <button class="plan-btn" onclick="openDemo()">Démarrer l'essai gratuit</button>
       </div>
       <div class="plan">
-        <div class="plan-trial" style="background:var(--gold-l);border-color:rgba(255,213,77,.2);color:var(--gold)">📞 Devis personnalisé</div>
+        <div class="plan-trial" style="background:var(--green-t);border-color:rgba(46,130,105,.2);color:var(--green)">📞 Devis personnalisé</div>
         <div class="plan-ico">🏭</div>
         <div class="plan-name">ETI</div>
         <div class="plan-price" style="font-size:22px;line-height:1.3">Sur mesure</div>
@@ -947,7 +949,7 @@ footer {
           <li>CI · CM · SN inclus</li>
           <li>API et accès cabinet</li>
         </ul>
-        <button class="plan-btn" style="border-color:var(--gold);color:var(--gold)"
+        <button class="plan-btn" style="border-color:var(--green);color:var(--green)"
           onclick="alert('Un conseiller vous contactera sous 24h.\n\nEmail : contact@hcompta.ai')">Nous contacter</button>
       </div>
     </div>
@@ -1001,21 +1003,11 @@ footer {
 
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">
-          <span>Quels pays sont supportés ?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer-wrap">
-          <div class="faq-answer">Actuellement : Côte d'Ivoire (TVA 18%), Cameroun (TVA 19.25%) et Sénégal (TVA 18%). Les taux de TVA et les normes SYSCOHADA sont intégrés nativement. D'autres pays OHADA seront ajoutés prochainement.</div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
           <span>Combien coûte H-Compta AI ?</span>
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer-wrap">
-          <div class="faq-answer">Nous proposons 3 plans : TPE (gratuit, 1 utilisateur), PME (à partir de 15 000 FCFA/mois, 3 utilisateurs) et ETI (sur devis, utilisateurs illimités). Chaque plan inclut l'IA Mariah et les exports Sage/Odoo.</div>
+          <div class="faq-answer">Nous proposons 3 plans : TPE (12 500 FCFA HT/mois, 1 entreprise), PME (25 000 FCFA HT/mois, multi-pays) et ETI (sur devis, multi-entités). Chaque plan inclut l'IA Mariah, les exports Sage/Odoo et 30 jours d'essai gratuit.</div>
         </div>
       </div>
 
@@ -1036,16 +1028,6 @@ footer {
         </button>
         <div class="faq-answer-wrap">
           <div class="faq-answer">Oui. H-Compta génère des fichiers .txt compatibles Sage 100 et .csv compatibles Odoo. Le format respecte les normes SYSCOHADA avec les journaux (ACH, VTE, BQ, CAI, OD, IMM, PAI) et les comptes à 6 chiffres.</div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          <span>Comment démarrer ?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer-wrap">
-          <div class="faq-answer">Créez votre compte en 2 minutes, importez votre première facture et laissez Mariah faire le reste. Pas besoin d'installation — tout fonctionne dans votre navigateur.</div>
         </div>
       </div>
 

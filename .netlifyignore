@@ -1,0 +1,14 @@
+.env
+.git
+.netlify
+make-blueprints
+supabase
+schema_v3.sql
+seed_prompts_22.sql
+_tmp*
+*.sql
+DOCUMENTATION_NOE.html
+LIVRABLE_PHASE1_NOE.html
+LIVRABLE_PHASE2_4_NOE.html
+PROPOSITIONS_HCOMPTA.html
+hero-proposal.mp4

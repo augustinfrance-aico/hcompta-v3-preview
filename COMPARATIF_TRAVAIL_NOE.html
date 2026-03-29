@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H-Compta AI — Bilan du Travail Realis&eacute;</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #05070A;
+    --bg-card: #0D1117;
+    --bg-card-hover: #131920;
+    --border: #1B2230;
+    --border-light: #253040;
+    --green: #2E8269;
+    --green-light: #3AA882;
+    --green-glow: rgba(46, 130, 105, 0.25);
+    --gold: #F59E0B;
+    --gold-light: #FBBF24;
+    --gold-glow: rgba(245, 158, 11, 0.2);
+    --red: #EF4444;
+    --red-light: #F87171;
+    --red-glow: rgba(239, 68, 68, 0.15);
+    --text: #E6EDF3;
+    --text-muted: #8B949E;
+    --text-dim: #6E7681;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes growWidth {
+    from { width: 0%; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  @keyframes countUp {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes borderGlow {
+    0%, 100% { border-color: var(--green); box-shadow: 0 0 15px var(--green-glow); }
+    50% { border-color: var(--green-light); box-shadow: 0 0 25px var(--green-glow); }
+  }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ─── LAYOUT ─── */
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  section { padding: 80px 0; }
+
+  /* ─── HEADER ─── */
+  .header {
+    position: relative;
+    padding: 100px 0 80px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 50% 30%, rgba(46, 130, 105, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: rgba(46, 130, 105, 0.1);
+    border: 1px solid rgba(46, 130, 105, 0.3);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--green-light);
+    margin-bottom: 24px;
+    animation: fadeIn 0.8s ease;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .header-badge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green-light);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    animation: fadeInUp 0.8s ease;
+  }
+  .header h1 span { color: var(--green-light); }
+  .header .subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--text-muted);
+    font-weight: 400;
+    animation: fadeInUp 0.8s ease 0.15s both;
+  }
+  .header .subtitle strong {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ─── SECTION TITLES ─── */
+  .section-header {
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  .section-number {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green-light);
+    background: rgba(46, 130, 105, 0.12);
+    border: 1px solid rgba(46, 130, 105, 0.25);
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .section-header h2 {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+  .section-header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-top: 8px;
+  }
+
+  /* ─── SECTION 1: CRITERIA CARDS ─── */
+  .criteria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .criteria-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+  .criteria-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-light);
+    transform: translateY(-2px);
+  }
+  .criteria-check {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(46, 130, 105, 0.15);
+    border: 1px solid rgba(46, 130, 105, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green-light);
+    font-size: 16px;
+  }
+  .criteria-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+  .criteria-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .score-banner {
+    margin-top: 32px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(46, 130, 105, 0.12) 0%, rgba(46, 130, 105, 0.04) 100%);
+    border: 2px solid var(--green);
+    border-radius: 16px;
+    text-align: center;
+    animation: borderGlow 3s ease-in-out infinite;
+  }
+  .score-banner .score-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: var(--green-light);
+    letter-spacing: -0.02em;
+  }
+  .score-banner .score-label {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+
+  /* ─── SECTION 2: PROGRESS BARS ─── */
+  .phases-list { display: flex; flex-direction: column; gap: 24px; }
+  .phase-item {
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+  .phase-item:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-light);
+  }
+  .phase-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .phase-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--white);
+  }
+  .phase-percent {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .phase-percent.green { color: var(--green-light); }
+  .phase-percent.amber { color: var(--gold); }
+  .phase-bar-bg {
+    height: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .phase-bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 0%;
+  }
+  .phase-bar-fill.green {
+    background: linear-gradient(90deg, var(--green) 0%, var(--green-light) 100%);
+    box-shadow: 0 0 12px var(--green-glow);
+  }
+  .phase-bar-fill.amber {
+    background: linear-gradient(90deg, #D97706 0%, var(--gold-light) 100%);
+    box-shadow: 0 0 12px var(--gold-glow);
+  }
+  .phase-detail {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .total-banner {
+    margin-top: 24px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(46, 130, 105, 0.08), rgba(245, 158, 11, 0.06));
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    text-align: center;
+  }
+  .total-banner .total-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--green-light), var(--gold-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .total-banner .total-label {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  /* ─── SECTION 3: COMPARISON TABLE ─── */
+  .comparison-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+  }
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .comparison-table thead th {
+    padding: 18px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border);
+  }
+  .comparison-table thead th:first-child {
+    background: var(--bg-card);
+    color: var(--text-muted);
+  }
+  .comparison-table thead th:nth-child(2) {
+    background: rgba(46, 130, 105, 0.1);
+    color: var(--green-light);
+    text-align: center;
+  }
+  .comparison-table thead th:nth-child(3) {
+    background: rgba(239, 68, 68, 0.06);
+    color: var(--red-light);
+    text-align: center;
+  }
+  .comparison-table tbody td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .comparison-table tbody tr {
+    transition: background 0.2s ease;
+  }
+  .comparison-table tbody tr:hover {
+    background: rgba(255,255,255,0.02);
+  }
+  .comparison-table tbody td:first-child {
+    color: var(--text);
+    font-weight: 500;
+    background: var(--bg-card);
+  }
+  .comparison-table tbody td:nth-child(2) {
+    text-align: center;
+    color: var(--green-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    background: rgba(46, 130, 105, 0.04);
+  }
+  .comparison-table tbody td:nth-child(3) {
+    text-align: center;
+    color: var(--red-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    background: rgba(239, 68, 68, 0.03);
+  }
+  .comparison-table tfoot td {
+    padding: 20px;
+    font-weight: 700;
+    font-size: 15px;
+    border-top: 2px solid var(--border-light);
+  }
+  .comparison-table tfoot td:first-child {
+    background: var(--bg-card);
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .comparison-table tfoot td:nth-child(2) {
+    text-align: center;
+    background: rgba(46, 130, 105, 0.1);
+    color: var(--green-light);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .comparison-table tfoot td:nth-child(3) {
+    text-align: center;
+    background: rgba(239, 68, 68, 0.06);
+    color: var(--red-light);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .savings-callout {
+    margin-top: 24px;
+    padding: 20px 28px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.02));
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 12px;
+    text-align: center;
+  }
+  .savings-callout .savings-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--gold);
+  }
+  .savings-callout .savings-label {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  /* ─── SECTION 4: BONUS GRID ─── */
+  .bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .bonus-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    transition: all 0.3s ease;
+  }
+  .bonus-item:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--gold);
+    box-shadow: 0 0 15px var(--gold-glow);
+    transform: translateY(-1px);
+  }
+  .bonus-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--gold);
+  }
+  .bonus-badge {
+    margin-top: 24px;
+    padding: 16px;
+    text-align: center;
+    border: 1px dashed rgba(245, 158, 11, 0.3);
+    border-radius: 12px;
+    background: rgba(245, 158, 11, 0.03);
+  }
+  .bonus-badge span {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 15px;
+  }
+  .bonus-badge p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  /* ─── SECTION 5: SECURITY TABLE ─── */
+  .security-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .security-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+  .security-row:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-light);
+  }
+  .security-before {
+    font-size: 13px;
+    color: var(--red-light);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .security-before .icon-x {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--red);
+  }
+  .security-arrow {
+    color: var(--text-dim);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .security-after {
+    font-size: 13px;
+    color: var(--green-light);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .security-after .icon-check {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(46, 130, 105, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--green-light);
+  }
+
+  /* ─── SECTION 6: STATS ─── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .stat-card {
+    padding: 28px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--green-light));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .stat-card:hover {
+    border-color: var(--green);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    font-weight: 800;
+    color: var(--green-light);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    padding: 48px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .footer-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+  .footer-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 24px;
+    background: rgba(46, 130, 105, 0.1);
+    border: 1px solid rgba(46, 130, 105, 0.3);
+    border-radius: 8px;
+    color: var(--green-light);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  .footer-link:hover {
+    background: rgba(46, 130, 105, 0.2);
+    border-color: var(--green-light);
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+  .footer-contract {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .section-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green), transparent);
+    margin: 0 auto 0;
+    border-radius: 2px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    section { padding: 56px 0; }
+    .criteria-grid { grid-template-columns: 1fr; }
+    .bonus-grid { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .security-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      text-align: center;
+    }
+    .security-before, .security-after { justify-content: center; }
+    .security-arrow { transform: rotate(90deg); justify-self: center; }
+    .comparison-table { font-size: 12px; }
+    .comparison-table thead th,
+    .comparison-table tbody td,
+    .comparison-table tfoot td { padding: 12px 10px; }
+  }
+  @media (max-width: 480px) {
+    .bonus-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── PRINT ─── */
+  @media print {
+    body { background: white; color: #111; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .phase-bar-fill { width: var(--target-width) !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="container">
+    <div class="header-badge">
+      <span class="dot"></span>
+      Projet Actif
+    </div>
+    <h1>H-Compta AI &mdash; Bilan du <span>Travail R&eacute;alis&eacute;</span></h1>
+    <p class="subtitle">Cahier des Charges V3 &mdash; <strong>Point d'&eacute;tape 30/03/2026</strong></p>
+  </div>
+</header>
+
+<!-- ═══════════════════ SECTION 1 ═══════════════════ -->
+<section id="criteria">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-number">Section 01</span>
+      <h2>9 Crit&egrave;res d'Acceptation &mdash; CdC V3</h2>
+      <p>Chaque crit&egrave;re du Cahier des Charges valid&eacute; individuellement</p>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-card reveal reveal-delay-1">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-01</div><div class="criteria-text">Connexion PME &rarr; Dashboard PME (sans SIMULATION_MODE)</div></div>
+      </div>
+      <div class="criteria-card reveal reveal-delay-2">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-02</div><div class="criteria-text">Connexion Expert &rarr; Dashboard Expert + portefeuille PME</div></div>
+      </div>
+      <div class="criteria-card reveal reveal-delay-3">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-03</div><div class="criteria-text">D&eacute;p&ocirc;t PDF &rarr; &eacute;criture Supabase en &lt;60s</div></div>
+      </div>
+      <div class="criteria-card reveal reveal-delay-4">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-04</div><div class="criteria-text">Prompts Mariah depuis table <code style="font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(46,130,105,0.1);padding:2px 6px;border-radius:4px;">prompts</code> (22/22 ins&eacute;r&eacute;s)</div></div>
+      </div>
+      <div class="criteria-card reveal reveal-delay-1">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-05</div><div class="criteria-text">Export Sage/Odoo &rarr; bucket <code style="font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(46,130,105,0.1);padding:2px 6px;border-radius:4px;">exports</code></div></div>
+      </div>
+      <div class="criteria-card reveal reveal-delay-2">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-06</div><div class="criteria-text">Invitation expert &rarr; email &rarr; connexion &rarr; acc&egrave;s</div></div>
+      </div>
+      <div class="criteria-card reveal reveal-delay-3">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-07</div><div class="criteria-text">RLS : PME A ne voit PAS donn&eacute;es PME B</div></div>
+      </div>
+      <div class="criteria-card reveal reveal-delay-4">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-08</div><div class="criteria-text">TVA export CI/CM/SN correct</div></div>
+      </div>
+      <div class="criteria-card reveal reveal-delay-1">
+        <div class="criteria-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="criteria-number">C-09</div><div class="criteria-text">D&eacute;connexion &rarr; session invalid&eacute;e Supabase</div></div>
+      </div>
+    </div>
+    <div class="score-banner reveal">
+      <div class="score-value">9 / 9 PASS</div>
+      <div class="score-label">Tous les crit&egrave;res du Cahier des Charges V3 valid&eacute;s</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 2 ═══════════════════ -->
+<section id="phases" style="background: rgba(255,255,255,0.01);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-number">Section 02</span>
+      <h2>5 Phases du Projet &mdash; Avancement</h2>
+      <p>D&eacute;tail de chaque phase avec progression r&eacute;elle</p>
+    </div>
+    <div class="phases-list">
+      <div class="phase-item reveal">
+        <div class="phase-top">
+          <span class="phase-name">Phase 1 &mdash; Schema SQL</span>
+          <span class="phase-percent green">100%</span>
+        </div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill green" data-width="100" style="--target-width:100%"></div></div>
+        <div class="phase-detail">8 tables &bull; 34 RLS policies &bull; 13 indexes &bull; 5 buckets</div>
+      </div>
+      <div class="phase-item reveal reveal-delay-1">
+        <div class="phase-top">
+          <span class="phase-name">Phase 2 &mdash; Auth JWT</span>
+          <span class="phase-percent green">100%</span>
+        </div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill green" data-width="100" style="--target-width:100%"></div></div>
+        <div class="phase-detail">4 r&ocirc;les &bull; invitations &bull; session audit</div>
+      </div>
+      <div class="phase-item reveal reveal-delay-2">
+        <div class="phase-top">
+          <span class="phase-name">Phase 3 &mdash; Make.com</span>
+          <span class="phase-percent green">100%</span>
+        </div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill green" data-width="100" style="--target-width:100%"></div></div>
+        <div class="phase-detail">4 sc&eacute;narios rec&acirc;bl&eacute;s Supabase</div>
+      </div>
+      <div class="phase-item reveal reveal-delay-3">
+        <div class="phase-top">
+          <span class="phase-name">Phase 4 &mdash; Frontend</span>
+          <span class="phase-percent green">100%</span>
+        </div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill green" data-width="100" style="--target-width:100%"></div></div>
+        <div class="phase-detail">6 HTML &bull; 4 JS modules &bull; charte align&eacute;e</div>
+      </div>
+      <div class="phase-item reveal reveal-delay-4">
+        <div class="phase-top">
+          <span class="phase-name">Phase 5 &mdash; Deploy</span>
+          <span class="phase-percent amber">95%</span>
+        </div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill amber" data-width="95" style="--target-width:95%"></div></div>
+        <div class="phase-detail">Preview live &bull; Netlify config pr&ecirc;te &bull; DNS en attente</div>
+      </div>
+    </div>
+    <div class="total-banner reveal">
+      <div class="total-value">~98% du CdC V3 r&eacute;alis&eacute;</div>
+      <div class="total-label">Avancement global du projet</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 3 ═══════════════════ -->
+<section id="comparison">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-number">Section 03</span>
+      <h2>Comparatif &mdash; Claude Code vs D&eacute;veloppeur Full-Stack</h2>
+      <p>Estimation r&eacute;aliste bas&eacute;e sur les tarifs march&eacute; freelance</p>
+    </div>
+    <div class="comparison-wrapper reveal">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>T&acirc;che</th>
+            <th>Claude Code (livr&eacute;)</th>
+            <th>Dev Full-Stack (estimation)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Schema SQL 8 tables + 34 RLS</td>
+            <td>2h</td>
+            <td>3-5 jours</td>
+          </tr>
+          <tr>
+            <td>Auth JWT 4 r&ocirc;les + invitations</td>
+            <td>2h</td>
+            <td>3-4 jours</td>
+          </tr>
+          <tr>
+            <td>4 sc&eacute;narios Make Supabase</td>
+            <td>3h</td>
+            <td>4-5 jours</td>
+          </tr>
+          <tr>
+            <td>6 pages HTML + 4 modules JS</td>
+            <td>4h</td>
+            <td>7-10 jours</td>
+          </tr>
+          <tr>
+            <td>Tests + s&eacute;curit&eacute; + debug</td>
+            <td>2h</td>
+            <td>3-4 jours</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Total</td>
+            <td>~13h</td>
+            <td>20-28 jours</td>
+          </tr>
+          <tr>
+            <td>Co&ucirc;t</td>
+            <td>1 500 &euro;</td>
+            <td>3 200 - 4 500 &euro;</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="savings-callout reveal">
+      <div class="savings-value">&Eacute;conomie : 1 700 &ndash; 3 000 &euro;</div>
+      <div class="savings-label">par rapport &agrave; un d&eacute;veloppeur full-stack freelance classique</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 4 ═══════════════════ -->
+<section id="bonus" style="background: rgba(255,255,255,0.01);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-number">Section 04</span>
+      <h2>16 Features Bonus &mdash; Hors CdC</h2>
+      <p>Fonctionnalit&eacute;s suppl&eacute;mentaires livr&eacute;es gratuitement</p>
+    </div>
+    <div class="bonus-grid">
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Score conformit&eacute;</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Proxy Mariah s&eacute;curis&eacute;</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Banni&egrave;re RGPD + CGU</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>34 RLS policies</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Page invitation</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Optimisation Make 9&rarr;4</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Guide onboarding</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>FAQ</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Multi-devises FCFA</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Audit trail SHA256</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Programme ambassadeur QR</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Dark mode</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Recherche &eacute;critures</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Export CSV</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Sync indicator temps r&eacute;el</div>
+      <div class="bonus-item reveal"><div class="bonus-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>5 animations landing</div>
+    </div>
+    <div class="bonus-badge reveal">
+      <span>16 features offertes &mdash; valeur estim&eacute;e ~800 &euro;</span>
+      <p>Livr&eacute;es en plus du Cahier des Charges, sans surco&ucirc;t</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 5 ═══════════════════ -->
+<section id="security">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-number">Section 05</span>
+      <h2>8 Failles de S&eacute;curit&eacute; Corrig&eacute;es</h2>
+      <p>Vuln&eacute;rabilit&eacute;s identifi&eacute;es et r&eacute;solues proactivement</p>
+    </div>
+    <div class="security-grid">
+      <div class="security-row reveal">
+        <div class="security-before"><span class="icon-x">&times;</span>CORS ouvert</div>
+        <div class="security-arrow">&rarr;</div>
+        <div class="security-after"><span class="icon-check"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Verrouill&eacute;</div>
+      </div>
+      <div class="security-row reveal reveal-delay-1">
+        <div class="security-before"><span class="icon-x">&times;</span>pmeId null</div>
+        <div class="security-arrow">&rarr;</div>
+        <div class="security-after"><span class="icon-check"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>throw imm&eacute;diat</div>
+      </div>
+      <div class="security-row reveal reveal-delay-2">
+        <div class="security-before"><span class="icon-x">&times;</span>Taille fichier illimit&eacute;e</div>
+        <div class="security-arrow">&rarr;</div>
+        <div class="security-after"><span class="icon-check"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>10 Mo max</div>
+      </div>
+      <div class="security-row reveal reveal-delay-3">
+        <div class="security-before"><span class="icon-x">&times;</span>Type document non valid&eacute;</div>
+        <div class="security-arrow">&rarr;</div>
+        <div class="security-after"><span class="icon-check"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Whitelist 7 types</div>
+      </div>
+      <div class="security-row reveal reveal-delay-4">
+        <div class="security-before"><span class="icon-x">&times;</span>Pays non valid&eacute;</div>
+        <div class="security-arrow">&rarr;</div>
+        <div class="security-after"><span class="icon-check"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Whitelist CI/CM/SN</div>
+      </div>
+      <div class="security-row reveal reveal-delay-1">
+        <div class="security-before"><span class="icon-x">&times;</span>Erreurs API expos&eacute;es</div>
+        <div class="security-arrow">&rarr;</div>
+        <div class="security-after"><span class="icon-check"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Message g&eacute;n&eacute;rique FR</div>
+      </div>
+      <div class="security-row reveal reveal-delay-2">
+        <div class="security-before"><span class="icon-x">&times;</span>Config hardcod&eacute;e</div>
+        <div class="security-arrow">&rarr;</div>
+        <div class="security-after"><span class="icon-check"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Variables env</div>
+      </div>
+      <div class="security-row reveal reveal-delay-3">
+        <div class="security-before"><span class="icon-x">&times;</span>Bridge non v&eacute;rifi&eacute;</div>
+        <div class="security-arrow">&rarr;</div>
+        <div class="security-after"><span class="icon-check"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Defensive check</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION 6 ═══════════════════ -->
+<section id="data" style="background: rgba(255,255,255,0.01);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-number">Section 06</span>
+      <h2>Donn&eacute;es en Production</h2>
+      <p>Contenu r&eacute;el ins&eacute;r&eacute; dans la base Supabase</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-number" data-count="22">22</div>
+        <div class="stat-label">Prompts Mariah<br><small style="color:var(--text-dim)">remplis avec contenu r&eacute;el</small></div>
+      </div>
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-number" data-count="16">16</div>
+        <div class="stat-label">&Eacute;critures test<br><small style="color:var(--text-dim)">3 PMEs</small></div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-number" data-count="5">5</div>
+        <div class="stat-label">PMEs de d&eacute;monstration<br><small style="color:var(--text-dim)">comptes actifs</small></div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-number" data-count="5">5</div>
+        <div class="stat-label">Buckets Storage priv&eacute;s<br><small style="color:var(--text-dim)">documents &bull; exports &bull; uploads</small></div>
+      </div>
+      <div class="stat-card reveal reveal-delay-4">
+        <div class="stat-number" data-count="4">4</div>
+        <div class="stat-label">Sc&eacute;narios Make<br><small style="color:var(--text-dim)">valid&eacute;s et actifs</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer-text">
+      Document g&eacute;n&eacute;r&eacute; le 29/03/2026 &mdash; Projet H-Compta AI
+    </p>
+    <a href="https://augustinfrance-aico.github.io/hcompta-v3-preview/" target="_blank" class="footer-link">
+      Preview live &rarr; hcompta-v3-preview
+    </a>
+    <p class="footer-contract">Contrat Upwork &mdash; 1 500 &euro;</p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  // ─── Intersection Observer for reveal animations ───
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // ─── Animate progress bars when visible ───
+  const barObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var bar = entry.target;
+        var width = bar.getAttribute('data-width');
+        setTimeout(function() {
+          bar.style.width = width + '%';
+        }, 300);
+        barObserver.unobserve(bar);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.phase-bar-fill').forEach(function(bar) {
+    barObserver.observe(bar);
+  });
+
+  // ─── Animate stat numbers ───
+  var statObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        var duration = 1200;
+        var start = performance.now();
+        function tick(now) {
+          var progress = Math.min((now - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(target * eased);
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-number[data-count]').forEach(function(el) {
+    el.textContent = '0';
+    statObserver.observe(el);
+  });
+})();
+</script>
+</body>
+</html>

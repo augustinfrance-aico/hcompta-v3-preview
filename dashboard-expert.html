@@ -598,18 +598,18 @@ body.dark .dm-toggle::after{font-size:16px;}
     <div class="kpi-row">
       <div class="kpi-card">
         <div class="kpi-label">PME clientes</div>
-        <div class="kpi-val" style="color:var(--navy)">5</div>
-        <div class="kpi-sub">Côte d'Ivoire · TVA 18%</div>
+        <div class="kpi-val" id="exp-kpi-pme" style="color:var(--navy)">—</div>
+        <div class="kpi-sub" id="exp-kpi-pme-sub">Chargement…</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Alertes ouvertes</div>
-        <div class="kpi-val" style="color:var(--red)">3</div>
-        <div class="kpi-sub">1 critique · 2 majeures</div>
+        <div class="kpi-val" id="exp-kpi-alertes" style="color:var(--red)">—</div>
+        <div class="kpi-sub" id="exp-kpi-alertes-sub">Chargement…</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Écritures à valider</div>
-        <div class="kpi-val" style="color:var(--orange)">24</div>
-        <div class="kpi-trend trend-up">↑ Score moy. 87%</div>
+        <div class="kpi-val" id="exp-kpi-ecritures" style="color:var(--orange)">—</div>
+        <div class="kpi-trend trend-up" id="exp-kpi-score">↑ Chargement…</div>
       </div>
     </div>
 
@@ -621,8 +621,8 @@ body.dark .dm-toggle::after{font-size:16px;}
             <div class="spark-sub">Évolution 6 derniers mois — Cabinet Kouassi &amp; Associés</div>
           </div>
           <div style="text-align:right;">
-            <div class="spark-cur">87%</div>
-            <div class="spark-cur-sub">↑ +4 pts vs oct.</div>
+            <div class="spark-cur" id="exp-spark-score">—</div>
+            <div class="spark-cur-sub" id="exp-spark-sub">Chargement…</div>
           </div>
         </div>
         <svg class="spark-svg" viewBox="0 0 480 80" preserveAspectRatio="none">
@@ -1107,6 +1107,22 @@ async function _loadExpertPortfolio(session){
   const clTitle=document.querySelector('.cl-title');
   if(clTitle)clTitle.textContent='Mes clients — '+pmes.length+' PME';
   _lastSync=Date.now();
+
+  // ══ MAJ KPIs dynamiques depuis données chargées ══
+  const totalEcr=Object.values(PME_DATA).reduce((s,d)=>s+(d.pieces||0),0);
+  const totalAlertes=Object.values(PME_DATA).reduce((s,d)=>s+(d.alertes||0),0);
+  const avgScore=pmes.length>0?Math.round(pmes.reduce((s,p)=>s+(p.score_conformite||0),0)/pmes.length):0;
+  const paysSet=[...new Set(pmes.map(p=>p.pays))];
+  const paysLabel=paysSet.length===1?({CI:"Côte d'Ivoire",CM:'Cameroun',SN:'Sénégal'}[paysSet[0]]||paysSet[0]):paysSet.join(' · ');
+  const _s=id=>document.getElementById(id);
+  if(_s('exp-kpi-pme'))_s('exp-kpi-pme').textContent=pmes.length;
+  if(_s('exp-kpi-pme-sub'))_s('exp-kpi-pme-sub').textContent=paysLabel;
+  if(_s('exp-kpi-alertes'))_s('exp-kpi-alertes').textContent=totalAlertes;
+  if(_s('exp-kpi-alertes-sub'))_s('exp-kpi-alertes-sub').textContent=totalAlertes>0?totalAlertes+' en attente':'Aucune alerte';
+  if(_s('exp-kpi-ecritures'))_s('exp-kpi-ecritures').textContent=totalEcr;
+  if(_s('exp-kpi-score'))_s('exp-kpi-score').textContent='↑ Score moy. '+avgScore+'%';
+  if(_s('exp-spark-score'))_s('exp-spark-score').textContent=avgScore+'%';
+  if(_s('exp-spark-sub'))_s('exp-spark-sub').textContent='Score moyen portefeuille';
 }
 
 // ══ SESSION — Supabase Auth (CdC V3 Section 4) ══════════

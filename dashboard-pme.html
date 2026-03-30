@@ -640,16 +640,15 @@ body.dark .dm-toggle::after{font-size:16px;}
       <span class="nav-ico">🏠</span>Accueil
       <span class="nav-badge nb-red" id="bd-accueil">3</span>
     </div>
-    <div class="nav-item disabled">
+    <div class="nav-item" id="nav-pieces" onclick="showPage('accueil',this);document.getElementById('ecritures-table').scrollIntoView({behavior:'smooth'})">
       <span class="nav-ico">📄</span>Pièces comptables
-      <span class="nav-badge nb-grey">12</span>
+      <span class="nav-badge nb-grey" id="nav-pieces-count">12</span>
     </div>
-    <div class="nav-item disabled">
+    <div class="nav-item" id="nav-ia" onclick="showPage('accueil',this);showToast('🧠 Imputations IA visibles dans le tableau des écritures')">
       <span class="nav-ico">🧠</span>Imputations IA
-      <span class="nav-badge nb-grey">5</span>
+      <span class="nav-badge nb-grey" id="nav-ia-count">5</span>
     </div>
-    <div class="nav-item disabled">
-      <span class="nav-ico">🔔</span>Alertes
+    <div class="nav-item" id="nav-alertes" onclick="showPage('accueil',this);showToast('🔔 Alertes visibles dans la section Actions à faire')">
       <span class="nav-badge nb-red">2</span>
     </div>
 

@@ -648,7 +648,7 @@ body.dark .dm-toggle::after{font-size:16px;}
       <span class="nav-ico">🧠</span>Imputations IA
       <span class="nav-badge nb-grey" id="nav-ia-count">5</span>
     </div>
-    <div class="nav-item" id="nav-alertes" onclick="showPage('accueil',this);setTimeout(()=>document.querySelector('[style*=\\'border-left:3px solid var(--red)\\']').scrollIntoView({behavior:'smooth',block:'center'}),100)">
+    <div class="nav-item" id="nav-alertes" onclick="showPage('accueil',this);setTimeout(()=>document.getElementById('section-alertes').scrollIntoView({behavior:'smooth',block:'center'}),100)">
       <span class="nav-ico">🔔</span>Alertes
       <span class="nav-badge nb-red">2</span>
     </div>
@@ -761,7 +761,7 @@ body.dark .dm-toggle::after{font-size:16px;}
       </div>
 
       <!-- Actions à faire - style Pennylane -->
-      <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow)">
+      <div id="section-alertes" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:var(--shadow)">
         <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:7px">
           🎯 Actions à faire
           <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:9px;background:var(--red-l);color:var(--red)">3</span>

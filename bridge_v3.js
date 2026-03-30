@@ -413,7 +413,9 @@ async function hcLoadInvitations() {
 // EXPERT — Charger portefeuille PME
 // ============================================================
 async function hcLoadPortefeuille() {
-  if (_session.role !== 'EXPERT' && _session.role !== 'ADMIN') return;
+  // FIX: récupérer session si pas initialisée (dashboard expert n'appelle pas hcDashboardInit)
+  if (!_session) _session = await HC.getSession();
+  if (!_session || (_session.role !== 'EXPERT' && _session.role !== 'ADMIN')) return [];
   const sb = HC.getSupabase();
 
   const { data: pmes } = await sb.from('pme_liste')

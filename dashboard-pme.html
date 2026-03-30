@@ -640,15 +640,15 @@ body.dark .dm-toggle::after{font-size:16px;}
       <span class="nav-ico">🏠</span>Accueil
       <span class="nav-badge nb-red" id="bd-accueil">3</span>
     </div>
-    <div class="nav-item" id="nav-pieces" onclick="showPage('accueil',this);document.getElementById('ecritures-table').scrollIntoView({behavior:'smooth'})">
+    <div class="nav-item" id="nav-pieces" onclick="showPage('accueil',this);setTimeout(()=>document.getElementById('ecritures-table').scrollIntoView({behavior:'smooth',block:'start'}),100)">
       <span class="nav-ico">📄</span>Pièces comptables
       <span class="nav-badge nb-grey" id="nav-pieces-count">12</span>
     </div>
-    <div class="nav-item" id="nav-ia" onclick="showPage('accueil',this);showToast('🧠 Imputations IA visibles dans le tableau des écritures')">
+    <div class="nav-item" id="nav-ia" onclick="showPage('accueil',this);setTimeout(()=>document.querySelector('.kpi.k-cyan').scrollIntoView({behavior:'smooth',block:'center'}),100)">
       <span class="nav-ico">🧠</span>Imputations IA
       <span class="nav-badge nb-grey" id="nav-ia-count">5</span>
     </div>
-    <div class="nav-item" id="nav-alertes" onclick="showPage('accueil',this);showToast('🔔 Alertes visibles dans la section Actions à faire')">
+    <div class="nav-item" id="nav-alertes" onclick="showPage('accueil',this);setTimeout(()=>document.querySelector('[style*=\\'border-left:3px solid var(--red)\\']').scrollIntoView({behavior:'smooth',block:'center'}),100)">
       <span class="nav-ico">🔔</span>Alertes
       <span class="nav-badge nb-red">2</span>
     </div>

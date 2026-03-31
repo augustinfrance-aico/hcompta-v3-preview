@@ -952,7 +952,7 @@ body.dark ::-webkit-scrollbar-thumb{background:#2E3640;border-radius:4px;}
                 <tr><td style="color:var(--text2)">CimenCI SA</td><td class="tbl-mono hc-montant" style="color:var(--gold)">18 090 FCFA</td></tr>
               </table>
             </div>
-            <button onclick="showToast('📥 Export TVA téléchargé')" style="width:100%;padding:10px;border-radius:8px;background:var(--green);color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">📥 Exporter Déclaration TVA</button>
+            <button onclick="downloadTVA()" style="width:100%;padding:10px;border-radius:8px;background:var(--green);color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">📥 Exporter Déclaration TVA</button>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:14px">
@@ -985,7 +985,7 @@ body.dark ::-webkit-scrollbar-thumb{background:#2E3640;border-radius:4px;}
             15/05/2025;AC;4411;Orange CI-FAC441;0;105492
           </div>
           <div style="font-size:10px;color:var(--text3);margin-bottom:10px">3 écritures · 2 factures · Dernier export il y a 2h</div>
-          <button class="exp-dl-btn" onclick="showToast('📥 Export Sage 100 téléchargé')">📥 Télécharger Export Sage</button>
+          <button class="exp-dl-btn" onclick="downloadExport('sage')">📥 Télécharger Export Sage</button>
         </div>
 
         <!-- ODOO ACTIF -->
@@ -1003,7 +1003,7 @@ body.dark ::-webkit-scrollbar-thumb{background:#2E3640;border-radius:4px;}
             2025-05-15,4411,Orange CI-FAC441,0,105492
           </div>
           <div style="font-size:10px;color:var(--text3);margin-bottom:10px">3 écritures · Format journal Odoo CI</div>
-          <button class="exp-dl-btn odoo" onclick="showToast('🔷 Export Odoo téléchargé')">📥 Télécharger Export Odoo</button>
+          <button class="exp-dl-btn odoo" onclick="downloadExport('odoo')">📥 Télécharger Export Odoo</button>
         </div>
 
         <!-- GRISÉS -->
@@ -1488,11 +1488,110 @@ function _updateSyncStatus(){
 }
 setInterval(_updateSyncStatus,5000);
 
+/* ══ EXPORT SAGE/ODOO — Télécharge depuis Supabase Storage ══ */
+async function downloadExport(format){
+  try{
+    const sb=HC.getSupabase();
+    const sess=await HC.getSession();
+    if(!sess||!sess.pmeId){showToast('Erreur : session non trouvée');return;}
+    // Générer le fichier depuis les écritures validées
+    const {data:ecrs}=await sb.from('ecritures').select('*').eq('pme_id',sess.pmeId).eq('statut','Validé');
+    if(!ecrs||!ecrs.length){showToast('Aucune écriture validée à exporter');return;}
+    let content='';
+    if(format==='sage'){
+      content='JOURNAL;DATE;PIECE;COMPTE_D;COMPTE_C;LIBELLE;DEBIT;CREDIT\n';
+      ecrs.forEach((e,i)=>{
+        const dt=new Date(e.created_at).toISOString().slice(0,10).replace(/-/g,'');
+        content+=e.journal+';'+dt+';FAC-'+String(i+1).padStart(3,'0')+';'+e.compte_debit+';'+e.compte_credit+';'+e.fournisseur+';'+e.montant_ttc+';0\n';
+      });
+    }else{
+      content='date,account_id,name,debit,credit\n';
+      ecrs.forEach(e=>{
+        const dt=new Date(e.created_at).toISOString().slice(0,10);
+        content+=dt+','+e.compte_debit+','+e.fournisseur+','+e.montant_ttc+',0\n';
+      });
+    }
+    const ext=format==='sage'?'txt':'csv';
+    const blob=new Blob(['\uFEFF'+content],{type:'text/'+ext+';charset=utf-8;'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='export_'+format+'_'+new Date().toISOString().slice(0,10)+'.'+ext;
+    a.click();
+    showToast('📥 Export '+format.toUpperCase()+' téléchargé ('+ecrs.length+' écritures)');
+  }catch(e){showToast('Erreur export : '+e.message);}
+}
+
+/* ══ TVA — Télécharge depuis Supabase Storage ══ */
+async function downloadTVA(){
+  try{
+    const sb=HC.getSupabase();
+    const sess=await HC.getSession();
+    if(!sess||!sess.pmeId){showToast('Erreur : session non trouvée');return;}
+    const {data:ecrs}=await sb.from('ecritures').select('montant_ht,tva,montant_ttc,fournisseur').eq('pme_id',sess.pmeId);
+    if(!ecrs||!ecrs.length){showToast('Aucune écriture');return;}
+    const totalHT=ecrs.reduce((s,e)=>s+(parseFloat(e.montant_ht)||0),0);
+    const totalTVA=ecrs.reduce((s,e)=>s+(parseFloat(e.tva)||0),0);
+    const totalTTC=ecrs.reduce((s,e)=>s+(parseFloat(e.montant_ttc)||0),0);
+    const taux=sess.tva||18;
+    let content='========================================\n';
+    content+='DECLARATION TVA — '+(sess.nomPme||'PME')+'\n';
+    content+='Pays: '+(sess.pays||'CI')+' | TVA: '+taux+'%\n';
+    content+='Periode: '+new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'})+'\n';
+    content+='========================================\n\n';
+    content+='TOTAUX :\n';
+    content+='  Montant HT :  '+totalHT.toLocaleString('fr-FR')+' FCFA\n';
+    content+='  TVA :         '+totalTVA.toLocaleString('fr-FR')+' FCFA\n';
+    content+='  Montant TTC : '+totalTTC.toLocaleString('fr-FR')+' FCFA\n\n';
+    content+='DETAIL :\n';
+    ecrs.forEach(e=>{content+='  '+e.fournisseur+' | '+e.montant_ht+' HT | '+e.tva+' TVA\n';});
+    content+='\n========================================\n';
+    content+='Genere par H-Compta AI\n';
+    const blob=new Blob([content],{type:'text/plain;charset=utf-8;'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='Declaration_TVA_'+(sess.nomPme||'PME')+'_'+new Date().toISOString().slice(0,7)+'.txt';
+    a.click();
+    showToast('📥 Déclaration TVA téléchargée');
+  }catch(e){showToast('Erreur TVA : '+e.message);}
+}
+
+/* ══ TVA REPORTING — Charger les vrais chiffres ══ */
+async function loadTVAReporting(){
+  try{
+    const sb=HC.getSupabase();
+    const sess=await HC.getSession();
+    if(!sess||!sess.pmeId)return;
+    const {data:ecrs}=await sb.from('ecritures').select('montant_ht,tva,montant_ttc,fournisseur,journal').eq('pme_id',sess.pmeId);
+    if(!ecrs)return;
+    const achats=ecrs.filter(e=>e.journal==='ACH');
+    const ventes=ecrs.filter(e=>e.journal==='VTE');
+    const tvaColl=ventes.reduce((s,e)=>s+(parseFloat(e.tva)||0),0);
+    const tvaDed=achats.reduce((s,e)=>s+(parseFloat(e.tva)||0),0);
+    const tvaPay=tvaColl-tvaDed;
+    const fmt=n=>Math.round(n).toLocaleString('fr-FR');
+    const el=id=>document.getElementById(id);
+    if(el('tva-coll'))el('tva-coll').textContent=fmt(tvaColl);
+    if(el('tva-ded'))el('tva-ded').textContent=fmt(tvaDed);
+    if(el('tva-pay')){el('tva-pay').textContent=fmt(Math.abs(tvaPay));el('tva-pay').style.color=tvaPay>=0?'var(--red)':'var(--green)';}
+    // Detail table
+    const tbl=el('tva-coll')?.closest('.card')?.querySelector('.tbl');
+    if(tbl){
+      tbl.innerHTML='';
+      ecrs.forEach(e=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML='<td style="color:var(--text2)">'+e.fournisseur+'</td><td class="tbl-mono" style="color:var(--gold)">'+fmt(parseFloat(e.tva)||0)+' FCFA</td>';
+        tbl.appendChild(tr);
+      });
+    }
+  }catch(e){console.warn('[TVA]',e);}
+}
+
 /* ══ BOOT — Supabase Auth + Bridge (CdC V3) ═════ */
 const _origHcLoadAll=window.hcLoadAll;
 window.hcLoadAll=async function(){
   await _origHcLoadAll();
   _lastSync=Date.now();
+  loadTVAReporting();
   // MAJ activité récente + actions depuis Supabase
   try{
     const sb=HC.getSupabase();

@@ -225,7 +225,12 @@ async function hcImporterPiece(file) {
     const month = String(new Date().getMonth() + 1).padStart(2, '0');
 
     // Convention CdC V3 : {bucket}/{pme_id}/{annee}/{mois}/{timestamp}_{nom}
-    const path = `${pmeId}/${year}/${month}/${now}_${file.name}`;
+    // FIX: sanitize filename — Supabase Storage refuse accents, espaces, parenthèses
+    const safeName = file.name
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // remove accents
+      .replace(/[^a-zA-Z0-9._-]/g, '_')                  // replace special chars
+      .replace(/_+/g, '_');                                // collapse multiple _
+    const path = `${pmeId}/${year}/${month}/${now}_${safeName}`;
 
     const { error: uploadErr } = await sb.storage
       .from('factures-brutes')

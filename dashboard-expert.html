@@ -986,9 +986,9 @@ body.dark ::-webkit-scrollbar-thumb{background:#2E3640;border-radius:4px;}
       <!-- Exports -->
       <div class="sub" id="exports-tab">
         <div class="exports-grid">
-          <div class="exp-card"><div class="exp-icon">📊</div><div class="exp-name">TVA Février 2026</div><div class="exp-sub">418 000 FCFA nets · DGI CI</div><button class="exp-dl" onclick="showToast('📊 Export TVA téléchargé')">⬇ Télécharger</button></div>
-          <div class="exp-card"><div class="exp-icon">📄</div><div class="exp-name">Export Sage 100</div><div class="exp-sub">42 écritures · mars 2026</div><button class="exp-dl" onclick="showToast('📄 Export Sage 100 téléchargé')">⬇ Télécharger</button></div>
-          <div class="exp-card"><div class="exp-icon">🔷</div><div class="exp-name">Export Odoo</div><div class="exp-sub">Format compatible Odoo 16/17</div><button class="exp-dl" onclick="showToast('🔷 Export Odoo téléchargé')">⬇ Télécharger</button></div>
+          <div class="exp-card"><div class="exp-icon">📊</div><div class="exp-name">TVA Mensuelle</div><div class="exp-sub" id="exp-tva-sub">Chargement…</div><button class="exp-dl" onclick="downloadExpertTVA()">⬇ Télécharger</button></div>
+          <div class="exp-card"><div class="exp-icon">📄</div><div class="exp-name">Export Sage 100</div><div class="exp-sub" id="exp-sage-sub">Chargement…</div><button class="exp-dl" onclick="downloadExpertSage()">⬇ Télécharger</button></div>
+          <div class="exp-card"><div class="exp-icon">🔷</div><div class="exp-name">Export Odoo</div><div class="exp-sub">Format compatible Odoo 16/17</div><button class="exp-dl" onclick="downloadExpertOdoo()">⬇ Télécharger</button></div>
           <div class="exp-card"><div class="exp-icon">📋</div><div class="exp-name">Grand Livre</div><div class="exp-sub">Toutes les écritures · mars</div><button class="exp-dl" onclick="showToast('📋 Grand Livre téléchargé')">⬇ Télécharger</button></div>
           <div class="exp-card"><div class="exp-icon">🧾</div><div class="exp-name">Historique corrections</div><div class="exp-sub">Toutes les corrections expert</div><button class="exp-dl" onclick="showToast('🧾 Historique téléchargé')">⬇ Télécharger</button></div>
           <div class="exp-card" style="opacity:0.5;"><div class="exp-icon">⏳</div><div class="exp-name">TVA Mars 2026</div><div class="exp-sub">Disponible le 01/04/2026</div><button class="exp-dl disabled" disabled>En attente</button></div>
@@ -1495,6 +1495,58 @@ function filterEcrituresExpert(q){
   });
   const c=document.getElementById('ecr-count');
   if(c)c.textContent=q?(shown+'/'+total+' résultats'):'';
+}
+
+// ══ EXPORT TVA/SAGE/ODOO EXPERT ══════════════════
+async function _getExpertEcritures(){
+  const sb=HC.getSupabase();
+  const sess=await HC.getSession();
+  if(!sess)return[];
+  const pmes=sess.pmes||[];
+  let all=[];
+  for(const p of pmes){
+    const {data}=await sb.from('ecritures').select('*').eq('pme_id',p.id);
+    if(data)all=all.concat(data.map(e=>({...e,nom_pme:p.nom_pme,pays:p.pays})));
+  }
+  return all;
+}
+async function downloadExpertTVA(){
+  const ecrs=await _getExpertEcritures();
+  if(!ecrs.length){showToast('Aucune écriture');return;}
+  const byPme={};
+  ecrs.forEach(e=>{if(!byPme[e.nom_pme])byPme[e.nom_pme]={pays:e.pays,ecrs:[]};byPme[e.nom_pme].ecrs.push(e);});
+  let content='';
+  for(const[nom,d]of Object.entries(byPme)){
+    const tva=d.ecrs.reduce((s,e)=>s+(parseFloat(e.tva)||0),0);
+    const ht=d.ecrs.reduce((s,e)=>s+(parseFloat(e.montant_ht)||0),0);
+    content+='DECLARATION TVA — '+nom+'\nPays: '+d.pays+'\nTVA: '+Math.round(tva).toLocaleString('fr-FR')+' FCFA\nHT: '+Math.round(ht).toLocaleString('fr-FR')+' FCFA\nEcritures: '+d.ecrs.length+'\n\n';
+  }
+  const blob=new Blob([content],{type:'text/plain;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='TVA_portefeuille_'+new Date().toISOString().slice(0,10)+'.txt';a.click();
+  showToast('📊 Export TVA téléchargé');
+}
+async function downloadExpertSage(){
+  const ecrs=await _getExpertEcritures();
+  const valid=ecrs.filter(e=>e.statut==='Validé');
+  if(!valid.length){showToast('Aucune écriture validée');return;}
+  let content='JOURNAL;DATE;PIECE;COMPTE_D;COMPTE_C;LIBELLE;DEBIT;CREDIT\n';
+  valid.forEach((e,i)=>{const dt=new Date(e.created_at).toISOString().slice(0,10).replace(/-/g,'');content+=e.journal+';'+dt+';FAC-'+String(i+1).padStart(3,'0')+';'+e.compte_debit+';'+e.compte_credit+';'+e.fournisseur+';'+e.montant_ttc+';0\n';});
+  const blob=new Blob(['\uFEFF'+content],{type:'text/plain;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='export_sage_portefeuille_'+new Date().toISOString().slice(0,10)+'.txt';a.click();
+  showToast('📄 Export Sage téléchargé');
+}
+async function downloadExpertOdoo(){
+  const ecrs=await _getExpertEcritures();
+  const valid=ecrs.filter(e=>e.statut==='Validé');
+  if(!valid.length){showToast('Aucune écriture validée');return;}
+  let content='date,account_id,name,debit,credit\n';
+  valid.forEach(e=>{const dt=new Date(e.created_at).toISOString().slice(0,10);content+=dt+','+e.compte_debit+','+e.fournisseur+','+e.montant_ttc+',0\n';});
+  const blob=new Blob(['\uFEFF'+content],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='export_odoo_portefeuille_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  showToast('🔷 Export Odoo téléchargé');
 }
 
 // ══ EXPORT CSV EXPERT ════════════════════════════

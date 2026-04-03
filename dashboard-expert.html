@@ -1113,15 +1113,21 @@ async function _loadExpertPortfolio(session){
     container.innerHTML='<div style="padding:24px;text-align:center;color:var(--text3)">Aucune PME assignée à votre cabinet.</div>';
     return;
   }
-  // Charger les écritures pour chaque PME
+  // Charger TOUTES les écritures en 1 requête (optimisation perf)
   const sb = HC.getSupabase();
+  const pmeIds=pmes.map(p=>p.id);
+  const {data:allEcr}=await sb.from('ecritures').select('pme_id,statut').in('pme_id',pmeIds);
+  const ecrByPme={};
+  (allEcr||[]).forEach(e=>{if(!ecrByPme[e.pme_id])ecrByPme[e.pme_id]=[];ecrByPme[e.pme_id].push(e);});
+
   let html='';
   for(let i=0;i<pmes.length;i++){
     const p=pmes[i];
     const score=p.score_conformite||0;
-    const {count:nbEcr}=await sb.from('ecritures').select('*',{count:'exact',head:true}).eq('pme_id',p.id);
-    const {count:nbVal}=await sb.from('ecritures').select('*',{count:'exact',head:true}).eq('pme_id',p.id).eq('statut','Validé');
-    const {count:nbAlert}=await sb.from('ecritures').select('*',{count:'exact',head:true}).eq('pme_id',p.id).in('statut',['Rejeté','En attente']);
+    const myEcr=ecrByPme[p.id]||[];
+    const nbEcr=myEcr.length;
+    const nbVal=myEcr.filter(e=>e.statut==='Validé').length;
+    const nbAlert=myEcr.filter(e=>e.statut==='Rejeté'||e.statut==='En attente').length;
     const pct=nbEcr>0?Math.round(nbVal/nbEcr*100):0;
     const scoreColor=score>=85?'var(--green)':score>=60?'#F59E0B':'var(--red)';
     const scoreLabel=score>=85?'Excellent':score>=60?'Bon':'À risque';

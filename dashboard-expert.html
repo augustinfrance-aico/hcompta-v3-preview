@@ -1213,9 +1213,10 @@ async function loadClientsList(){
   const cl=document.getElementById('clients-list');
   if(!cl)return;
   try{
-    if(!_session)_session=await HC.getSession();
+    const sess=await HC.getSession();
+    if(!sess)return;
     const sb=HC.getSupabase();
-    const {data:pmes}=await sb.from('pme_liste').select('id,nom_pme,pays,plan,score_conformite').eq('email_expert',_session.email);
+    const {data:pmes}=await sb.from('pme_liste').select('id,nom_pme,pays,plan,score_conformite').eq('email_expert',sess.email);
     if(!pmes||!pmes.length){cl.innerHTML='<div style="padding:16px;text-align:center;color:var(--text3)">Aucune PME</div>';return;}
     const clTitle2=document.querySelector('#panel-clients .cl-title');
     if(clTitle2)clTitle2.textContent='Mes clients — '+pmes.length+' PME';
@@ -1236,7 +1237,6 @@ async function loadClientsList(){
   }catch(e){console.error('[CLIENTS]',e);cl.innerHTML='<div style="padding:16px;color:var(--red)">Erreur chargement</div>';}
 }
 
-var _session=null;
 function goPanel(id,el){
   document.querySelectorAll('.panel').forEach(p=>{p.classList.remove('active');});
   const p=document.getElementById('panel-'+id);

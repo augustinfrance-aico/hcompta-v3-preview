@@ -1145,6 +1145,28 @@ async function _loadExpertPortfolio(session){
   if(clTitle)clTitle.textContent='Mes clients — '+pmes.length+' PME';
   _lastSync=Date.now();
 
+  // ══ Remplir panel "Mes clients" ══
+  const clList=document.getElementById('clients-list');
+  if(clList && pmes.length){
+    const clTitle2=document.querySelector('#panel-clients .cl-title');
+    if(clTitle2)clTitle2.textContent='Mes clients — '+pmes.length+' PME';
+    let clHtml='';
+    pmes.forEach(p=>{
+      const init=p.nom_pme.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      const sc=p.score_conformite||0;
+      const scColor=sc>=85?'var(--green)':sc>=60?'#F59E0B':'var(--red)';
+      clHtml+='<div class="cl-item" style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer" onclick="goPanel(\'dashboard\',document.getElementById(\'ni-dash\'))">';
+      clHtml+='<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#243A3A,#2E8269);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700">'+init+'</div>';
+      clHtml+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">'+p.nom_pme+'</div><div style="font-size:11px;color:var(--text3)">'+p.pays+' · '+(p.plan||'PME')+'</div></div>';
+      clHtml+='<div style="text-align:right"><div style="font-size:14px;font-weight:700;color:'+scColor+'">'+sc+'%</div><div style="font-size:10px;color:var(--text3)">Score</div></div>';
+      clHtml+='</div>';
+    });
+    clList.innerHTML=clHtml;
+    // Update nav count
+    const navCount=document.querySelector('#ni-clients .nav-count');
+    if(navCount)navCount.textContent=pmes.length;
+  }
+
   // ══ MAJ KPIs dynamiques depuis données chargées ══
   const totalEcr=Object.values(PME_DATA).reduce((s,d)=>s+(d.pieces||0),0);
   const totalAlertes=Object.values(PME_DATA).reduce((s,d)=>s+(d.alertes||0),0);

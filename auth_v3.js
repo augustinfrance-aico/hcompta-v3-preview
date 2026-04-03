@@ -24,6 +24,15 @@ const SUPABASE_URL  = window.HC_SUPABASE_URL || 'https://auxhvovqrevwhkpmpwrc.su
 const SUPABASE_ANON = window.HC_SUPABASE_ANON || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1eGh2b3ZxcmV2d2hrcG1wd3JjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNjQwMjUsImV4cCI6MjA4ODg0MDAyNX0.tCtDc2_pAtBrMawZUy49zteocUS6rBKaMOBNrsseoiw';
 
 // ============================================================
+// LICENSE CHECK — Désactive l'app si non autorisé
+// ============================================================
+const _LC = window.HC_LICENSE || 'AICO-2026-HCOMPTA';
+if (_LC !== 'AICO-2026-HCOMPTA') {
+  document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Inter,sans-serif;color:#666"><div style="text-align:center"><h2>Licence expirée</h2><p>Contactez votre prestataire.</p></div></div>';
+  throw new Error('License invalid');
+}
+
+// ============================================================
 // INIT SUPABASE CLIENT (singleton)
 // ============================================================
 let _sb = null;

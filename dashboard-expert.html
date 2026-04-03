@@ -967,9 +967,7 @@ body.dark ::-webkit-scrollbar-thumb{background:#2E3640;border-radius:4px;}
           <div class="etbl-top"><div class="etbl-title">À valider (3)</div><button class="open-btn" style="padding:5px 12px;font-size:11px;" onclick="valTout()">Valider tout ✓</button></div>
           <table><thead><tr><th>Pièce</th><th>Libellé</th><th>Montant</th><th>Score</th><th>Statut</th><th>Actions</th></tr></thead>
           <tbody id="val-tbody">
-            <tr><td class="mono">FAC-089</td><td>Achat matériaux</td><td class="mono">1 450 000</td><td><div class="sw"><div class="sb"><div class="sf" style="width:78%;background:#F59E0B"></div></div><span class="sn" style="color:#F59E0B">78</span></div></td><td><span class="badge b-wait" id="vb089">À VÉRIFIER</span></td><td><div class="act-cell"><div class="act a-ok" onclick="valEcr('vb089')" title="Valider">✓</div><div class="act a-ko" onclick="rejEcr('vb089')" title="Rejeter">✕</div><div class="act a-edit" onclick="switchPrTab('comment')" title="Commenter">✏️</div><div class="act a-m" onclick="switchPrTab('mariah');pmSend('Valider FAC-089 achat matériaux 1 450 000 FCFA — vérifier TVA')" title="Mariah">✦</div></div></td></tr>
-            <tr><td class="mono">FAC-041</td><td>Prestation info</td><td class="mono">850 000</td><td><div class="sw"><div class="sb"><div class="sf" style="width:52%;background:var(--red)"></div></div><span class="sn" style="color:var(--red)">52</span></div></td><td><span class="badge b-block" id="vb041">BLOQUÉ</span></td><td><div class="act-cell"><div class="act a-ok" onclick="valEcr('vb041')">✓</div><div class="act a-ko" onclick="rejEcr('vb041')">✕</div><div class="act a-edit" onclick="switchPrTab('comment')">✏️</div><div class="act a-m" onclick="switchPrTab('mariah');pmSend('Journal FAC-041 prestation informatique CI : AC ou OD ?')">✦</div></div></td></tr>
-            <tr><td class="mono">FAC-012</td><td>Marchandises</td><td class="mono">2 100 000</td><td><div class="sw"><div class="sb"><div class="sf" style="width:81%;background:#F59E0B"></div></div><span class="sn" style="color:#F59E0B">81</span></div></td><td><span class="badge b-wait" id="vb012">À VÉRIFIER</span></td><td><div class="act-cell"><div class="act a-ok" onclick="valEcr('vb012')">✓</div><div class="act a-ko" onclick="rejEcr('vb012')">✕</div><div class="act a-edit" onclick="switchPrTab('comment')">✏️</div><div class="act a-m" onclick="switchPrTab('mariah');pmSend('Vérifier écriture achat marchandises 2 100 000 FCFA')">✦</div></div></td></tr>
+            <tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3)">Chargement…</td></tr>
           </tbody></table>
         </div>
       </div>
@@ -1209,6 +1207,36 @@ async function _loadExpertPortfolio(session){
 })();
 
 // ══ NAVIGATION PANELS ════════════════════════════════════
+async function loadValidationTable(pmeId){
+  const tbody=document.getElementById('val-tbody');
+  if(!tbody)return;
+  try{
+    const sb=HC.getSupabase();
+    const {data:ecrs}=await sb.from('ecritures').select('id,fournisseur,montant_ttc,statut,journal,created_at').eq('pme_id',pmeId).in('statut',['À valider','En attente']).order('created_at',{ascending:false});
+    if(!ecrs||!ecrs.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--text3)">Aucune écriture à valider</td></tr>';return;}
+    const titleEl=document.querySelector('#valid-tab .etbl-title');
+    if(titleEl)titleEl.textContent='À valider ('+ecrs.length+')';
+    let h='';
+    ecrs.forEach((e,i)=>{
+      const dt=new Date(e.created_at).toLocaleDateString('fr-FR');
+      const mt=e.montant_ttc?Math.round(e.montant_ttc).toLocaleString('fr-FR'):'—';
+      const badge=e.statut==='En attente'?'b-wait':'b-wait';
+      h+='<tr>';
+      h+='<td class="mono">'+dt+'</td>';
+      h+='<td>'+e.fournisseur+'</td>';
+      h+='<td class="mono">'+mt+'</td>';
+      h+='<td>'+(e.journal||'—')+'</td>';
+      h+='<td><span class="badge '+badge+'">'+e.statut+'</span></td>';
+      h+='<td><div class="act-cell">';
+      h+='<div class="act a-ok" onclick="valEcr(\''+e.id+'\')" title="Valider">✓</div>';
+      h+='<div class="act a-ko" onclick="rejEcr(\''+e.id+'\')" title="Rejeter">✕</div>';
+      h+='</div></td>';
+      h+='</tr>';
+    });
+    tbody.innerHTML=h;
+  }catch(err){console.error('[VALID]',err);tbody.innerHTML='<tr><td colspan="6" style="color:var(--red)">Erreur chargement</td></tr>';}
+}
+
 async function loadClientsList(){
   const cl=document.getElementById('clients-list');
   if(!cl)return;
@@ -1298,6 +1326,8 @@ function openPME(id,nom,init,color,score,status){
   document.getElementById('as-alertes').textContent=d.alertes;
   document.getElementById('as-alertes-sub').textContent=d.alertesSub;
   document.getElementById('actions-list').innerHTML=d.actionsHtml;
+  // Charger écritures "À valider" depuis Supabase
+  loadValidationTable(id);
   // Reset
   switchPt('apercu-tab');
   switchPrTab('mariah');

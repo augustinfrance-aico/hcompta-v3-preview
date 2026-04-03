@@ -170,34 +170,37 @@ function _renderEcrituresTable(ecritures) {
 async function hcValider(ecritureId) {
   if (!HC.canDo('validation')) return;
   try {
-    const jwt = await HC.getJWT();
-    const resp = await fetch(PROXY_URL + '/sync', {
+    // FIX: appel direct webhook S8 (proxy non déployé)
+    const WEBHOOK_S8 = 'https://hook.eu1.make.com/df73y2o6yshtciylg3fshv1i447ykfc5';
+    const resp = await fetch(WEBHOOK_S8, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + jwt },
-      body: JSON.stringify({ ecritureId, action: 'valider' })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ecritureId, action: 'valider', commentaire: 'Validé par expert', expert_email: _session?.email || '' })
     });
     if (!resp.ok) throw new Error(await resp.text());
-    _showToast('Écriture validée');
+    _showToast('✅ Écriture validée');
     await hcLoadAll();
   } catch (e) {
     console.error('[VALIDER ERROR]', e);
+    _showToast('Erreur validation : ' + e.message);
   }
 }
 
 async function hcRejeter(ecritureId, commentaire) {
   if (!HC.canDo('validation')) return;
   try {
-    const jwt = await HC.getJWT();
-    const resp = await fetch(PROXY_URL + '/sync', {
+    const WEBHOOK_S8 = 'https://hook.eu1.make.com/df73y2o6yshtciylg3fshv1i447ykfc5';
+    const resp = await fetch(WEBHOOK_S8, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + jwt },
-      body: JSON.stringify({ ecritureId, action: 'rejeter', commentaire })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ecritureId, action: 'rejeter', commentaire, expert_email: _session?.email || '' })
     });
     if (!resp.ok) throw new Error(await resp.text());
-    _showToast('Écriture rejetée');
+    _showToast('❌ Écriture rejetée');
     await hcLoadAll();
   } catch (e) {
     console.error('[REJETER ERROR]', e);
+    _showToast('Erreur rejet : ' + e.message);
   }
 }
 

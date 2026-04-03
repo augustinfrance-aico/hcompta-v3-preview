@@ -595,7 +595,7 @@ body.dark ::-webkit-scrollbar-thumb{background:#2E3640;border-radius:4px;}
   <div class="nav-item active" id="ni-dashboard" onclick="goPanel('dashboard',this)">
     <span class="nav-icon">📊</span>Tableau de bord
   </div>
-  <div class="nav-item" id="ni-clients" onclick="goPanel('clients',this)">
+  <div class="nav-item" id="ni-clients" onclick="goPanel('clients',this);loadClientsList()">
     <span class="nav-icon">👥</span>Mes clients<span class="nav-count nc-cyan">5</span>
   </div>
 
@@ -1209,6 +1209,34 @@ async function _loadExpertPortfolio(session){
 })();
 
 // ══ NAVIGATION PANELS ════════════════════════════════════
+async function loadClientsList(){
+  const cl=document.getElementById('clients-list');
+  if(!cl)return;
+  try{
+    if(!_session)_session=await HC.getSession();
+    const sb=HC.getSupabase();
+    const {data:pmes}=await sb.from('pme_liste').select('id,nom_pme,pays,plan,score_conformite').eq('email_expert',_session.email);
+    if(!pmes||!pmes.length){cl.innerHTML='<div style="padding:16px;text-align:center;color:var(--text3)">Aucune PME</div>';return;}
+    const clTitle2=document.querySelector('#panel-clients .cl-title');
+    if(clTitle2)clTitle2.textContent='Mes clients — '+pmes.length+' PME';
+    let h='';
+    pmes.forEach(p=>{
+      const init=p.nom_pme.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      const sc=p.score_conformite||0;
+      const scColor=sc>=85?'var(--green)':sc>=60?'#F59E0B':'var(--red)';
+      h+='<div class="cl-item" style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer" onclick="goPanel(\'dashboard\',document.getElementById(\'ni-dash\'))">';
+      h+='<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#243A3A,#2E8269);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700">'+init+'</div>';
+      h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">'+p.nom_pme+'</div><div style="font-size:11px;color:var(--text3)">'+p.pays+' · '+(p.plan||'PME')+'</div></div>';
+      h+='<div style="text-align:right"><div style="font-size:14px;font-weight:700;color:'+scColor+'">'+sc+'%</div><div style="font-size:10px;color:var(--text3)">Score</div></div>';
+      h+='</div>';
+    });
+    cl.innerHTML=h;
+    const navCount=document.querySelector('#ni-clients .nav-count');
+    if(navCount)navCount.textContent=pmes.length;
+  }catch(e){console.error('[CLIENTS]',e);cl.innerHTML='<div style="padding:16px;color:var(--red)">Erreur chargement</div>';}
+}
+
+var _session=null;
 function goPanel(id,el){
   document.querySelectorAll('.panel').forEach(p=>{p.classList.remove('active');});
   const p=document.getElementById('panel-'+id);
